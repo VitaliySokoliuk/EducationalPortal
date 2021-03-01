@@ -1,13 +1,13 @@
 package ua.lviv.EduPortal.entities;
 
-import ua.lviv.EduPortal.entities.CompositKeys.CK_UserArticles;
+import ua.lviv.EduPortal.entities.CompositKeys.CK_UserArticle;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "user_articles")
-@IdClass(value = CK_UserArticles.class)
-public class UserArticles {
+@Table(name = "user_article")
+@IdClass(value = CK_UserArticle.class)
+public class UserArticle {
 
     @Id
     @ManyToOne
@@ -17,13 +17,16 @@ public class UserArticles {
     @ManyToOne
     @JoinColumn(name = "article_id")
     private Article article;
+    @Column(name = "added_by_author", nullable = false)
+    private boolean addedByAuthor;
 
-    public UserArticles(User user, Article article) {
+    public UserArticle(User user, Article article, boolean addedByAuthor) {
         this.user = user;
         this.article = article;
+        this.addedByAuthor = addedByAuthor;
     }
 
-    public UserArticles() {
+    public UserArticle() {
     }
 
     public User getUser() {
@@ -42,11 +45,20 @@ public class UserArticles {
         this.article = article;
     }
 
+    public boolean isAddedByAuthor() {
+        return addedByAuthor;
+    }
+
+    public void setAddedByAuthor(boolean addedByAuthor) {
+        this.addedByAuthor = addedByAuthor;
+    }
+
     @Override
     public String toString() {
-        return "UserArticles{" +
+        return "UserArticle{" +
                 "user=" + user +
                 ", article=" + article +
+                ", addedByAuthor=" + addedByAuthor +
                 '}';
     }
 }

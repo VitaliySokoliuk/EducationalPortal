@@ -19,15 +19,18 @@ public class Course {
     private Topic topic;
     @Column(nullable = false)
     private String description;
+    @Column(nullable = false)
+    private boolean visibility;
     @Lob
     @Column(name = "logo_picture")
     private byte[] logoPicture;
 
-    public Course(User author, String name, Topic topic, String description, byte[] logoPicture) {
+    public Course(User author, String name, Topic topic, String description, boolean visibility, byte[] logoPicture) {
         this.author = author;
         this.name = name;
         this.topic = topic;
         this.description = description;
+        this.visibility = visibility;
         this.logoPicture = logoPicture;
     }
 
@@ -74,6 +77,14 @@ public class Course {
         this.description = description;
     }
 
+    public boolean isVisibility() {
+        return visibility;
+    }
+
+    public void setVisibility(boolean visibility) {
+        this.visibility = visibility;
+    }
+
     public byte[] getLogoPicture() {
         return logoPicture;
     }
@@ -89,6 +100,7 @@ public class Course {
                 ", author=" + author +
                 ", name='" + name + '\'' +
                 ", topic=" + topic +
+                ", visibility=" + visibility +
                 ", description='" + description + '\'' +
                 '}';
     }

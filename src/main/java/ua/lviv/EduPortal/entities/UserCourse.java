@@ -1,13 +1,13 @@
 package ua.lviv.EduPortal.entities;
 
-import ua.lviv.EduPortal.entities.CompositKeys.CK_UserCourses;
+import ua.lviv.EduPortal.entities.CompositKeys.CK_UserCourse;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "user_courses")
-@IdClass(value = CK_UserCourses.class)
-public class UserCourses {
+@Table(name = "user_course")
+@IdClass(value = CK_UserCourse.class)
+public class UserCourse {
 
     @Id
     @ManyToOne
@@ -17,13 +17,16 @@ public class UserCourses {
     @ManyToOne
     @JoinColumn(name = "course_id")
     private Course course;
+    @Column(name = "added_by_author", nullable = false)
+    private boolean addedByAuthor;
 
-    public UserCourses(User user, Course course) {
+    public UserCourse(User user, Course course, boolean addedByAuthor) {
         this.user = user;
         this.course = course;
+        this.addedByAuthor = addedByAuthor;
     }
 
-    public UserCourses() {
+    public UserCourse() {
     }
 
     public User getUser() {
@@ -42,11 +45,20 @@ public class UserCourses {
         this.course = course;
     }
 
+    public boolean isAddedByAuthor() {
+        return addedByAuthor;
+    }
+
+    public void setAddedByAuthor(boolean addedByAuthor) {
+        this.addedByAuthor = addedByAuthor;
+    }
+
     @Override
     public String toString() {
-        return "UserCourses{" +
+        return "UserCourse{" +
                 "user=" + user +
                 ", course=" + course +
+                ", addedByAuthor=" + addedByAuthor +
                 '}';
     }
 }

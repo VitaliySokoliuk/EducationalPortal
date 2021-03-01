@@ -3,25 +3,25 @@ package ua.lviv.EduPortal.entities;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "likes")
-public class Like {
+@Table(name = "course_likes")
+public class CourseLike {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @ManyToOne
-    @JoinColumn(name = "article_id", nullable = false)
-    private Article article;
+    @JoinColumn(name = "course_id", nullable = false)
+    private Course course;
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    public Like(Article article, User user) {
-        this.article = article;
+    public CourseLike(Course course, User user) {
+        this.course = course;
         this.user = user;
     }
 
-    public Like() {
+    public CourseLike() {
     }
 
     public int getId() {
@@ -32,12 +32,12 @@ public class Like {
         this.id = id;
     }
 
-    public Article getArticle() {
-        return article;
+    public Course getCourse() {
+        return course;
     }
 
-    public void setArticle(Article article) {
-        this.article = article;
+    public void setCourse(Course course) {
+        this.course = course;
     }
 
     public User getUser() {
@@ -50,9 +50,9 @@ public class Like {
 
     @Override
     public String toString() {
-        return "Like{" +
+        return "CourseLike{" +
                 "id=" + id +
-                ", article=" + article +
+                ", course=" + course +
                 ", user=" + user +
                 '}';
     }

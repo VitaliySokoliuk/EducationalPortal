@@ -7,7 +7,7 @@ import javax.persistence.Embeddable;
 import java.io.Serializable;
 
 @Embeddable
-public class CK_UserCourses implements Serializable {
+public class CK_UserCourse implements Serializable {
 
     private User user;
     private Course course;

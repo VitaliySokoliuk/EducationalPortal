@@ -21,6 +21,8 @@ public class Article {
     private Topic topic;
     @Column(nullable = false)
     private boolean visibility;
+    @Column(name = "give_answers", nullable = false)
+    private boolean giveAnswers;
     @Column(nullable = false)
     @Type(type = "text")
     private String content;
@@ -28,11 +30,12 @@ public class Article {
     @Column(name = "logo_picture")
     private byte[] logoPicture;
 
-    public Article(User author, String name, Topic topic, boolean visibility, String content, byte[] logoPicture) {
+    public Article(User author, String name, Topic topic, boolean visibility, boolean giveAnswers, String content, byte[] logoPicture) {
         this.author = author;
         this.name = name;
         this.topic = topic;
         this.visibility = visibility;
+        this.giveAnswers = giveAnswers;
         this.content = content;
         this.logoPicture = logoPicture;
     }
@@ -80,6 +83,14 @@ public class Article {
         this.visibility = visibility;
     }
 
+    public boolean isGiveAnswers() {
+        return giveAnswers;
+    }
+
+    public void setGiveAnswers(boolean giveAnswers) {
+        this.giveAnswers = giveAnswers;
+    }
+
     public String getContent() {
         return content;
     }
@@ -104,6 +115,7 @@ public class Article {
                 ", name='" + name + '\'' +
                 ", topic=" + topic +
                 ", visibility=" + visibility +
+                ", giveAnswers=" + giveAnswers +
                 ", content='" + content + '\'' +
                 '}';
     }
