@@ -1,4 +1,4 @@
-package ua.lviv.EduPortal.entities;
+package ua.lviv.EduPortal.Entities;
 
 import javax.persistence.*;
 
@@ -9,16 +9,12 @@ public class Hometask {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "article_id", nullable = false)
-    private Article article;
     @Column(nullable = false)
     private String task;
     @Column(name = "max_mark", nullable = false)
     private int maxMark;
 
-    public Hometask(Article article, String task, int maxMark) {
-        this.article = article;
+    public Hometask(String task, int maxMark) {
         this.task = task;
         this.maxMark = maxMark;
     }
@@ -32,14 +28,6 @@ public class Hometask {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public Article getArticle() {
-        return article;
-    }
-
-    public void setArticle(Article article) {
-        this.article = article;
     }
 
     public String getTask() {
@@ -62,7 +50,6 @@ public class Hometask {
     public String toString() {
         return "Hometask{" +
                 "id=" + id +
-                ", article=" + article +
                 ", task='" + task + '\'' +
                 ", maxMark=" + maxMark +
                 '}';

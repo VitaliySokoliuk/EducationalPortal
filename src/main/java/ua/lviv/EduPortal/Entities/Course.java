@@ -1,4 +1,4 @@
-package ua.lviv.EduPortal.entities;
+package ua.lviv.EduPortal.Entities;
 
 import javax.persistence.*;
 
@@ -12,12 +12,12 @@ public class Course {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id", nullable = false)
     private User author;
-    @Column(nullable = false)
+    @Column(nullable = false, length = 30)
     private String name;
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "topic_id", nullable = false)
-    private Topic topic;
-    @Column(nullable = false)
+    @JoinColumn(name = "chapter_id", nullable = false)
+    private Chapter chapter;
+    @Column(nullable = false, length = 60)
     private String description;
     @Column(nullable = false)
     private boolean visibility;
@@ -25,10 +25,10 @@ public class Course {
     @Column(name = "logo_picture")
     private byte[] logoPicture;
 
-    public Course(User author, String name, Topic topic, String description, boolean visibility, byte[] logoPicture) {
+    public Course(User author, String name, Chapter chapter, String description, boolean visibility, byte[] logoPicture) {
         this.author = author;
         this.name = name;
-        this.topic = topic;
+        this.chapter = chapter;
         this.description = description;
         this.visibility = visibility;
         this.logoPicture = logoPicture;
@@ -61,12 +61,12 @@ public class Course {
         this.name = name;
     }
 
-    public Topic getTopic() {
-        return topic;
+    public Chapter getChapter() {
+        return chapter;
     }
 
-    public void setTopic(Topic topic) {
-        this.topic = topic;
+    public void setChapter(Chapter chapter) {
+        this.chapter = chapter;
     }
 
     public String getDescription() {
@@ -99,7 +99,7 @@ public class Course {
                 "id=" + id +
                 ", author=" + author +
                 ", name='" + name + '\'' +
-                ", topic=" + topic +
+                ", chapter=" + chapter +
                 ", visibility=" + visibility +
                 ", description='" + description + '\'' +
                 '}';

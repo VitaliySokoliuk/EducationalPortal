@@ -1,7 +1,7 @@
-package ua.lviv.EduPortal.entities.CompositKeys;
+package ua.lviv.EduPortal.Entities.CompositKeys;
 
-import ua.lviv.EduPortal.entities.Course;
-import ua.lviv.EduPortal.entities.User;
+import ua.lviv.EduPortal.Entities.Course;
+import ua.lviv.EduPortal.Entities.User;
 
 import javax.persistence.Embeddable;
 import java.io.Serializable;

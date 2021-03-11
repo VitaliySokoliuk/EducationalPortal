@@ -1,13 +1,13 @@
-package ua.lviv.EduPortal.entities;
+package ua.lviv.EduPortal.Entities;
 
-import ua.lviv.EduPortal.entities.CompositKeys.CK_UserArticle;
+import ua.lviv.EduPortal.Entities.CompositKeys.CK_UserCourse;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "user_article")
-@IdClass(value = CK_UserArticle.class)
-public class UserArticle {
+@Table(name = "user_course")
+@IdClass(value = CK_UserCourse.class)
+public class UserCourse {
 
     @Id
     @ManyToOne
@@ -15,18 +15,18 @@ public class UserArticle {
     private User user;
     @Id
     @ManyToOne
-    @JoinColumn(name = "article_id")
-    private Article article;
+    @JoinColumn(name = "course_id")
+    private Course course;
     @Column(name = "added_by_author", nullable = false)
     private boolean addedByAuthor;
 
-    public UserArticle(User user, Article article, boolean addedByAuthor) {
+    public UserCourse(User user, Course course, boolean addedByAuthor) {
         this.user = user;
-        this.article = article;
+        this.course = course;
         this.addedByAuthor = addedByAuthor;
     }
 
-    public UserArticle() {
+    public UserCourse() {
     }
 
     public User getUser() {
@@ -37,12 +37,12 @@ public class UserArticle {
         this.user = user;
     }
 
-    public Article getArticle() {
-        return article;
+    public Course getCourse() {
+        return course;
     }
 
-    public void setArticle(Article article) {
-        this.article = article;
+    public void setCourse(Course course) {
+        this.course = course;
     }
 
     public boolean isAddedByAuthor() {
@@ -55,9 +55,9 @@ public class UserArticle {
 
     @Override
     public String toString() {
-        return "UserArticle{" +
+        return "UserCourse{" +
                 "user=" + user +
-                ", article=" + article +
+                ", course=" + course +
                 ", addedByAuthor=" + addedByAuthor +
                 '}';
     }

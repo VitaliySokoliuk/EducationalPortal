@@ -1,6 +1,6 @@
-package ua.lviv.EduPortal.entities;
+package ua.lviv.EduPortal.Entities;
 
-import ua.lviv.EduPortal.entities.enums.UserRole;
+import ua.lviv.EduPortal.Entities.enums.UserRole;
 
 import javax.persistence.*;
 
@@ -11,16 +11,16 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column(name = "first_name", nullable = false)
+    @Column(name = "first_name", nullable = false, length = 30)
     private String firstName;
-    @Column(name = "last_name", nullable = false)
+    @Column(name = "last_name", nullable = false, length = 30)
     private String lastName;
-    @Column(unique = true, nullable = false)
+    @Column(unique = true, nullable = false, length = 60)
     private String email;
     @Column(nullable = false)
     private String password;
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(nullable = false, length = 30)
     private UserRole role;
     @Lob
     @Column(name = "profile_picture")

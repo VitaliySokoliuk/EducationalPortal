@@ -1,6 +1,6 @@
-package ua.lviv.EduPortal.entities;
+package ua.lviv.EduPortal.Entities;
 
-import ua.lviv.EduPortal.entities.CompositKeys.CK_ArticlesInCourse;
+import ua.lviv.EduPortal.Entities.CompositKeys.CK_ArticlesInCourse;
 
 import javax.persistence.*;
 

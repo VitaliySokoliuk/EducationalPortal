@@ -1,18 +1,14 @@
-package ua.lviv.EduPortal.entities;
+package ua.lviv.EduPortal.Entities;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "topic")
 public class Topic {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @ManyToOne
-    @JoinColumn(name = "chapter_id", nullable = false)
-    private Chapter chapter;
-    @Column(unique = true, nullable = false)
+    @Column(unique = true, nullable = false, length = 30)
     private String name;
 
     public Topic(String name) {

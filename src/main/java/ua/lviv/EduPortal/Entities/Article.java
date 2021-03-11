@@ -1,4 +1,4 @@
-package ua.lviv.EduPortal.entities;
+package ua.lviv.EduPortal.Entities;
 
 import org.hibernate.annotations.Type;
 
@@ -14,11 +14,16 @@ public class Article {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id", nullable = false)
     private User author;
-    @Column(nullable = false)
-    private String name;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "hometask_id", referencedColumnName = "id")
+    private Hometask hometask;
+    @Column(nullable = false, length = 30)
+    private String title;
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "topic_id", nullable = false)
-    private Topic topic;
+    @JoinColumn(name = "chapter_id", nullable = false)
+    private Chapter chapter;
+    @Column(nullable = false, length = 60)
+    private String description;
     @Column(nullable = false)
     private boolean visibility;
     @Column(name = "give_answers", nullable = false)
@@ -30,14 +35,15 @@ public class Article {
     @Column(name = "logo_picture")
     private byte[] logoPicture;
 
-    public Article(User author, String name, Topic topic, boolean visibility, boolean giveAnswers, String content, byte[] logoPicture) {
+    public Article(User author, String title, Chapter chapter, String description,
+                   boolean visibility, boolean giveAnswers, String content) {
         this.author = author;
-        this.name = name;
-        this.topic = topic;
+        this.title = title;
+        this.chapter = chapter;
+        this.description = description;
         this.visibility = visibility;
         this.giveAnswers = giveAnswers;
         this.content = content;
-        this.logoPicture = logoPicture;
     }
 
     public Article() {
@@ -59,20 +65,28 @@ public class Article {
         this.author = author;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public Topic getTopic() {
-        return topic;
+    public Chapter getChapter() {
+        return chapter;
     }
 
-    public void setTopic(Topic topic) {
-        this.topic = topic;
+    public void setChapter(Chapter chapter) {
+        this.chapter = chapter;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public boolean isVisibility() {
@@ -107,13 +121,22 @@ public class Article {
         this.logoPicture = logoPicture;
     }
 
+    public Hometask getHometask() {
+        return hometask;
+    }
+
+    public void setHometask(Hometask hometask) {
+        this.hometask = hometask;
+    }
+
     @Override
     public String toString() {
         return "Article{" +
                 "id=" + id +
                 ", author=" + author +
-                ", name='" + name + '\'' +
-                ", topic=" + topic +
+                ", title='" + title + '\'' +
+                ", chapter=" + chapter +
+                ", description=" + description +
                 ", visibility=" + visibility +
                 ", giveAnswers=" + giveAnswers +
                 ", content='" + content + '\'' +

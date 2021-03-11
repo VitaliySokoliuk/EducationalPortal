@@ -1,4 +1,4 @@
-package ua.lviv.EduPortal.entities.enums;
+package ua.lviv.EduPortal.Entities.enums;
 
 public enum UserRole {
 

@@ -1,4 +1,4 @@
-package ua.lviv.EduPortal.entities;
+package ua.lviv.EduPortal.Entities;
 
 import javax.persistence.*;
 
