@@ -31,4 +31,8 @@ public class ArticleService {
         return articleRepository.getLogoPictureById(id);
     }
 
+    public Article findById(int id){
+        return articleRepository.getOne(id);
+    }
+
 }

@@ -10,6 +10,7 @@ import ua.lviv.EduPortal.Services.security.CustomUserDetailsService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -111,6 +112,9 @@ public class CabinetController {
                     myTopic = maybeTopic.get();
                 }
                 Chapter savedChapter = chapterService.save(new Chapter(myTopic, chapter));
+                content = content.replaceAll("&lt;", "<")
+                        .replaceAll("&gt;", ">")
+                        .replaceAll("&quot;", "\"");
                 Article article = new Article(currentUser.get(), title, savedChapter, description,
                                             visibility, false, content);
                 String contentType = logo.getContentType();
@@ -135,6 +139,73 @@ public class CabinetController {
     @GetMapping("downloadArticleLogo")
     public @ResponseBody byte[] downloadArticleLogo(@RequestParam int id) {
         return articleService.getLogoPictureById(id);
+    }
+
+    @GetMapping("editArticle")
+    public String editArticle(HttpServletRequest request, @RequestParam int id){
+        List<Topic> topics = topicService.findAll();
+        Article article = articleService.findById(id);
+        topics.remove(article.getChapter().getTopic());
+        request.setAttribute("topics", topics);
+        request.setAttribute("article", article);
+        return "editArticle";
+    }
+
+    @PostMapping("editArticle")
+    public String editArticle(@RequestParam String content,
+                                 @RequestParam String description,
+                                 @RequestParam MultipartFile logo,
+                                 @RequestParam String title,
+                                 @RequestParam(defaultValue = "true") boolean visibility,
+                                 @RequestParam String hometask,
+                                 @RequestParam(defaultValue = "false") boolean give_answers,
+                                 @RequestParam(defaultValue = "5") int max_point,
+                                 @RequestParam(defaultValue = "unavailable") String chapter,
+                                 @RequestParam(defaultValue = "unavailable") String topic,
+                                 @RequestParam int id){
+        try {
+            Optional<Topic> maybeTopic = topicService.getByName(topic);
+            Topic myTopic;
+            if(maybeTopic.isEmpty()){
+                myTopic = topicService.save(new Topic(topic));
+            }else {
+                myTopic = maybeTopic.get();
+            }
+            Chapter savedChapter = chapterService.save(new Chapter(myTopic, chapter));
+            Article article = articleService.findById(id);
+            article.setTitle(title);
+            article.setChapter(savedChapter);
+            article.setDescription(description);
+            article.setVisibility(visibility);
+            content = content.replaceAll("&lt;", "<")
+                    .replaceAll("&gt;", ">")
+                    .replaceAll("&quot;", "\"");
+            article.setContent(content);
+            String contentType = logo.getContentType();
+            if (contentType != null && contentType.startsWith("image")) {
+                article.setLogoPicture(logo.getBytes());
+            }
+            hometask = hometask.trim();
+            if(!hometask.isEmpty()){
+                Hometask task = new Hometask(hometask, max_point);
+                if(article.getHometask() != null){
+                    task.setId(article.getHometask().getId());
+                }
+                article.setHometask(hometaskService.save(task));
+                article.setGiveAnswers(give_answers);
+            }else {
+                if(article.getHometask() != null){
+                    int htId = article.getHometask().getId();
+                    article.setHometask(null);
+                    hometaskService.deleteById(htId);
+                }
+                article.setGiveAnswers(false);
+            }
+            articleService.save(article);
+        } catch (IOException e) {
+            throw new RuntimeException("Could not save file" + logo.getOriginalFilename());
+        }
+        return "redirect:/cabinet";
     }
 
 }
