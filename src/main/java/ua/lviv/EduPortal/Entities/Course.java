@@ -13,7 +13,7 @@ public class Course {
     @JoinColumn(name = "author_id", nullable = false)
     private User author;
     @Column(nullable = false, length = 30)
-    private String name;
+    private String title;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "chapter_id", nullable = false)
     private Chapter chapter;
@@ -25,13 +25,12 @@ public class Course {
     @Column(name = "logo_picture")
     private byte[] logoPicture;
 
-    public Course(User author, String name, Chapter chapter, String description, boolean visibility, byte[] logoPicture) {
+    public Course(User author, String title, Chapter chapter, String description, boolean visibility) {
         this.author = author;
-        this.name = name;
+        this.title = title;
         this.chapter = chapter;
         this.description = description;
         this.visibility = visibility;
-        this.logoPicture = logoPicture;
     }
 
     public Course() {
@@ -53,12 +52,12 @@ public class Course {
         this.author = author;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public Chapter getChapter() {
@@ -98,7 +97,7 @@ public class Course {
         return "Course{" +
                 "id=" + id +
                 ", author=" + author +
-                ", name='" + name + '\'' +
+                ", title='" + title + '\'' +
                 ", chapter=" + chapter +
                 ", visibility=" + visibility +
                 ", description='" + description + '\'' +

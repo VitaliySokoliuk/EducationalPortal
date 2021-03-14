@@ -22,16 +22,21 @@ public class CabinetController {
     private HometaskService hometaskService;
     private TopicService topicService;
     private ChapterService chapterService;
+    private CourseService courseService;
+    private ArticlesInCourseService articlesInCourseService;
 
     @Autowired
     public CabinetController(UserService userService, ArticleService articleService,
                              HometaskService hometaskService, TopicService topicService,
-                             ChapterService chapterService) {
+                             ChapterService chapterService, CourseService courseService,
+                             ArticlesInCourseService articlesInCourseService) {
         this.userService = userService;
         this.articleService = articleService;
         this.hometaskService = hometaskService;
         this.topicService = topicService;
         this.chapterService = chapterService;
+        this.courseService = courseService;
+        this.articlesInCourseService = articlesInCourseService;
     }
 
     @GetMapping
@@ -41,7 +46,8 @@ public class CabinetController {
             User user = currentUser.get();
             request.setAttribute("user", user);
             request.setAttribute("articles", articleService.getByAuthor(user));
-            return "cabinet";
+            request.setAttribute("courses", courseService.getByAuthor(user));
+            return "cabinet/cabinet";
         }
         return "403";
     }
@@ -56,7 +62,7 @@ public class CabinetController {
         Optional<User> currentUser = CustomUserDetailsService.getCurrentUser();
         if(currentUser.isPresent()){
             request.setAttribute("user", currentUser.get());
-            return "updateUser";
+            return "cabinet/updateUser";
         }
         return "403";
     }
@@ -87,7 +93,7 @@ public class CabinetController {
     @GetMapping("createArticle")
     public String createArticle(HttpServletRequest request){
         request.setAttribute("topics", topicService.findAll());
-        return "createArticle";
+        return "cabinet/createArticle";
     }
 
     @PostMapping("createArticle")
@@ -104,14 +110,8 @@ public class CabinetController {
         Optional<User> currentUser = CustomUserDetailsService.getCurrentUser();
         if(currentUser.isPresent()){
             try {
-                Optional<Topic> maybeTopic = topicService.getByName(topic);
-                Topic myTopic;
-                if(maybeTopic.isEmpty()){
-                    myTopic = topicService.save(new Topic(topic));
-                }else {
-                    myTopic = maybeTopic.get();
-                }
-                Chapter savedChapter = chapterService.save(new Chapter(myTopic, chapter));
+                Topic savedTopic = topicService.findOrSave(topic);
+                Chapter savedChapter = chapterService.save(new Chapter(savedTopic, chapter));
                 content = content.replaceAll("&lt;", "<")
                         .replaceAll("&gt;", ">")
                         .replaceAll("&quot;", "\"");
@@ -148,7 +148,7 @@ public class CabinetController {
         topics.remove(article.getChapter().getTopic());
         request.setAttribute("topics", topics);
         request.setAttribute("article", article);
-        return "editArticle";
+        return "cabinet/editArticle";
     }
 
     @PostMapping("editArticle")
@@ -164,17 +164,16 @@ public class CabinetController {
                                  @RequestParam(defaultValue = "unavailable") String topic,
                                  @RequestParam int id){
         try {
-            Optional<Topic> maybeTopic = topicService.getByName(topic);
-            Topic myTopic;
-            if(maybeTopic.isEmpty()){
-                myTopic = topicService.save(new Topic(topic));
-            }else {
-                myTopic = maybeTopic.get();
-            }
-            Chapter savedChapter = chapterService.save(new Chapter(myTopic, chapter));
             Article article = articleService.findById(id);
+            if(!(article.getChapter().getName().equals(chapter) &&
+                    article.getChapter().getTopic().getName().equals(topic))){
+                Topic savedTopic = topicService.findOrSave(topic);
+                Chapter savedChapter = chapterService.save(new Chapter(savedTopic, chapter));
+                int chapterId = article.getChapter().getId();
+                article.setChapter(savedChapter);
+                chapterService.deleteById(chapterId);
+            }
             article.setTitle(title);
-            article.setChapter(savedChapter);
             article.setDescription(description);
             article.setVisibility(visibility);
             content = content.replaceAll("&lt;", "<")
@@ -206,6 +205,123 @@ public class CabinetController {
             throw new RuntimeException("Could not save file" + logo.getOriginalFilename());
         }
         return "redirect:/cabinet";
+    }
+
+    @GetMapping("createCourse")
+    public String createCourse(HttpServletRequest request){
+        request.setAttribute("topics", topicService.findAll());
+        return "cabinet/createCourse";
+    }
+
+    @PostMapping("createCourse")
+    public String createCourse(@RequestParam String description,
+                                @RequestParam MultipartFile logo,
+                                @RequestParam String title,
+                                @RequestParam(defaultValue = "true") boolean visibility,
+                                @RequestParam(defaultValue = "unavailable") String chapter,
+                                @RequestParam(defaultValue = "unavailable") String topic){
+        Optional<User> currentUser = CustomUserDetailsService.getCurrentUser();
+        if(currentUser.isPresent()){
+            try {
+
+                Topic savedTopic = topicService.findOrSave(topic);
+                Chapter savedChapter = chapterService.save(new Chapter(savedTopic, chapter));
+                Course course = new Course(currentUser.get(), title, savedChapter, description, visibility);
+
+                String contentType = logo.getContentType();
+                if (contentType != null && contentType.startsWith("image")) {
+                    course.setLogoPicture(logo.getBytes());
+                }
+                courseService.save(course);
+            } catch (IOException e) {
+                throw new RuntimeException("Could not save file" + logo.getOriginalFilename());
+            }
+        }
+        return "redirect:/cabinet";
+    }
+
+    @GetMapping("downloadCourseLogo")
+    public @ResponseBody byte[] downloadCourseLogo(@RequestParam int id) {
+        return courseService.getLogoPictureById(id);
+    }
+
+    @GetMapping("editCourse")
+    public String editCourse(HttpServletRequest request, @RequestParam int id){
+        List<Topic> topics = topicService.findAll();
+        Course course = courseService.findById(id);
+        topics.remove(course.getChapter().getTopic());
+        request.setAttribute("topics", topics);
+        request.setAttribute("course", course);
+        return "cabinet/editCourse";
+    }
+
+    @PostMapping("editCourse")
+    public String editCourse(@RequestParam String description,
+                             @RequestParam MultipartFile logo,
+                             @RequestParam String title,
+                             @RequestParam(defaultValue = "true") boolean visibility,
+                             @RequestParam(defaultValue = "unavailable") String chapter,
+                             @RequestParam(defaultValue = "unavailable") String topic,
+                             @RequestParam int id){
+        Optional<User> currentUser = CustomUserDetailsService.getCurrentUser();
+        if(currentUser.isPresent()){
+            try {
+                Course course = courseService.findById(id);
+                if(!(course.getChapter().getName().equals(chapter) &&
+                        course.getChapter().getTopic().getName().equals(topic))){
+                    Topic savedTopic = topicService.findOrSave(topic);
+                    Chapter savedChapter = chapterService.save(new Chapter(savedTopic, chapter));
+                    int chapterId = course.getChapter().getId();
+                    course.setChapter(savedChapter);
+                    chapterService.deleteById(chapterId);
+                }
+                course.setDescription(description);
+                course.setTitle(title);
+                course.setVisibility(visibility);
+                String contentType = logo.getContentType();
+                if (contentType != null && contentType.startsWith("image")) {
+                    course.setLogoPicture(logo.getBytes());
+                }
+                courseService.save(course);
+            } catch (IOException e) {
+                throw new RuntimeException("Could not save file" + logo.getOriginalFilename());
+            }
+        }
+        return "redirect:/cabinet";
+    }
+
+    @GetMapping("articlesInCourse")
+    public String articlesInCourse(HttpServletRequest request, @RequestParam int id){
+        Optional<User> currentUser = CustomUserDetailsService.getCurrentUser();
+        if(currentUser.isPresent()){
+            User user = currentUser.get();
+            List<Article> articlesByCourseId = articlesInCourseService.findArticlesByCourseId(id);
+            List<Article> articlesByAuthor = articleService.getByAuthor(user);
+            articlesByAuthor.removeAll(articlesByCourseId);
+            request.setAttribute("articlesInCourse", articlesByCourseId);
+            request.setAttribute("anotherArticle", articlesByAuthor);
+            request.setAttribute("courseId", id);
+            return "cabinet/articlesInCourse";
+        }
+        return "403";
+    }
+
+    @GetMapping("contentArticle")
+    public String contentArticle(HttpServletRequest request, @RequestParam int id){
+        request.setAttribute("article", articleService.findById(id));
+        return "cabinet/contentArticle";
+    }
+
+    @GetMapping("addArticleToCourse")
+    public String addArticleToCourse(@RequestParam int aId, @RequestParam int cId){
+        articlesInCourseService.save(aId, cId);
+        return "redirect:/cabinet/articlesInCourse?id=" + cId;
+    }
+
+    @GetMapping("delArticleFromCourse")
+    public String deleteArticleFromCourse(@RequestParam int aId, @RequestParam int cId){
+        articlesInCourseService.delete(aId, cId);
+        return "redirect:/cabinet/articlesInCourse?id=" + cId;
     }
 
 }

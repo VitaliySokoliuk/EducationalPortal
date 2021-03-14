@@ -32,7 +32,12 @@ public class TopicService {
         return topicRepository.findByName(name);
     }
 
-    public void findByName(String topic) {
-
+    public Topic findOrSave(String topic) {
+        Optional<Topic> maybeTopic = topicRepository.findByName(topic);
+        if(maybeTopic.isEmpty()){
+            return topicRepository.save(new Topic(topic));
+        }else {
+            return maybeTopic.get();
+        }
     }
 }

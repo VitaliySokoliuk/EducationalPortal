@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
 </head>
 <body>
-<c:import url="parts/header.jsp"/>
+<c:import url="../parts/header.jsp"/>
 
     <c:if test = "${user.profilePicture == null}">
         <td>

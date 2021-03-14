@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
 </head>
 <body>
-<c:import url="parts/header.jsp"/>
+<c:import url="../parts/header.jsp"/>
 
 <div class="container">
     <h2>New Article</h2>
@@ -50,7 +50,6 @@
                       cols="30" rows="3">${article.description}</textarea>
         </div>
         <textarea name="content" id="content" cols="30" rows="10">${article.content}</textarea>
-        ${article.content}
         <div class="form-group">
             <label for="visibility">Accessibility:</label> <br>
             <c:if test = "${article.visibility == true}">
