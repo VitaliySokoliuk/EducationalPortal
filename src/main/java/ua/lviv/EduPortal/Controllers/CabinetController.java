@@ -125,7 +125,11 @@ public class CabinetController {
                 if(!hometask.isEmpty()){
                     Hometask task = new Hometask(hometask, max_point);
                     Hometask savedTask = hometaskService.save(task);
-                    article.setGiveAnswers(give_answers);
+                    if(!visibility) {
+                        article.setGiveAnswers(give_answers);
+                    }else{
+                        article.setGiveAnswers(false);
+                    }
                     article.setHometask(savedTask);
                 }
                 articleService.save(article);
@@ -191,7 +195,11 @@ public class CabinetController {
                     task.setId(article.getHometask().getId());
                 }
                 article.setHometask(hometaskService.save(task));
-                article.setGiveAnswers(give_answers);
+                if(!visibility) {
+                    article.setGiveAnswers(give_answers);
+                }else{
+                    article.setGiveAnswers(false);
+                }
             }else {
                 if(article.getHometask() != null){
                     int htId = article.getHometask().getId();
@@ -323,5 +331,7 @@ public class CabinetController {
         articlesInCourseService.delete(aId, cId);
         return "redirect:/cabinet/articlesInCourse?id=" + cId;
     }
+
+
 
 }
