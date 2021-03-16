@@ -24,12 +24,14 @@ public class CabinetController {
     private ChapterService chapterService;
     private CourseService courseService;
     private ArticlesInCourseService articlesInCourseService;
+    private UserArticleService userArticleService;
 
     @Autowired
     public CabinetController(UserService userService, ArticleService articleService,
                              HometaskService hometaskService, TopicService topicService,
                              ChapterService chapterService, CourseService courseService,
-                             ArticlesInCourseService articlesInCourseService) {
+                             ArticlesInCourseService articlesInCourseService,
+                             UserArticleService userArticleService) {
         this.userService = userService;
         this.articleService = articleService;
         this.hometaskService = hometaskService;
@@ -37,6 +39,7 @@ public class CabinetController {
         this.chapterService = chapterService;
         this.courseService = courseService;
         this.articlesInCourseService = articlesInCourseService;
+        this.userArticleService = userArticleService;
     }
 
     @GetMapping
@@ -332,6 +335,22 @@ public class CabinetController {
         return "redirect:/cabinet/articlesInCourse?id=" + cId;
     }
 
+    @GetMapping("articleReaders")
+    public String articleReaders(HttpServletRequest request, @RequestParam("id") int articleId){
+        request.setAttribute("users", userArticleService.findAllUsersByArticleId(articleId));
+        request.setAttribute("articleId", articleId);
+        return "cabinet/articleReaders";
+    }
 
+    @PostMapping("addUserArticle")
+    public String addTopic(@RequestParam String email, @RequestParam int articleId){
+        Optional<User> maybeUser = userService.findByEmail(email);
+        if(maybeUser.isPresent()){
+            int userId = maybeUser.get().getId();
+            userArticleService.save(articleId, userId, true);
+        }
+
+        return "redirect:/cabinet/articleReaders?id=" + articleId;
+    }
 
 }
