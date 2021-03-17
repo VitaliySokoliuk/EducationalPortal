@@ -31,4 +31,11 @@ public class UserArticleService {
         }
     }
 
+    @Transactional
+    public void delete(int aId, int uId){
+        if(userArticleRepository.findByUserIdAndArticleId(aId, uId).isPresent()){
+            userArticleRepository.delByArticleIdAndUserId(aId, uId);
+        }
+    }
+
 }

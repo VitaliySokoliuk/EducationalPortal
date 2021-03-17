@@ -25,13 +25,14 @@ public class CabinetController {
     private CourseService courseService;
     private ArticlesInCourseService articlesInCourseService;
     private UserArticleService userArticleService;
+    private UserCourseService userCourseService;
 
     @Autowired
     public CabinetController(UserService userService, ArticleService articleService,
                              HometaskService hometaskService, TopicService topicService,
                              ChapterService chapterService, CourseService courseService,
                              ArticlesInCourseService articlesInCourseService,
-                             UserArticleService userArticleService) {
+                             UserArticleService userArticleService, UserCourseService userCourseService) {
         this.userService = userService;
         this.articleService = articleService;
         this.hometaskService = hometaskService;
@@ -40,6 +41,7 @@ public class CabinetController {
         this.courseService = courseService;
         this.articlesInCourseService = articlesInCourseService;
         this.userArticleService = userArticleService;
+        this.userCourseService = userCourseService;
     }
 
     @GetMapping
@@ -343,14 +345,42 @@ public class CabinetController {
     }
 
     @PostMapping("addUserArticle")
-    public String addTopic(@RequestParam String email, @RequestParam int articleId){
+    public String addUserArticle(@RequestParam String email, @RequestParam int articleId){
         Optional<User> maybeUser = userService.findByEmail(email);
         if(maybeUser.isPresent()){
             int userId = maybeUser.get().getId();
             userArticleService.save(articleId, userId, true);
         }
-
         return "redirect:/cabinet/articleReaders?id=" + articleId;
+    }
+
+    @GetMapping("delUserArticle")
+    public String delUserArticle(@RequestParam int articleId, @RequestParam int userId){
+        userArticleService.delete(articleId, userId);
+        return "redirect:/cabinet/articleReaders?id=" + articleId;
+    }
+
+    @GetMapping("courseReaders")
+    public String courseReaders(HttpServletRequest request, @RequestParam("id") int courseId){
+        request.setAttribute("users", userCourseService.findAllUsersByCourseId(courseId));
+        request.setAttribute("courseId", courseId);
+        return "cabinet/courseReaders";
+    }
+
+    @PostMapping("addUserCourse")
+    public String addUserCourse(@RequestParam String email, @RequestParam int courseId){
+        Optional<User> maybeUser = userService.findByEmail(email);
+        if(maybeUser.isPresent()){
+            int userId = maybeUser.get().getId();
+            userCourseService.save(courseId, userId, true);
+        }
+        return "redirect:/cabinet/courseReaders?id=" + courseId;
+    }
+
+    @GetMapping("delUserCourse")
+    public String delUserCourse(@RequestParam int courseId, @RequestParam int userId){
+        userCourseService.delete(courseId, userId);
+        return "redirect:/cabinet/courseReaders?id=" + courseId;
     }
 
 }

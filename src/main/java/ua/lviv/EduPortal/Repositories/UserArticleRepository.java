@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface UserArticleRepository extends JpaRepository<UserArticle, Integer> {
+public interface UserArticleRepository extends JpaRepository<UserArticle, CK_UserArticle> {
 
     @Query("select new ua.lviv.EduPortal.DTOs.UserDto(u.id, u.firstName, u.lastName, u.email) " +
             "from UserArticle uar join User u on uar.user.id = u.id where uar.article.id = :articleId")
@@ -25,5 +25,9 @@ public interface UserArticleRepository extends JpaRepository<UserArticle, Intege
 
     @Query("select u from UserArticle u where u.user.id = :uId and u.article.id = :aId")
     Optional<UserArticle> findByUserIdAndArticleId(int aId, int uId);
+
+    @Modifying
+    @Query("delete from UserArticle a where a.article.id = :aId and a.user.id = :uId")
+    void delByArticleIdAndUserId(int aId, int uId);
 
 }
