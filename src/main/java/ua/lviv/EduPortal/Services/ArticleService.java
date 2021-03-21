@@ -35,4 +35,7 @@ public class ArticleService {
         return articleRepository.getOne(id);
     }
 
+    public List<Article> findAll() {
+        return articleRepository.findAll();
+    }
 }
