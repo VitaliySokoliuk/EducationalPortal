@@ -35,4 +35,16 @@ public class ArticleService {
         return articleRepository.getOne(id);
     }
 
+    public List<Article> findAll() {
+        return articleRepository.findAll();
+    }
+
+    public List<Article> findAllIfNotPrivate() {
+        return articleRepository.findAllIfNotPrivate();
+    }
+
+    public List<Article> findArticlesInUserList(int userId){
+        return articleRepository.findArticlesInUserList(userId);
+    }
+
 }

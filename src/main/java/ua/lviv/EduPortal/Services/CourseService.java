@@ -36,4 +36,17 @@ public class CourseService {
     public Course findById(int id) {
         return courseRepository.getOne(id);
     }
+
+    public List<Course> findAll(){
+        return courseRepository.findAll();
+    }
+
+    public List<Course> findAllIfNotPrivate(){
+        return courseRepository.findAllIfNotPrivate();
+    }
+
+    public List<Course> findCoursesInUserList(int userId){
+        return courseRepository.findCoursesInUserList(userId);
+    }
+
 }
