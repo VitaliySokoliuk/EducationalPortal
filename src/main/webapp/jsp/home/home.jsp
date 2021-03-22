@@ -32,7 +32,7 @@
                     <p>${course.description}</p>
                     <a href="/courseDetails?id=${course.id}">Details</a>
                     <c:if test = "${isUserPresent == true}">
-                        <a href="/addToList?id=${course.id}">Add to my list</a>
+                        <a href="/addCToList?id=${course.id}">Add to my list</a>
                     </c:if>
                 </div>
             </div>
@@ -61,7 +61,7 @@
                     <p>${article.description}</p>
                     <a href="/readArticle?id=${article.id}">Read</a>
                     <c:if test = "${isUserPresent == true}">
-                        <a href="/addToList?id=${article.id}">Add to my list</a>
+                        <a href="/addAToList?id=${article.id}">Add to my list</a>
                     </c:if>
                 </div>
             </div>

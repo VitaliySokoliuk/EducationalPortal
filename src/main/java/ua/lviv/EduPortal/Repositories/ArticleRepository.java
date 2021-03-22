@@ -16,4 +16,6 @@ public interface ArticleRepository extends JpaRepository<Article, Integer> {
     @Query("select a.logoPicture from Article a where a.id = :id")
     byte[] getLogoPictureById(int id);
 
+    @Query("select a from Article a where a.visibility = true")
+    List<Article> findAllIfNotPrivate();
 }

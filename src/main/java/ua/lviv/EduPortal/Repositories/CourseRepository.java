@@ -16,4 +16,7 @@ public interface CourseRepository extends JpaRepository<Course, Integer> {
     @Query("select c.logoPicture from Course c where c.id = :id")
     byte[] getLogoPictureById(int id);
 
+    @Query("select c from Course c where c.visibility = true")
+    List<Course> findAllIfNotPrivate();
+
 }
