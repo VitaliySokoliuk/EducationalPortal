@@ -45,4 +45,8 @@ public class CourseService {
         return courseRepository.findAllIfNotPrivate();
     }
 
+    public List<Course> findCoursesInUserList(int userId){
+        return courseRepository.findCoursesInUserList(userId);
+    }
+
 }

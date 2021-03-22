@@ -43,4 +43,8 @@ public class ArticleService {
         return articleRepository.findAllIfNotPrivate();
     }
 
+    public List<Article> findArticlesInUserList(int userId){
+        return articleRepository.findArticlesInUserList(userId);
+    }
+
 }

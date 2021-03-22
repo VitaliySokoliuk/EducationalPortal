@@ -9,7 +9,7 @@
         <a class="p-2 text-dark" href="#">Materials</a>
     </div>
     <div class="my-2 my-md-0 mr-md-3">
-        <a class="p-2 text-dark" href="#">My materials</a>
+        <a class="p-2 text-dark" href="/myMaterials">My materials</a>
     </div>
     <div class="my-2 my-md-0 mr-md-3">
         <a class="p-2 text-dark" href="#">My marks</a>
