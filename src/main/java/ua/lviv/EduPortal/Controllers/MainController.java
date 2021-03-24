@@ -60,6 +60,7 @@ public class MainController {
     @GetMapping("readArticle")
     public String readArticle(HttpServletRequest request, @RequestParam int id){
         request.setAttribute("article", articleService.findById(id));
+        request.setAttribute("answerAbility", true);
         return "cabinet/contentArticle";
     }
 

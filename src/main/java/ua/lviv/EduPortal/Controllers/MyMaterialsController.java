@@ -11,7 +11,6 @@ import ua.lviv.EduPortal.Services.CourseService;
 import ua.lviv.EduPortal.Services.security.CustomUserDetailsService;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 import java.util.Optional;
 
 @Controller

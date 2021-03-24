@@ -88,7 +88,7 @@
                             <a href="/cabinet/articleReaders?id=${article.id}">Readers</a>
                         </c:if>
                         <c:if test = "${article.giveAnswers == true}">
-                            <a href="/cabinet/ArticleAnswers?id=${article.id}">Answers</a>
+                            <a href="/cabinet/articleAnswers?id=${article.id}">Answers</a>
                         </c:if>
                     </div>
                 </div>
