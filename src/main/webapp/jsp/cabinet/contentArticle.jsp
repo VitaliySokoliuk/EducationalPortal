@@ -14,6 +14,20 @@
 
 ${article.content}
 
+<c:if test = "${article.hometask != null}">
+    <h3>Additional task</h3>
+    ${article.hometask.task}
+    <c:if test = "${article.giveAnswers == true && answerAbility == true}">
+        <form method="post" action="/readArticle" enctype="multipart/form-data">
+            <input type="file" name="file">
+            <input type="text" name="response">
+            <input type="hidden" name="hometaskId" value="${article.hometask.id}">
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+            <button type="submit" class="btn btn-dark">Send</button><br>
+        </form>
+    </c:if>
+</c:if>
+
 
 </body>
 </html>

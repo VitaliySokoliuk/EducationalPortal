@@ -15,16 +15,17 @@ public class Answer {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "answerFile_id", referencedColumnName = "id")
+    private AnswerFile answerFile;
     @Column(nullable = true)
     private String response;
     @Column(nullable = false)
     private double mark;
 
-    public Answer(Hometask hometask, User user, String response, double mark) {
+    public Answer(Hometask hometask, User user) {
         this.hometask = hometask;
         this.user = user;
-        this.response = response;
-        this.mark = mark;
     }
 
     public Answer() {
@@ -68,6 +69,14 @@ public class Answer {
 
     public void setMark(double mark) {
         this.mark = mark;
+    }
+
+    public AnswerFile getAnswerFile() {
+        return answerFile;
+    }
+
+    public void setAnswerFile(AnswerFile answerFile) {
+        this.answerFile = answerFile;
     }
 
     @Override
