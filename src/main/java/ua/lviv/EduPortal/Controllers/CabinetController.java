@@ -1,6 +1,8 @@
 package ua.lviv.EduPortal.Controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,13 +28,16 @@ public class CabinetController {
     private ArticlesInCourseService articlesInCourseService;
     private UserArticleService userArticleService;
     private UserCourseService userCourseService;
+    private AnswerService answerService;
+    private AnswerFileService answerFileService;
 
     @Autowired
     public CabinetController(UserService userService, ArticleService articleService,
                              HometaskService hometaskService, TopicService topicService,
                              ChapterService chapterService, CourseService courseService,
                              ArticlesInCourseService articlesInCourseService,
-                             UserArticleService userArticleService, UserCourseService userCourseService) {
+                             UserArticleService userArticleService, UserCourseService userCourseService,
+                             AnswerService answerService, AnswerFileService answerFileService) {
         this.userService = userService;
         this.articleService = articleService;
         this.hometaskService = hometaskService;
@@ -42,6 +47,8 @@ public class CabinetController {
         this.articlesInCourseService = articlesInCourseService;
         this.userArticleService = userArticleService;
         this.userCourseService = userCourseService;
+        this.answerService = answerService;
+        this.answerFileService = answerFileService;
     }
 
     @GetMapping
@@ -381,6 +388,23 @@ public class CabinetController {
     public String delUserCourse(@RequestParam int courseId, @RequestParam int userId){
         userCourseService.delete(courseId, userId);
         return "redirect:/cabinet/courseReaders?id=" + courseId;
+    }
+
+    @GetMapping("articleAnswers")
+    public String articleAnswers(HttpServletRequest request, @RequestParam("id") int articleId){
+        Article byId = articleService.findById(articleId);
+        int id = byId.getHometask().getId();
+        List<Answer> allByHometaskId = answerService.findAllByHometaskId(id);
+        request.setAttribute("answers", allByHometaskId);
+        return "cabinet/articleAnswers";
+    }
+
+    @GetMapping("downloadAnswerFile")
+    public ResponseEntity<byte[]> getFile(@RequestParam int id) {
+        AnswerFile answerFile = answerFileService.getById(id);
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + answerFile.getName() + "\"")
+                .body(answerFile.getData());
     }
 
 }

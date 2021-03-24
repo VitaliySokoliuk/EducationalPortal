@@ -17,7 +17,7 @@ public class Course {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "chapter_id", nullable = false)
     private Chapter chapter;
-    @Column(nullable = false, length = 60)
+    @Column(nullable = false, length = 120)
     private String description;
     @Column(nullable = false)
     private boolean visibility;
