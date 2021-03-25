@@ -13,7 +13,7 @@
 
 <c:if test="${!empty answers}">
     <div class="container">
-        <h4>Articles:</h4>
+        <h4>Answers:</h4>
         <c:forEach var="answer" items="${answers}">
             <div class="container">
                 <div>
@@ -21,7 +21,7 @@
                     <c:if test="${!empty answer.response}">
                         <p>Response: ${answer.response}</p>
                     </c:if>
-                    <c:if test="${answer.answerFile != null}">
+                    <c:if test="${answer.answerFile.id != null}">
                         <p>File: <a href="/cabinet/downloadAnswerFile?id=${answer.answerFile.id}">File</a></p>
                     </c:if>
                         <form action="/cabinet/confirmAnswer/${answer.id}" method="get">

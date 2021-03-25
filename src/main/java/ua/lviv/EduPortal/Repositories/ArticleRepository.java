@@ -24,4 +24,6 @@ public interface ArticleRepository extends JpaRepository<Article, Integer> {
 
     @Query("select a.hometask.id from Article a where a.id = :articleId")
     int findHTidByArticleId(int articleId);
+
+    Article findByHometaskId(int hometaskId);
 }

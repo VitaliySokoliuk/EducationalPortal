@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import ua.lviv.EduPortal.Entities.Article;
 import ua.lviv.EduPortal.Entities.User;
 import ua.lviv.EduPortal.Services.ArticleService;
 import ua.lviv.EduPortal.Services.CourseService;

@@ -51,4 +51,7 @@ public class ArticleService {
         return articleRepository.findHTidByArticleId(articleId);
     }
 
+    public Article findByHometaskId(int hometaskId) {
+        return articleRepository.findByHometaskId(hometaskId);
+    }
 }

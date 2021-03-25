@@ -28,4 +28,8 @@ public class AnswerService {
     public Answer findById(int answerId) {
         return answerRepository.getOne(answerId);
     }
+
+    public List<Answer> findAllByUserId(int userId) {
+        return answerRepository.findAllByUserId(userId);
+    }
 }
