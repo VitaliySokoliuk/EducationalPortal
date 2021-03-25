@@ -11,7 +11,7 @@
 <body>
 <c:import url="../parts/header.jsp"/>
 
-<%--<c:if test="${!empty answerArticle}">--%>
+<c:if test="${!empty answersArticle}">
     <div class="container">
         <h4>My answers:</h4>
         <c:forEach var="answerArticle" items="${answersArticle}">
@@ -34,7 +34,7 @@
             </div>
         </c:forEach>
     </div>
-<%--</c:if>--%>
+</c:if>
 
 
 </body>
