@@ -47,4 +47,8 @@ public class ArticleService {
         return articleRepository.findArticlesInUserList(userId);
     }
 
+    public int findHTidByArticleId(int articleId){
+        return articleRepository.findHTidByArticleId(articleId);
+    }
+
 }

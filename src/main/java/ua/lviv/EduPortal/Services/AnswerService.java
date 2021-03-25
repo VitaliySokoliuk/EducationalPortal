@@ -25,4 +25,7 @@ public class AnswerService {
         return answerRepository.findAllByHometaskId(id);
     }
 
+    public Answer findById(int answerId) {
+        return answerRepository.getOne(answerId);
+    }
 }

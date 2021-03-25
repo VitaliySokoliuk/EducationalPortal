@@ -24,6 +24,12 @@
                     <c:if test="${answer.answerFile != null}">
                         <p>File: <a href="/cabinet/downloadAnswerFile?id=${answer.answerFile.id}">File</a></p>
                     </c:if>
+                        <form action="/cabinet/confirmAnswer/${answer.id}" method="get">
+                            <input type="number" step="0.1" value="${answer.mark}" name="mark" min="0" max="${answer.hometask.maxMark}"/>
+                            <input type="hidden" name="articleId" value="${articleId}">
+                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                            <button type="submit" class="btn btn-dark">Send</button><br>
+                        </form>
                 </div>
             </div>
         </c:forEach>
