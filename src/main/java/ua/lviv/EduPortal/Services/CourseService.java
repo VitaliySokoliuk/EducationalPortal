@@ -2,7 +2,7 @@ package ua.lviv.EduPortal.Services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ua.lviv.EduPortal.Entities.Article;
+import ua.lviv.EduPortal.DTOs.CourseDto;
 import ua.lviv.EduPortal.Entities.Course;
 import ua.lviv.EduPortal.Entities.User;
 import ua.lviv.EduPortal.Repositories.CourseRepository;
@@ -49,4 +49,7 @@ public class CourseService {
         return courseRepository.findCoursesInUserList(userId, byAuthor);
     }
 
+    public List<CourseDto> findCoursesAndLikes(int userId){
+        return courseRepository.findCoursesAndLikes(userId);
+    }
 }

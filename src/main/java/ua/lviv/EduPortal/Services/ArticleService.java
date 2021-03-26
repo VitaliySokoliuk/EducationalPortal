@@ -1,6 +1,7 @@
 package ua.lviv.EduPortal.Services;
 
 import org.springframework.stereotype.Service;
+import ua.lviv.EduPortal.DTOs.ArticleDto;
 import ua.lviv.EduPortal.Entities.Article;
 import ua.lviv.EduPortal.Entities.User;
 import ua.lviv.EduPortal.Repositories.ArticleRepository;
@@ -54,4 +55,9 @@ public class ArticleService {
     public Article findByHometaskId(int hometaskId) {
         return articleRepository.findByHometaskId(hometaskId);
     }
+
+    public List<ArticleDto> findArticlesAndLikes(int userId){
+        return articleRepository.findArticlesAndLikes(userId);
+    }
+
 }

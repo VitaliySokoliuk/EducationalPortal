@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="<c:url value="/resources/css/home.css"/>">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
 </head>
 <body>
 <c:import url="../parts/header.jsp"/>
@@ -57,6 +58,15 @@
                     <p>${course.title}</p>
                     <p>${course.description}</p>
                     <a href="/courseDetails?id=${course.id}">Details</a>
+                    <a class="col align-self-center" href="/myMaterials/likeC?courseId=${course.id}">
+                        <c:if test = "${course.meLiked}">
+                            <i class="fas fa-heart"></i>
+                        </c:if>
+                        <c:if test = "${!course.meLiked}">
+                            <i class="far fa-heart"></i>
+                        </c:if>
+                            ${course.likes}
+                    </a>
                 </div>
             </div>
         </c:forEach>
@@ -109,6 +119,15 @@
                     <p>${article.title}</p>
                     <p>${article.description}</p>
                     <a href="/readArticle?id=${article.id}">Read</a>
+                    <a class="col align-self-center" href="/myMaterials/likeA?articleId=${article.id}">
+                        <c:if test = "${article.meLiked}">
+                            <i class="fas fa-heart"></i>
+                        </c:if>
+                        <c:if test = "${!article.meLiked}">
+                            <i class="far fa-heart"></i>
+                        </c:if>
+                            ${article.likes}
+                    </a>
                 </div>
             </div>
         </c:forEach>
