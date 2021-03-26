@@ -20,7 +20,8 @@ public interface CourseRepository extends JpaRepository<Course, Integer> {
     @Query("select c from Course c where c.visibility = true")
     List<Course> findAllIfNotPrivate();
 
-    @Query("select c from Course c join UserCourse uc on c.id = uc.course.id where uc.user.id = :userId ")
-    List<Course> findCoursesInUserList(int userId);
+    @Query("select c from Course c join UserCourse uc on c.id = uc.course.id " +
+            "where uc.user.id = :userId and uc.addedByAuthor = :byAuthor")
+    List<Course> findCoursesInUserList(int userId, boolean byAuthor);
 
 }
