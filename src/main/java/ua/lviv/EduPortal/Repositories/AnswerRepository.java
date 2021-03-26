@@ -10,4 +10,6 @@ import java.util.List;
 public interface AnswerRepository extends JpaRepository<Answer, Integer> {
 
     List<Answer> findAllByHometaskId(int id);
+
+    List<Answer> findAllByUserId(int userId);
 }

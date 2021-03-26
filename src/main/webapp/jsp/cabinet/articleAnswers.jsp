@@ -13,7 +13,7 @@
 
 <c:if test="${!empty answers}">
     <div class="container">
-        <h4>Articles:</h4>
+        <h4>Answers:</h4>
         <c:forEach var="answer" items="${answers}">
             <div class="container">
                 <div>
@@ -21,9 +21,15 @@
                     <c:if test="${!empty answer.response}">
                         <p>Response: ${answer.response}</p>
                     </c:if>
-                    <c:if test="${answer.answerFile != null}">
+                    <c:if test="${answer.answerFile.id != null}">
                         <p>File: <a href="/cabinet/downloadAnswerFile?id=${answer.answerFile.id}">File</a></p>
                     </c:if>
+                        <form action="/cabinet/confirmAnswer/${answer.id}" method="get">
+                            <input type="number" step="0.1" value="${answer.mark}" name="mark" min="0" max="${answer.hometask.maxMark}"/>
+                            <input type="hidden" name="articleId" value="${articleId}">
+                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                            <button type="submit" class="btn btn-dark">Send</button><br>
+                        </form>
                 </div>
             </div>
         </c:forEach>

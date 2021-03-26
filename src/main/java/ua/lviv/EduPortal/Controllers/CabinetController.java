@@ -392,10 +392,10 @@ public class CabinetController {
 
     @GetMapping("articleAnswers")
     public String articleAnswers(HttpServletRequest request, @RequestParam("id") int articleId){
-        Article byId = articleService.findById(articleId);
-        int id = byId.getHometask().getId();
-        List<Answer> allByHometaskId = answerService.findAllByHometaskId(id);
+        int hometastId = articleService.findHTidByArticleId(articleId);
+        List<Answer> allByHometaskId = answerService.findAllByHometaskId(hometastId);
         request.setAttribute("answers", allByHometaskId);
+        request.setAttribute("articleId", articleId);
         return "cabinet/articleAnswers";
     }
 
@@ -405,6 +405,15 @@ public class CabinetController {
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + answerFile.getName() + "\"")
                 .body(answerFile.getData());
+    }
+
+    @GetMapping("confirmAnswer/{id}")
+    public String confirmAnswer(@PathVariable(name = "id") int answerId, @RequestParam int articleId,
+                                @RequestParam double mark){
+        Answer answer = answerService.findById(answerId);
+        answer.setMark(mark);
+        answerService.save(answer);
+        return "redirect:/cabinet/articleAnswers?id=" + articleId;
     }
 
 }
