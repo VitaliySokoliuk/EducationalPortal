@@ -41,4 +41,10 @@ public interface CourseRepository extends JpaRepository<Course, Integer> {
             "where c.visibility = true group by ck.course.id order by count(ck.course.id) desc")
     List<Course> findFewByLikesIfNotPrivate(Pageable pageable);
 
+    @Query("select new ua.lviv.EduPortal.DTOs.CourseDto(c.id, c.title, c.description, c.logoPicture, " +
+            "c.visibility, count(cl.course.id) )" +
+            "from Course c left join CourseLike cl on c.id = cl.course.id " +
+            "where c.author.id = :userId group by c.id")
+    List<CourseDto> findAllCoursesAndLikes(int userId);
+
 }

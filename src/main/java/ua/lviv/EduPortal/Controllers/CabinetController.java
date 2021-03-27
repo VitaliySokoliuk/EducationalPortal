@@ -58,8 +58,9 @@ public class CabinetController {
         if(currentUser.isPresent()){
             User user = currentUser.get();
             request.setAttribute("user", user);
-            request.setAttribute("articles", articleService.getByAuthor(user));
-            request.setAttribute("courses", courseService.getByAuthor(user));
+            request.setAttribute("articles", articleService.findAllArticlesAndLikes(user.getId()));
+            request.setAttribute("courses", courseService.findAllCoursesAndLikes(user.getId()));
+            System.out.println(articleService.findAllArticlesAndLikes(user.getId()));
             return "cabinet/cabinet";
         }
         return "403";

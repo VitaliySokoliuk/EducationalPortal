@@ -50,8 +50,9 @@
                         </c:if>
                         <br>
                         <p>${course.title}</p>
-                        <p>Place in the ranking: undefined</p>
-                        <p>Number of likes: undefined</p>
+                        <c:if test = "${course.visibility}">
+                            <p>Number of likes: ${course.likes}</p>
+                        </c:if>
                         <a href="/cabinet/editCourse?id=${course.id}">Edit</a>
                         <a href="/cabinet/articlesInCourse?id=${course.id}">Articles</a>
                         <c:if test = "${course.visibility == false}">
@@ -81,8 +82,9 @@
                         </c:if>
                         <br>
                         <p>${article.title}</p>
-                        <p>Place in the ranking: undefined</p>
-                        <p>Number of likes: undefined</p>
+                        <c:if test = "${article.visibility}">
+                            <p>Number of likes: ${article.likes}</p>
+                        </c:if>
                         <a href="/cabinet/editArticle?id=${article.id}">Edit</a>
                         <c:if test = "${article.visibility == false}">
                             <a href="/cabinet/articleReaders?id=${article.id}">Readers</a>
