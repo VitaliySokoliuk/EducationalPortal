@@ -12,6 +12,7 @@ import ua.lviv.EduPortal.Services.security.CustomUserDetailsService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -318,6 +319,15 @@ public class CabinetController {
             List<Article> articlesByCourseId = articlesInCourseService.findArticlesByCourseId(id);
             List<Article> articlesByAuthor = articleService.getByAuthor(user);
             articlesByAuthor.removeAll(articlesByCourseId);
+            boolean visibility = courseService.findById(id).isVisibility();
+            List<Article> willRemove = new ArrayList<>();
+            for (Article a : articlesByAuthor) {
+                if(!a.isVisibility() && visibility){
+                    willRemove.add(a);
+                }
+                System.out.println(a.isVisibility() + "---");
+            }
+            articlesByAuthor.removeAll(willRemove);
             request.setAttribute("articlesInCourse", articlesByCourseId);
             request.setAttribute("anotherArticle", articlesByAuthor);
             request.setAttribute("courseId", id);
