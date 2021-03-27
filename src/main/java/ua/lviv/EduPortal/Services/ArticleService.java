@@ -60,4 +60,8 @@ public class ArticleService {
         return articleRepository.findArticlesAndLikes(userId);
     }
 
+    public List<Article> findAllByTopicIfNotPrivate(String topicName){
+        return articleRepository.findAllByTopicIfNotPrivate(topicName);
+    }
+
 }

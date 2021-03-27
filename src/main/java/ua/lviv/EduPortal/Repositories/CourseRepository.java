@@ -32,4 +32,8 @@ public interface CourseRepository extends JpaRepository<Course, Integer> {
             "where uc.user.id = :userId and uc.addedByAuthor = 0 " +
             "group by uc.course.id")
     List<CourseDto> findCoursesAndLikes(int userId);
+
+    @Query("select c from Course c where c.visibility = true and c.chapter.topic.name = :topicName")
+    List<Course> findAllByTopicIfNotPrivate(String topicName);
+
 }

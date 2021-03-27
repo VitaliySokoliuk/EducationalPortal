@@ -6,7 +6,7 @@
         <a class="p-2 text-dark" href="/adminPanel">Admin panel</a>
     </div>
     <div class="my-2 my-md-0 mr-md-3">
-        <a class="p-2 text-dark" href="#">Materials</a>
+        <a class="p-2 text-dark" href="/allMaterials">All materials</a>
     </div>
     <div class="my-2 my-md-0 mr-md-3">
         <a class="p-2 text-dark" href="/myMaterials">My materials</a>

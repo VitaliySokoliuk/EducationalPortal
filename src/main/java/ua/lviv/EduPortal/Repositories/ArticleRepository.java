@@ -36,4 +36,8 @@ public interface ArticleRepository extends JpaRepository<Article, Integer> {
             "where uar.user.id = :userId and uar.addedByAuthor = 0 " +
             "group by uar.article.id")
     List<ArticleDto> findArticlesAndLikes(int userId);
+
+    @Query("select a from Article a where a.visibility = true and a.chapter.topic.name = :topicName")
+    List<Article> findAllByTopicIfNotPrivate(String topicName);
+
 }

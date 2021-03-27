@@ -52,4 +52,9 @@ public class CourseService {
     public List<CourseDto> findCoursesAndLikes(int userId){
         return courseRepository.findCoursesAndLikes(userId);
     }
+
+    public List<Course> findAllByTopicIfNotPrivate(String topicName){
+        return courseRepository.findAllByTopicIfNotPrivate(topicName);
+    }
+
 }
