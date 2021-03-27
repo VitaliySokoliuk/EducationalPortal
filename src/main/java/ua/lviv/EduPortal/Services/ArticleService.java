@@ -1,5 +1,6 @@
 package ua.lviv.EduPortal.Services;
 
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ua.lviv.EduPortal.DTOs.ArticleDto;
 import ua.lviv.EduPortal.Entities.Article;
@@ -62,6 +63,10 @@ public class ArticleService {
 
     public List<Article> findAllByTopicIfNotPrivate(String topicName){
         return articleRepository.findAllByTopicIfNotPrivate(topicName);
+    }
+
+    public List<Article> findFewByLikesIfNotPrivate(int count) {
+        return articleRepository.findFewByLikesIfNotPrivate(PageRequest.of(0,count));
     }
 
 }

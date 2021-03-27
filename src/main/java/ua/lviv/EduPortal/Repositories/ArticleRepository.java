@@ -1,5 +1,6 @@
 package ua.lviv.EduPortal.Repositories;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -39,5 +40,9 @@ public interface ArticleRepository extends JpaRepository<Article, Integer> {
 
     @Query("select a from Article a where a.visibility = true and a.chapter.topic.name = :topicName")
     List<Article> findAllByTopicIfNotPrivate(String topicName);
+
+    @Query("select a from Article a join ArticleLike ak on a.id = ak.article.id " +
+            "where a.visibility = true group by ak.article.id order by count(ak.article.id) desc")
+    List<Article> findFewByLikesIfNotPrivate(Pageable pageable);
 
 }
