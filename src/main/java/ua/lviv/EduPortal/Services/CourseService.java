@@ -1,6 +1,7 @@
 package ua.lviv.EduPortal.Services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ua.lviv.EduPortal.DTOs.CourseDto;
 import ua.lviv.EduPortal.Entities.Course;
@@ -52,4 +53,13 @@ public class CourseService {
     public List<CourseDto> findCoursesAndLikes(int userId){
         return courseRepository.findCoursesAndLikes(userId);
     }
+
+    public List<Course> findAllByTopicIfNotPrivate(String topicName){
+        return courseRepository.findAllByTopicIfNotPrivate(topicName);
+    }
+
+    public List<Course> findFewByLikesIfNotPrivate(int count){
+        return courseRepository.findFewByLikesIfNotPrivate(PageRequest.of(0,count));
+    }
+
 }

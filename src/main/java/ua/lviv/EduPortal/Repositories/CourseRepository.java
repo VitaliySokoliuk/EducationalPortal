@@ -1,5 +1,6 @@
 package ua.lviv.EduPortal.Repositories;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -32,4 +33,12 @@ public interface CourseRepository extends JpaRepository<Course, Integer> {
             "where uc.user.id = :userId and uc.addedByAuthor = 0 " +
             "group by uc.course.id")
     List<CourseDto> findCoursesAndLikes(int userId);
+
+    @Query("select c from Course c where c.visibility = true and c.chapter.topic.name = :topicName")
+    List<Course> findAllByTopicIfNotPrivate(String topicName);
+
+    @Query("select c from Course c join CourseLike ck on c.id = ck.course.id " +
+            "where c.visibility = true group by ck.course.id order by count(ck.course.id) desc")
+    List<Course> findFewByLikesIfNotPrivate(Pageable pageable);
+
 }

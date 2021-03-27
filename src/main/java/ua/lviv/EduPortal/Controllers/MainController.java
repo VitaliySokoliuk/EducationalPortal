@@ -50,8 +50,8 @@ public class MainController {
         }else{
             req.setAttribute("isUserPresent", false);
         }
-        req.setAttribute("courses", courseService.findAllIfNotPrivate());
-        req.setAttribute("articles", articleService.findAllIfNotPrivate());
+        req.setAttribute("courses", courseService.findFewByLikesIfNotPrivate(3));
+        req.setAttribute("articles", articleService.findFewByLikesIfNotPrivate(3));
         return "home/home";
     }
 
