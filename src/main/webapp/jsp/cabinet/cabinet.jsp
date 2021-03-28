@@ -31,6 +31,7 @@
     <a href="/cabinet/createArticle">Create article</a> <br>
     <a href="/cabinet/createCourse">Create course</a> <br>
     <hr>
+    <a href="/cabinet/allAnswers">All readers answers</a>
 
     <c:if test="${!empty courses}">
         <div class="container">
@@ -50,6 +51,7 @@
                         </c:if>
                         <br>
                         <p>${course.title}</p>
+                        <p>${course.description}</p>
                         <c:if test = "${course.visibility}">
                             <p>Number of likes: ${course.likes}</p>
                         </c:if>
@@ -82,6 +84,7 @@
                         </c:if>
                         <br>
                         <p>${article.title}</p>
+                        <p>${article.description}</p>
                         <c:if test = "${article.visibility}">
                             <p>Number of likes: ${article.likes}</p>
                         </c:if>

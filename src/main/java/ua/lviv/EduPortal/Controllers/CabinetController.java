@@ -434,4 +434,21 @@ public class CabinetController {
         return "redirect:/cabinet/articleAnswers?id=" + articleId;
     }
 
+    @GetMapping("allAnswers")
+    public String allAnswers(HttpServletRequest request){
+        Optional<User> maybeUser = CustomUserDetailsService.getCurrentUser();
+        if(maybeUser.isPresent()){
+            request.setAttribute("answers", answerService.findAllForAuthor(maybeUser.get().getId()));
+        }
+        return "cabinet/allAnswers";
+    }
+
+    @PostMapping("allAnswers")
+    public String allAnswers2(@RequestParam int answerId, @RequestParam double mark){
+        Answer answer = answerService.findById(answerId);
+        answer.setMark(mark);
+        answerService.save(answer);
+        return "redirect:/cabinet/allAnswers";
+    }
+
 }
