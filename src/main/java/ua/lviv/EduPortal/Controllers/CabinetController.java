@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import ua.lviv.EduPortal.DTOs.UserDto;
 import ua.lviv.EduPortal.Entities.*;
 import ua.lviv.EduPortal.Services.*;
 import ua.lviv.EduPortal.Services.security.CustomUserDetailsService;
@@ -357,7 +358,10 @@ public class CabinetController {
 
     @GetMapping("articleReaders")
     public String articleReaders(HttpServletRequest request, @RequestParam("id") int articleId){
-        request.setAttribute("users", userArticleService.findAllUsersByArticleId(articleId));
+        List<UserDto> allUsersByArticleId = userArticleService.findAllUsersByArticleId(articleId);
+        int readersCount = allUsersByArticleId.size();
+        request.setAttribute("users", allUsersByArticleId);
+        request.setAttribute("readersCount", readersCount);
         request.setAttribute("articleId", articleId);
         return "cabinet/articleReaders";
     }
@@ -380,7 +384,10 @@ public class CabinetController {
 
     @GetMapping("courseReaders")
     public String courseReaders(HttpServletRequest request, @RequestParam("id") int courseId){
-        request.setAttribute("users", userCourseService.findAllUsersByCourseId(courseId));
+        List<UserDto> allUsersByCourseId = userCourseService.findAllUsersByCourseId(courseId);
+        int readersCount = allUsersByCourseId.size();
+        request.setAttribute("users", allUsersByCourseId);
+        request.setAttribute("readersCount", readersCount);
         request.setAttribute("courseId", courseId);
         return "cabinet/courseReaders";
     }

@@ -37,7 +37,7 @@ public interface CourseRepository extends JpaRepository<Course, Integer> {
     @Query("select c from Course c where c.visibility = true and c.chapter.topic.name = :topicName")
     List<Course> findAllByTopicIfNotPrivate(String topicName);
 
-    @Query("select c from Course c join CourseLike ck on c.id = ck.course.id " +
+    @Query("select c from Course c left join CourseLike ck on c.id = ck.course.id " +
             "where c.visibility = true group by ck.course.id order by count(ck.course.id) desc")
     List<Course> findFewByLikesIfNotPrivate(Pageable pageable);
 

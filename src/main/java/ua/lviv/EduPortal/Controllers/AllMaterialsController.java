@@ -40,7 +40,7 @@ public class AllMaterialsController {
         }else{
             request.setAttribute("isUserPresent", false);
         }
-        if(topicName == null){
+        if(topicName == null || topicName.equals("")){
             request.setAttribute("courses", courseService.findAllIfNotPrivate());
             request.setAttribute("articles", articleService.findAllIfNotPrivate());
             return "allMaterials/allMaterials";

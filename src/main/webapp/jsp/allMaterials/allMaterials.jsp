@@ -15,6 +15,7 @@
     <div class="form-group">
         <label for="topic">Find materials by topic:</label>
         <select class="form-control" id="topic" name="topic">
+            <option value="">All topics</option>
             <c:forEach var="topic" items="${topics}">
                 <option value="${topic.name}">${topic.name}</option>
             </c:forEach>
