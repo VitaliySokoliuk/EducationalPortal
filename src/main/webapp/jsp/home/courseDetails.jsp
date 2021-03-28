@@ -24,7 +24,7 @@
 <br>
 <p>${course.title}</p>
 <p>${course.description}</p>
-
+<p>Topic: ${course.chapter.topic.name} &#8594; ${course.chapter.name}</p>
 <c:if test = "${courseArticles != null && courseArticles != []}">
     <div class="container">
         <h3>Articles in course</h3>

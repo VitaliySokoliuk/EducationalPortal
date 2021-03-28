@@ -45,4 +45,10 @@ public interface ArticleRepository extends JpaRepository<Article, Integer> {
             "where a.visibility = true group by ak.article.id order by count(ak.article.id) desc")
     List<Article> findFewByLikesIfNotPrivate(Pageable pageable);
 
+    @Query("select new ua.lviv.EduPortal.DTOs.ArticleDto(a.id, a.title, a.description, a.logoPicture, " +
+            "a.visibility, a.giveAnswers, count(al.article.id) )" +
+            "from Article a left join ArticleLike al on a.id = al.article.id " +
+            "where a.author.id = :userId group by a.id")
+    List<ArticleDto> findAllArticlesAndLikes(int userId);
+
 }

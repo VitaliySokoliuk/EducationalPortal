@@ -69,4 +69,8 @@ public class ArticleService {
         return articleRepository.findFewByLikesIfNotPrivate(PageRequest.of(0,count));
     }
 
+    public List<ArticleDto> findAllArticlesAndLikes(int userId){
+        return articleRepository.findAllArticlesAndLikes(userId);
+    }
+
 }

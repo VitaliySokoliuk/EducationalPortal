@@ -15,6 +15,7 @@
     <div class="form-group">
         <label for="topic">Find materials by topic:</label>
         <select class="form-control" id="topic" name="topic">
+            <option value="">All topics</option>
             <c:forEach var="topic" items="${topics}">
                 <option value="${topic.name}">${topic.name}</option>
             </c:forEach>
@@ -42,6 +43,8 @@
                     <br>
                     <p>${course.title}</p>
                     <p>${course.description}</p>
+                    <p>Topic: <a href="/allMaterials?topic=${course.chapter.topic.name}">
+                            ${course.chapter.topic.name}</a> &#8594; ${course.chapter.name}</p>
                     <a href="/courseDetails?id=${course.id}">Details</a>
                     <c:if test = "${isUserPresent == true}">
                         <a href="/addCToList?id=${course.id}">Add to my list</a>
@@ -71,6 +74,8 @@
                     <br>
                     <p>${article.title}</p>
                     <p>${article.description}</p>
+                    <p>Topic: <a href="/allMaterials?topic=${article.chapter.topic.name}">
+                            ${article.chapter.topic.name}</a> &#8594; ${article.chapter.name}</p>
                     <a href="/readArticle?id=${article.id}">Read</a>
                     <c:if test = "${isUserPresent == true}">
                         <a href="/addAToList?id=${article.id}">Add to my list</a>

@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import ua.lviv.EduPortal.DTOs.UserDto;
 import ua.lviv.EduPortal.Entities.*;
 import ua.lviv.EduPortal.Services.*;
 import ua.lviv.EduPortal.Services.security.CustomUserDetailsService;
@@ -58,8 +59,9 @@ public class CabinetController {
         if(currentUser.isPresent()){
             User user = currentUser.get();
             request.setAttribute("user", user);
-            request.setAttribute("articles", articleService.getByAuthor(user));
-            request.setAttribute("courses", courseService.getByAuthor(user));
+            request.setAttribute("articles", articleService.findAllArticlesAndLikes(user.getId()));
+            request.setAttribute("courses", courseService.findAllCoursesAndLikes(user.getId()));
+            System.out.println(articleService.findAllArticlesAndLikes(user.getId()));
             return "cabinet/cabinet";
         }
         return "403";
@@ -356,7 +358,10 @@ public class CabinetController {
 
     @GetMapping("articleReaders")
     public String articleReaders(HttpServletRequest request, @RequestParam("id") int articleId){
-        request.setAttribute("users", userArticleService.findAllUsersByArticleId(articleId));
+        List<UserDto> allUsersByArticleId = userArticleService.findAllUsersByArticleId(articleId);
+        int readersCount = allUsersByArticleId.size();
+        request.setAttribute("users", allUsersByArticleId);
+        request.setAttribute("readersCount", readersCount);
         request.setAttribute("articleId", articleId);
         return "cabinet/articleReaders";
     }
@@ -379,7 +384,10 @@ public class CabinetController {
 
     @GetMapping("courseReaders")
     public String courseReaders(HttpServletRequest request, @RequestParam("id") int courseId){
-        request.setAttribute("users", userCourseService.findAllUsersByCourseId(courseId));
+        List<UserDto> allUsersByCourseId = userCourseService.findAllUsersByCourseId(courseId);
+        int readersCount = allUsersByCourseId.size();
+        request.setAttribute("users", allUsersByCourseId);
+        request.setAttribute("readersCount", readersCount);
         request.setAttribute("courseId", courseId);
         return "cabinet/courseReaders";
     }
@@ -424,6 +432,23 @@ public class CabinetController {
         answer.setMark(mark);
         answerService.save(answer);
         return "redirect:/cabinet/articleAnswers?id=" + articleId;
+    }
+
+    @GetMapping("allAnswers")
+    public String allAnswers(HttpServletRequest request){
+        Optional<User> maybeUser = CustomUserDetailsService.getCurrentUser();
+        if(maybeUser.isPresent()){
+            request.setAttribute("answers", answerService.findAllForAuthor(maybeUser.get().getId()));
+        }
+        return "cabinet/allAnswers";
+    }
+
+    @PostMapping("allAnswers")
+    public String allAnswers2(@RequestParam int answerId, @RequestParam double mark){
+        Answer answer = answerService.findById(answerId);
+        answer.setMark(mark);
+        answerService.save(answer);
+        return "redirect:/cabinet/allAnswers";
     }
 
 }

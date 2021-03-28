@@ -62,4 +62,8 @@ public class CourseService {
         return courseRepository.findFewByLikesIfNotPrivate(PageRequest.of(0,count));
     }
 
+    public List<CourseDto> findAllCoursesAndLikes(int userId){
+        return courseRepository.findAllCoursesAndLikes(userId);
+    }
+
 }

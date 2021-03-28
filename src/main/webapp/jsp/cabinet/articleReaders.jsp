@@ -10,7 +10,7 @@
 </head>
 <body>
 <c:import url="../parts/header.jsp"/>
-
+<h4>Number of readers: ${readersCount}</h4>
 <h4>Add new user:</h4>
 <form action="/cabinet/addUserArticle" method="post">
     <label>User email</label>

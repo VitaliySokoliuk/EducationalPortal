@@ -22,7 +22,7 @@ public class AnswerService {
     }
 
     public List<Answer> findAllByHometaskId(int id){
-        return answerRepository.findAllByHometaskId(id);
+        return answerRepository.findAllByHometaskIdOrderByMark(id);
     }
 
     public Answer findById(int answerId) {
@@ -32,4 +32,9 @@ public class AnswerService {
     public List<Answer> findAllByUserId(int userId) {
         return answerRepository.findAllByUserId(userId);
     }
+
+    public List<Answer> findAllForAuthor(int authorId){
+        return answerRepository.findAllForAuthor(authorId);
+    }
+
 }
