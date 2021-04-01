@@ -6,27 +6,32 @@ public class ArticleDto {
     private String title;
     private String description;
     private byte[] logoPicture;
-    private Boolean visibility;
+    private Boolean paid;
+    private Double price;
     private Boolean giveAnswers;
     private Long likes;
     private Boolean meLiked;
 
-    public ArticleDto(int id, String title, String description, byte[] logoPicture, Long likes, Boolean meLiked) {
+    public ArticleDto(int id, String title, String description, byte[] logoPicture, Boolean paid,
+                      Double price, Long likes, Boolean meLiked) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.logoPicture = logoPicture;
+        this.paid = paid;
+        this.price = price;
         this.likes = likes;
         this.meLiked = meLiked;
     }
 
-    public ArticleDto(int id, String title, String description, byte[] logoPicture, Boolean visibility,
-                      Boolean giveAnswers, Long likes) {
+    public ArticleDto(int id, String title, String description, byte[] logoPicture, Boolean paid,
+                      Double price, Boolean giveAnswers, Long likes) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.logoPicture = logoPicture;
-        this.visibility = visibility;
+        this.paid = paid;
+        this.price = price;
         this.giveAnswers = giveAnswers;
         this.likes = likes;
     }
@@ -79,12 +84,24 @@ public class ArticleDto {
         this.meLiked = meLiked;
     }
 
-    public Boolean getVisibility() {
-        return visibility;
+    public Boolean getPaid() {
+        return paid;
     }
 
-    public void setVisibility(Boolean visibility) {
-        this.visibility = visibility;
+    public void setPaid(Boolean paid) {
+        this.paid = paid;
+    }
+
+    public Boolean getGiveAnswers() {
+        return giveAnswers;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
     }
 
     public boolean isGiveAnswers() {

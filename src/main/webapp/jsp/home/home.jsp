@@ -15,7 +15,7 @@
     <div class="container">
         <h4>Courses:</h4>
         <c:forEach var="course" items="${courses}">
-            <div class="container article">
+            <div class="container">
                 <div>
                     <c:if test = "${course.logoPicture == null}">
                         <td>
@@ -30,11 +30,20 @@
                     <br>
                     <p>${course.title}</p>
                     <p>${course.description}</p>
+                    <c:if test = "${course.paid}">
+                        <p>Course is paid - ${course.price} UAH</p>
+                    </c:if>
+                    <c:if test = "${!course.paid}">
+                        <p>Course is free</p>
+                    </c:if>
                     <p>Topic: <a href="/allMaterials?topic=${course.chapter.topic.name}">
                             ${course.chapter.topic.name}</a> &#8594; ${course.chapter.name}</p>
                     <a href="/courseDetails?id=${course.id}">Details</a>
-                    <c:if test = "${isUserPresent == true}">
+                    <c:if test = "${isUserPresent == true && !course.paid}">
                         <a href="/addCToList?id=${course.id}">Add to my list</a>
+                    </c:if>
+                    <c:if test = "${isUserPresent == true && course.paid}">
+                        <a href="/buyCourse?id=${course.id}">Buy course</a>
                     </c:if>
                 </div>
             </div>
@@ -46,7 +55,7 @@
     <div class="container">
         <h4>Articles:</h4>
         <c:forEach var="article" items="${articles}">
-            <div class="container article">
+            <div class="container">
                 <div>
                     <c:if test = "${article.logoPicture == null}">
                         <td>
@@ -61,11 +70,22 @@
                     <br>
                     <p>${article.title}</p>
                     <p>${article.description}</p>
+                    <c:if test = "${article.paid}">
+                        <p>Article is paid - ${article.price} UAH</p>
+                    </c:if>
+                    <c:if test = "${!article.paid}">
+                        <p>Article is free</p>
+                    </c:if>
                     <p>Topic: <a href="/allMaterials?topic=${article.chapter.topic.name}">
                             ${article.chapter.topic.name}</a> &#8594; ${article.chapter.name}</p>
-                    <a href="/readArticle?id=${article.id}">Read</a>
-                    <c:if test = "${isUserPresent == true}">
+                    <c:if test = "${!article.paid}">
+                        <a href="/readArticle?id=${article.id}">Read</a>
+                    </c:if>
+                    <c:if test = "${isUserPresent == true && !article.paid}">
                         <a href="/addAToList?id=${article.id}">Add to my list</a>
+                    </c:if>
+                    <c:if test = "${isUserPresent == true && article.paid}">
+                        <a href="/buyArticle?id=${article.id}">Buy article</a>
                     </c:if>
                 </div>
             </div>

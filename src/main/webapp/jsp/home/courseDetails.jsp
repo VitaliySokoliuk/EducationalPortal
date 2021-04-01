@@ -44,7 +44,9 @@
                     <br>
                     <p>${article.title}</p>
                     <p>${article.description}</p>
-                    <a href="/readArticle?id=${article.id}">Read</a>
+                    <c:if test = "${isAbleToSee}">
+                        <a href="/readArticle?id=${article.id}">Read</a>
+                    </c:if>
                 </div>
             </div>
         </c:forEach>

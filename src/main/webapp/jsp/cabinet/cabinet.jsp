@@ -52,12 +52,16 @@
                         <br>
                         <p>${course.title}</p>
                         <p>${course.description}</p>
-                        <c:if test = "${course.visibility}">
-                            <p>Number of likes: ${course.likes}</p>
+                        <p>Number of likes: ${course.likes}</p>
+                        <c:if test = "${course.paid}">
+                            <p>Course is paid - ${course.price} UAH</p>
+                        </c:if>
+                        <c:if test = "${!course.paid}">
+                            <p>Course is free</p>
                         </c:if>
                         <a href="/cabinet/editCourse?id=${course.id}">Edit</a>
                         <a href="/cabinet/articlesInCourse?id=${course.id}">Articles</a>
-                        <c:if test = "${course.visibility == false}">
+                        <c:if test = "${course.paid}">
                             <a href="/cabinet/courseReaders?id=${course.id}">Readers</a>
                         </c:if>
                     </div>
@@ -85,11 +89,15 @@
                         <br>
                         <p>${article.title}</p>
                         <p>${article.description}</p>
-                        <c:if test = "${article.visibility}">
-                            <p>Number of likes: ${article.likes}</p>
+                        <p>Number of likes: ${article.likes}</p>
+                        <c:if test = "${article.paid}">
+                            <p>Article is paid - ${article.price} UAH</p>
+                        </c:if>
+                        <c:if test = "${!article.paid}">
+                            <p>Article is free</p>
                         </c:if>
                         <a href="/cabinet/editArticle?id=${article.id}">Edit</a>
-                        <c:if test = "${article.visibility == false}">
+                        <c:if test = "${article.paid}">
                             <a href="/cabinet/articleReaders?id=${article.id}">Readers</a>
                         </c:if>
                         <c:if test = "${article.giveAnswers == true}">

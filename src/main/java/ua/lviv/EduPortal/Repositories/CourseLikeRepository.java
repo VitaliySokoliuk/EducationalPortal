@@ -1,6 +1,7 @@
 package ua.lviv.EduPortal.Repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import ua.lviv.EduPortal.Entities.Course;
 import ua.lviv.EduPortal.Entities.CourseLike;
@@ -12,5 +13,8 @@ import java.util.Optional;
 public interface CourseLikeRepository extends JpaRepository<CourseLike, Integer> {
 
     Optional<CourseLike> findByUserAndCourse(User user, Course course);
+
+    @Query("select count(cl) from CourseLike cl where cl.course.author.id = :userId")
+    int getLikesByUserId(int userId);
 
 }

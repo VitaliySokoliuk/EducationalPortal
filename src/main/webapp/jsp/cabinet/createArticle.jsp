@@ -5,6 +5,7 @@
     <title>EduPortal</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="<c:url value="/resources/css/cabinet.css"/>">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
 </head>
 <body>
@@ -38,11 +39,21 @@
             <textarea required class="form-control" name="description" maxlength="60" id="description" cols="30" rows="3"></textarea>
         </div>
         <textarea name="content" id="content" cols="30" rows="10"></textarea>
-        <div class="form-group">
-            <label for="visibility">Accessibility:</label> <br>
-            <input type="radio" name="visibility" id="visibility" value="true" checked> Public article <br>
-            <input type="radio" name="visibility" value="false"> Private article
-        </div>
+        <c:if test = "${!userIsPaid}">
+            <div class="disabled">
+        </c:if>
+                <div class="form-group">
+                    <label for="paid">Accessibility:</label> <br>
+                    <input type="radio" name="paid" id="paid" value="false" checked> Free article <br>
+                    <input type="radio" name="paid" value="true"> Paid article
+                </div>
+                <div class="form-group">
+                    <label for="price">Price:</label> <br>
+                    <input type="number" step="0.1" id="price" name="price" min="0" />
+                </div>
+        <c:if test = "${!userIsPaid}">
+            </div>
+        </c:if>
         <div class="form-group">
             <label for="hometask">Hometask:</label>
             <textarea class="form-control" minlength="10" maxlength="255" name="hometask" id="hometask" cols="30" rows="5"></textarea>

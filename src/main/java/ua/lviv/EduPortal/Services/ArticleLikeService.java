@@ -28,12 +28,8 @@ public class ArticleLikeService {
         }
     }
 
-//    public int getLikesByArticleId(int articleId){
-//        return articleLikeRepository.getLikesByArticleId(articleId);
-//    }
-//
-//    public boolean ifLikePresent(int userId, int articleId) {
-//        return articleLikeRepository.existsByUserIdAndArticleId(userId, articleId);
-//    }
+    public int getLikesByUserId(int userId){
+        return articleLikeRepository.getLikesByUserId(userId);
+    }
 
 }

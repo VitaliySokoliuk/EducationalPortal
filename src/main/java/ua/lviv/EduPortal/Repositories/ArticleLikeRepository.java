@@ -14,9 +14,7 @@ public interface ArticleLikeRepository extends JpaRepository<ArticleLike, Intege
 
     Optional<ArticleLike> findByUserAndArticle(User user, Article article);
 
-//    @Query("select count(al) from ArticleLike al where al.article.id = :articleId")
-//    int getLikesByArticleId(int articleId);
-//
-//    boolean existsByUserIdAndArticleId(int userId, int articleId);
+    @Query("select count(al) from ArticleLike al where al.article.author.id = :userId")
+    int getLikesByUserId(int userId);
 
 }

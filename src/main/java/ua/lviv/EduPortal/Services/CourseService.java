@@ -42,10 +42,6 @@ public class CourseService {
         return courseRepository.findAll();
     }
 
-    public List<Course> findAllIfNotPrivate(){
-        return courseRepository.findAllIfNotPrivate();
-    }
-
     public List<Course> findCoursesInUserList(int userId, boolean byAuthor){
         return courseRepository.findCoursesInUserList(userId, byAuthor);
     }
@@ -54,12 +50,12 @@ public class CourseService {
         return courseRepository.findCoursesAndLikes(userId);
     }
 
-    public List<Course> findAllByTopicIfNotPrivate(String topicName){
-        return courseRepository.findAllByTopicIfNotPrivate(topicName);
+    public List<Course> findAllByTopic(String topicName){
+        return courseRepository.findAllByTopic(topicName);
     }
 
-    public List<Course> findFewByLikesIfNotPrivate(int count){
-        return courseRepository.findFewByLikesIfNotPrivate(PageRequest.of(0,count));
+    public List<Course> findFewByLikes(int count){
+        return courseRepository.findFewByLikes(PageRequest.of(0,count));
     }
 
     public List<CourseDto> findAllCoursesAndLikes(int userId){

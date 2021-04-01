@@ -14,7 +14,7 @@
 
 <c:if test="${!empty coursesAddedByAuthor}">
     <div class="container">
-        <h4>Courses to which you have been added by author:</h4>
+        <h4>Courses which you have bought:</h4>
         <c:forEach var="course" items="${coursesAddedByAuthor}">
             <div class="container article">
                 <div>
@@ -32,6 +32,15 @@
                     <p>${course.title}</p>
                     <p>${course.description}</p>
                     <a href="/courseDetails?id=${course.id}">Details</a>
+                    <a class="col align-self-center" href="/myMaterials/likeC?courseId=${course.id}">
+                        <c:if test = "${course.meLiked}">
+                            <i class="fas fa-heart"></i>
+                        </c:if>
+                        <c:if test = "${!course.meLiked}">
+                            <i class="far fa-heart"></i>
+                        </c:if>
+                            ${course.likes}
+                    </a>
                 </div>
             </div>
         </c:forEach>
@@ -75,7 +84,7 @@
 
 <c:if test="${!empty articlesAddedByAuthor}">
     <div class="container">
-        <h4>Articles to which you have been added by author:</h4>
+        <h4>Articles which you have bought:</h4>
         <c:forEach var="article" items="${articlesAddedByAuthor}">
             <div class="container article">
                 <div>
@@ -93,6 +102,15 @@
                     <p>${article.title}</p>
                     <p>${article.description}</p>
                     <a href="/readArticle?id=${article.id}">Read</a>
+                    <a class="col align-self-center" href="/myMaterials/likeA?articleId=${article.id}">
+                        <c:if test = "${article.meLiked}">
+                            <i class="fas fa-heart"></i>
+                        </c:if>
+                        <c:if test = "${!article.meLiked}">
+                            <i class="far fa-heart"></i>
+                        </c:if>
+                            ${article.likes}
+                    </a>
                 </div>
             </div>
         </c:forEach>

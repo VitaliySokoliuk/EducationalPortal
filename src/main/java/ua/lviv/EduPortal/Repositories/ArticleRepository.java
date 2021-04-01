@@ -18,9 +18,6 @@ public interface ArticleRepository extends JpaRepository<Article, Integer> {
     @Query("select a.logoPicture from Article a where a.id = :id")
     byte[] getLogoPictureById(int id);
 
-    @Query("select a from Article a where a.visibility = true")
-    List<Article> findAllIfNotPrivate();
-
     @Query("select a from Article a join UserArticle uar on a.id = uar.article.id " +
             "where uar.user.id = :userId and uar.addedByAuthor = :byAuthor")
     List<Article> findArticlesInUserList(int userId, boolean byAuthor);
@@ -30,23 +27,23 @@ public interface ArticleRepository extends JpaRepository<Article, Integer> {
 
     Article findByHometaskId(int hometaskId);
 
-    @Query("select new ua.lviv.EduPortal.DTOs.ArticleDto(a.id, a.title, a.description, a.logoPicture, count(al.id), " +
-            "sum(case when al.user.id = :userId then 1 else 0 end) > 0) " +
+    @Query("select new ua.lviv.EduPortal.DTOs.ArticleDto(a.id, a.title, a.description, a.logoPicture, a.paid, a.price, " +
+            "count(al.id), sum(case when al.user.id = :userId then 1 else 0 end) > 0) " +
             "from Article a join UserArticle uar on a.id = uar.article.id " +
             "left join ArticleLike al on a.id = al.article.id " +
             "where uar.user.id = :userId and uar.addedByAuthor = 0 " +
             "group by uar.article.id")
     List<ArticleDto> findArticlesAndLikes(int userId);
 
-    @Query("select a from Article a where a.visibility = true and a.chapter.topic.name = :topicName")
-    List<Article> findAllByTopicIfNotPrivate(String topicName);
+    @Query("select a from Article a where a.chapter.topic.name = :topicName")
+    List<Article> findAllByTopic(String topicName);
 
     @Query("select a from Article a join ArticleLike ak on a.id = ak.article.id " +
-            "where a.visibility = true group by ak.article.id order by count(ak.article.id) desc")
-    List<Article> findFewByLikesIfNotPrivate(Pageable pageable);
+            "group by ak.article.id order by count(ak.article.id) desc")
+    List<Article> findFewByLikes(Pageable pageable);
 
     @Query("select new ua.lviv.EduPortal.DTOs.ArticleDto(a.id, a.title, a.description, a.logoPicture, " +
-            "a.visibility, a.giveAnswers, count(al.article.id) )" +
+            "a.paid, a.price, a.giveAnswers, count(al.article.id) )" +
             "from Article a left join ArticleLike al on a.id = al.article.id " +
             "where a.author.id = :userId group by a.id")
     List<ArticleDto> findAllArticlesAndLikes(int userId);

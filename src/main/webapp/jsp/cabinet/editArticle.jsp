@@ -5,6 +5,7 @@
     <title>EduPortal</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="<c:url value="/resources/css/cabinet.css"/>">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
 </head>
 <body>
@@ -50,17 +51,27 @@
                       cols="30" rows="3">${article.description}</textarea>
         </div>
         <textarea name="content" id="content" cols="30" rows="10">${article.content}</textarea>
-        <div class="form-group">
-            <label for="visibility">Accessibility:</label> <br>
-            <c:if test = "${article.visibility == true}">
-                <input type="radio" name="visibility" id="visibility" value="true" checked> Public article <br>
-                <input type="radio" name="visibility" value="false"> Private article
-            </c:if>
-            <c:if test = "${article.visibility == false}">
-                <input type="radio" name="visibility" id="visibility" value="true"> Public article <br>
-                <input type="radio" name="visibility" value="false" checked> Private article
-            </c:if>
-        </div>
+        <c:if test = "${!userIsPaid}">
+            <div class="disabled">
+        </c:if>
+            <div class="form-group">
+                <label for="paid">Accessibility:</label> <br>
+                <c:if test = "${!article.paid}">
+                    <input type="radio" name="paid" id="paid" value="false" checked> Free article <br>
+                    <input type="radio" name="paid" value="true"> Paid article
+                </c:if>
+                <c:if test = "${article.paid}">
+                    <input type="radio" name="paid" id="paid" value="false"> Free article <br>
+                    <input type="radio" name="paid" value="true" checked> Paid article
+                </c:if>
+            </div>
+            <div class="form-group">
+                <label for="price">Price:</label> <br>
+                <input type="number" value="${article.price}" step="0.1" id="price" name="price" min="0" />
+            </div>
+        <c:if test = "${!userIsPaid}">
+            </div>
+        </c:if>
         <div class="form-group">
             <label for="hometask">Hometask:</label>
             <textarea class="form-control" minlength="10" maxlength="255" name="hometask" id="hometask"

@@ -25,17 +25,21 @@ public class User {
     @Lob
     @Column(name = "profile_picture")
     private byte[] profilePicture;
+    @Column(name = "paid_materials", nullable = false)
+    private boolean paidMaterials;
 
     public User() {
     }
 
-    public User(String firstName, String lastName, String email, String password, UserRole role, byte[] profilePicture) {
+    public User(String firstName, String lastName, String email, String password, UserRole role,
+                byte[] profilePicture, boolean paidMaterials) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
         this.role = role;
         this.profilePicture = profilePicture;
+        this.paidMaterials = paidMaterials;
     }
 
     public int getId() {
@@ -94,6 +98,14 @@ public class User {
         this.profilePicture = profilePicture;
     }
 
+    public boolean isPaidMaterials() {
+        return paidMaterials;
+    }
+
+    public void setPaidMaterials(boolean paidMaterials) {
+        this.paidMaterials = paidMaterials;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -101,7 +113,7 @@ public class User {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
+                ", paidMaterials='" + paidMaterials + '\'' +
                 ", role=" + role +
                 '}';
     }

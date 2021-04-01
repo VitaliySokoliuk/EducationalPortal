@@ -4,10 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import ua.lviv.EduPortal.Entities.Answer;
-import ua.lviv.EduPortal.Entities.AnswerFile;
-import ua.lviv.EduPortal.Entities.Hometask;
-import ua.lviv.EduPortal.Entities.User;
+import ua.lviv.EduPortal.Entities.*;
 import ua.lviv.EduPortal.Services.*;
 import ua.lviv.EduPortal.Services.security.CustomUserDetailsService;
 
@@ -50,8 +47,8 @@ public class MainController {
         }else{
             req.setAttribute("isUserPresent", false);
         }
-        req.setAttribute("courses", courseService.findFewByLikesIfNotPrivate(3));
-        req.setAttribute("articles", articleService.findFewByLikesIfNotPrivate(3));
+        req.setAttribute("courses", courseService.findFewByLikes(3));
+        req.setAttribute("articles", articleService.findFewByLikes(3));
         return "home/home";
     }
 
@@ -75,7 +72,22 @@ public class MainController {
 
     @GetMapping("courseDetails")
     public String courseDetails(HttpServletRequest request, @RequestParam("id") int courseId){
-        request.setAttribute("course", courseService.findById(courseId));
+        Course course = courseService.findById(courseId);
+        if(!course.isPaid()){
+            request.setAttribute("isAbleToSee", true);
+        }
+        Optional<User> currentUser = CustomUserDetailsService.getCurrentUser();
+        if(currentUser.isPresent()){
+            Optional<UserCourse> userCourse = userCourseService.findByUserIdAndCourseId(courseId, currentUser.get().getId());
+            if(userCourse.isPresent()){
+                request.setAttribute("isAbleToSee", true);
+            }else {
+                request.setAttribute("isAbleToSee", false);
+            }
+        }else {
+            request.setAttribute("isAbleToSee", false);
+        }
+        request.setAttribute("course", course);
         request.setAttribute("courseArticles", articlesInCourseService.findArticlesByCourseId(courseId));
         return "home/courseDetails";
     }
