@@ -41,10 +41,6 @@ public class ArticleService {
         return articleRepository.findAll();
     }
 
-    public List<Article> findAllIfNotPrivate() {
-        return articleRepository.findAllIfNotPrivate();
-    }
-
     public List<Article> findArticlesInUserList(int userId, boolean byAuthor){
         return articleRepository.findArticlesInUserList(userId, byAuthor);
     }
@@ -61,12 +57,12 @@ public class ArticleService {
         return articleRepository.findArticlesAndLikes(userId);
     }
 
-    public List<Article> findAllByTopicIfNotPrivate(String topicName){
-        return articleRepository.findAllByTopicIfNotPrivate(topicName);
+    public List<Article> findAllByTopic(String topicName){
+        return articleRepository.findAllByTopic(topicName);
     }
 
-    public List<Article> findFewByLikesIfNotPrivate(int count) {
-        return articleRepository.findFewByLikesIfNotPrivate(PageRequest.of(0,count));
+    public List<Article> findFewByLikes(int count) {
+        return articleRepository.findFewByLikes(PageRequest.of(0,count));
     }
 
     public List<ArticleDto> findAllArticlesAndLikes(int userId){

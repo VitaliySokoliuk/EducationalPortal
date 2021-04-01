@@ -5,10 +5,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import ua.lviv.EduPortal.Entities.Article;
 import ua.lviv.EduPortal.Entities.User;
+import ua.lviv.EduPortal.Entities.UserArticle;
 import ua.lviv.EduPortal.Services.ArticleService;
 import ua.lviv.EduPortal.Services.CourseService;
 import ua.lviv.EduPortal.Services.TopicService;
+import ua.lviv.EduPortal.Services.UserArticleService;
 import ua.lviv.EduPortal.Services.security.CustomUserDetailsService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,13 +24,15 @@ public class AllMaterialsController {
     private ArticleService articleService;
     private CourseService courseService;
     private TopicService topicService;
+    private UserArticleService userArticleService;
 
     @Autowired
     public AllMaterialsController(ArticleService articleService, CourseService courseService,
-                                  TopicService topicService) {
+                                  TopicService topicService, UserArticleService userArticleService) {
         this.articleService = articleService;
         this.courseService = courseService;
         this.topicService = topicService;
+        this.userArticleService = userArticleService;
     }
 
     @GetMapping
@@ -41,15 +46,32 @@ public class AllMaterialsController {
             request.setAttribute("isUserPresent", false);
         }
         if(topicName == null || topicName.equals("")){
-            request.setAttribute("courses", courseService.findAllIfNotPrivate());
-            request.setAttribute("articles", articleService.findAllIfNotPrivate());
+            request.setAttribute("courses", courseService.findAll());
+            request.setAttribute("articles", articleService.findAll());
             return "allMaterials/allMaterials";
         }
-        request.setAttribute("courses", courseService.findAllByTopicIfNotPrivate(topicName));
-        request.setAttribute("articles", articleService.findAllByTopicIfNotPrivate(topicName));
+        request.setAttribute("courses", courseService.findAllByTopic(topicName));
+        request.setAttribute("articles", articleService.findAllByTopic(topicName));
         return "allMaterials/allMaterials";
     }
 
-
+    @GetMapping("articleDetails")
+    public String articleDetails(HttpServletRequest request, @RequestParam(name = "id") int articleId){
+        Optional<User> currentUser = CustomUserDetailsService.getCurrentUser();
+        Article article = articleService.findById(articleId);
+        request.setAttribute("article", article);
+        request.setAttribute("author", article.getAuthor());
+        if(currentUser.isPresent()){
+            Optional<UserArticle> userArticle = userArticleService.findByUserIdAndArticleId(articleId, currentUser.get().getId());
+            if(userArticle.isPresent()){
+                request.setAttribute("isAbleToSee", true);
+            } else {
+                request.setAttribute("isAbleToSee", false);
+            }
+        } else {
+            request.setAttribute("isAbleToSee", false);
+        }
+        return "allMaterials/articleDetails";
+    }
 
 }

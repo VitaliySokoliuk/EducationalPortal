@@ -32,6 +32,8 @@ public class CabinetController {
     private UserCourseService userCourseService;
     private AnswerService answerService;
     private AnswerFileService answerFileService;
+    private CourseLikeService courseLikeService;
+    private ArticleLikeService articleLikeService;
 
     @Autowired
     public CabinetController(UserService userService, ArticleService articleService,
@@ -39,7 +41,8 @@ public class CabinetController {
                              ChapterService chapterService, CourseService courseService,
                              ArticlesInCourseService articlesInCourseService,
                              UserArticleService userArticleService, UserCourseService userCourseService,
-                             AnswerService answerService, AnswerFileService answerFileService) {
+                             AnswerService answerService, AnswerFileService answerFileService,
+                             CourseLikeService courseLikeService, ArticleLikeService articleLikeService) {
         this.userService = userService;
         this.articleService = articleService;
         this.hometaskService = hometaskService;
@@ -51,6 +54,8 @@ public class CabinetController {
         this.userCourseService = userCourseService;
         this.answerService = answerService;
         this.answerFileService = answerFileService;
+        this.courseLikeService = courseLikeService;
+        this.articleLikeService = articleLikeService;
     }
 
     @GetMapping
@@ -58,10 +63,17 @@ public class CabinetController {
         Optional<User> currentUser = CustomUserDetailsService.getCurrentUser();
         if(currentUser.isPresent()){
             User user = currentUser.get();
+            if (!user.isPaidMaterials()){
+                int courseLikes = courseLikeService.getLikesByUserId(user.getId());
+                int articleLikes = articleLikeService.getLikesByUserId(user.getId());
+                if (courseLikes + articleLikes > 15){
+                    user.setPaidMaterials(true);
+                    userService.update(user);
+                }
+            }
             request.setAttribute("user", user);
             request.setAttribute("articles", articleService.findAllArticlesAndLikes(user.getId()));
             request.setAttribute("courses", courseService.findAllCoursesAndLikes(user.getId()));
-            System.out.println(articleService.findAllArticlesAndLikes(user.getId()));
             return "cabinet/cabinet";
         }
         return "403";
@@ -108,6 +120,10 @@ public class CabinetController {
     @GetMapping("createArticle")
     public String createArticle(HttpServletRequest request){
         request.setAttribute("topics", topicService.findAll());
+        Optional<User> currentUser = CustomUserDetailsService.getCurrentUser();
+        if (currentUser.isPresent()){
+            request.setAttribute("userIsPaid", currentUser.get().isPaidMaterials());
+        }
         return "cabinet/createArticle";
     }
 
@@ -116,7 +132,8 @@ public class CabinetController {
                                  @RequestParam String description,
                                  @RequestParam MultipartFile logo,
                                  @RequestParam String title,
-                                 @RequestParam(defaultValue = "true") boolean visibility,
+                                 @RequestParam(defaultValue = "false") boolean paid,
+                                 @RequestParam(defaultValue = "0.0") double price,
                                  @RequestParam String hometask,
                                  @RequestParam(defaultValue = "false") boolean give_answers,
                                  @RequestParam(defaultValue = "5") int max_point,
@@ -131,20 +148,21 @@ public class CabinetController {
                         .replaceAll("&gt;", ">")
                         .replaceAll("&quot;", "\"");
                 Article article = new Article(currentUser.get(), title, savedChapter, description,
-                                            visibility, false, content);
+                                            paid, false, content);
                 String contentType = logo.getContentType();
                 if (contentType != null && contentType.startsWith("image")) {
                     article.setLogoPicture(logo.getBytes());
+                }
+                if(paid) {
+                    article.setPrice(price);
+                    article.setGiveAnswers(give_answers);
+                }else{
+                    article.setGiveAnswers(false);
                 }
                 hometask = hometask.trim();
                 if(!hometask.isEmpty()){
                     Hometask task = new Hometask(hometask, max_point);
                     Hometask savedTask = hometaskService.save(task);
-                    if(!visibility) {
-                        article.setGiveAnswers(give_answers);
-                    }else{
-                        article.setGiveAnswers(false);
-                    }
                     article.setHometask(savedTask);
                 }
                 articleService.save(article);
@@ -167,6 +185,10 @@ public class CabinetController {
         topics.remove(article.getChapter().getTopic());
         request.setAttribute("topics", topics);
         request.setAttribute("article", article);
+        Optional<User> currentUser = CustomUserDetailsService.getCurrentUser();
+        if (currentUser.isPresent()){
+            request.setAttribute("userIsPaid", currentUser.get().isPaidMaterials());
+        }
         return "cabinet/editArticle";
     }
 
@@ -175,7 +197,8 @@ public class CabinetController {
                                  @RequestParam String description,
                                  @RequestParam MultipartFile logo,
                                  @RequestParam String title,
-                                 @RequestParam(defaultValue = "true") boolean visibility,
+                                 @RequestParam(defaultValue = "false") boolean paid,
+                                 @RequestParam(defaultValue = "0.0") double price,
                                  @RequestParam String hometask,
                                  @RequestParam(defaultValue = "false") boolean give_answers,
                                  @RequestParam(defaultValue = "5") int max_point,
@@ -194,7 +217,7 @@ public class CabinetController {
             }
             article.setTitle(title);
             article.setDescription(description);
-            article.setVisibility(visibility);
+            article.setPaid(paid);
             content = content.replaceAll("&lt;", "<")
                     .replaceAll("&gt;", ">")
                     .replaceAll("&quot;", "\"");
@@ -204,17 +227,18 @@ public class CabinetController {
                 article.setLogoPicture(logo.getBytes());
             }
             hometask = hometask.trim();
+            if(paid) {
+                article.setPrice(price);
+                article.setGiveAnswers(give_answers);
+            }else{
+                article.setGiveAnswers(false);
+            }
             if(!hometask.isEmpty()){
                 Hometask task = new Hometask(hometask, max_point);
                 if(article.getHometask() != null){
                     task.setId(article.getHometask().getId());
                 }
                 article.setHometask(hometaskService.save(task));
-                if(!visibility) {
-                    article.setGiveAnswers(give_answers);
-                }else{
-                    article.setGiveAnswers(false);
-                }
             }else {
                 if(article.getHometask() != null){
                     int htId = article.getHometask().getId();
@@ -233,6 +257,10 @@ public class CabinetController {
     @GetMapping("createCourse")
     public String createCourse(HttpServletRequest request){
         request.setAttribute("topics", topicService.findAll());
+        Optional<User> currentUser = CustomUserDetailsService.getCurrentUser();
+        if (currentUser.isPresent()){
+            request.setAttribute("userIsPaid", currentUser.get().isPaidMaterials());
+        }
         return "cabinet/createCourse";
     }
 
@@ -240,7 +268,8 @@ public class CabinetController {
     public String createCourse(@RequestParam String description,
                                 @RequestParam MultipartFile logo,
                                 @RequestParam String title,
-                                @RequestParam(defaultValue = "true") boolean visibility,
+                                @RequestParam(defaultValue = "false") boolean paid,
+                                @RequestParam(defaultValue = "0.0") double price,
                                 @RequestParam(defaultValue = "unavailable") String chapter,
                                 @RequestParam(defaultValue = "unavailable") String topic){
         Optional<User> currentUser = CustomUserDetailsService.getCurrentUser();
@@ -249,8 +278,10 @@ public class CabinetController {
 
                 Topic savedTopic = topicService.findOrSave(topic);
                 Chapter savedChapter = chapterService.save(new Chapter(savedTopic, chapter));
-                Course course = new Course(currentUser.get(), title, savedChapter, description, visibility);
-
+                Course course = new Course(currentUser.get(), title, savedChapter, description, paid);
+                if(paid){
+                    course.setPrice(price);
+                }
                 String contentType = logo.getContentType();
                 if (contentType != null && contentType.startsWith("image")) {
                     course.setLogoPicture(logo.getBytes());
@@ -275,6 +306,10 @@ public class CabinetController {
         topics.remove(course.getChapter().getTopic());
         request.setAttribute("topics", topics);
         request.setAttribute("course", course);
+        Optional<User> currentUser = CustomUserDetailsService.getCurrentUser();
+        if (currentUser.isPresent()){
+            request.setAttribute("userIsPaid", currentUser.get().isPaidMaterials());
+        }
         return "cabinet/editCourse";
     }
 
@@ -282,7 +317,8 @@ public class CabinetController {
     public String editCourse(@RequestParam String description,
                              @RequestParam MultipartFile logo,
                              @RequestParam String title,
-                             @RequestParam(defaultValue = "true") boolean visibility,
+                             @RequestParam boolean paid,
+                             @RequestParam(defaultValue = "0.0") double price,
                              @RequestParam(defaultValue = "unavailable") String chapter,
                              @RequestParam(defaultValue = "unavailable") String topic,
                              @RequestParam int id){
@@ -300,7 +336,10 @@ public class CabinetController {
                 }
                 course.setDescription(description);
                 course.setTitle(title);
-                course.setVisibility(visibility);
+                course.setPaid(paid);
+                if(paid){
+                    course.setPrice(price);
+                }
                 String contentType = logo.getContentType();
                 if (contentType != null && contentType.startsWith("image")) {
                     course.setLogoPicture(logo.getBytes());
@@ -314,25 +353,24 @@ public class CabinetController {
     }
 
     @GetMapping("articlesInCourse")
-    public String articlesInCourse(HttpServletRequest request, @RequestParam int id){
+    public String articlesInCourse(HttpServletRequest request, @RequestParam(name = "id") int courseId){
         Optional<User> currentUser = CustomUserDetailsService.getCurrentUser();
         if(currentUser.isPresent()){
             User user = currentUser.get();
-            List<Article> articlesByCourseId = articlesInCourseService.findArticlesByCourseId(id);
+            List<Article> articlesByCourseId = articlesInCourseService.findArticlesByCourseId(courseId);
             List<Article> articlesByAuthor = articleService.getByAuthor(user);
             articlesByAuthor.removeAll(articlesByCourseId);
-            boolean visibility = courseService.findById(id).isVisibility();
+            boolean isPaid = courseService.findById(courseId).isPaid();
             List<Article> willRemove = new ArrayList<>();
             for (Article a : articlesByAuthor) {
-                if(!a.isVisibility() && visibility){
+                if(a.isPaid() != isPaid){
                     willRemove.add(a);
                 }
-                System.out.println(a.isVisibility() + "---");
             }
             articlesByAuthor.removeAll(willRemove);
             request.setAttribute("articlesInCourse", articlesByCourseId);
             request.setAttribute("anotherArticle", articlesByAuthor);
-            request.setAttribute("courseId", id);
+            request.setAttribute("courseId", courseId);
             return "cabinet/articlesInCourse";
         }
         return "403";

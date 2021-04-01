@@ -4,9 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ua.lviv.EduPortal.DTOs.UserDto;
+import ua.lviv.EduPortal.Entities.UserCourse;
 import ua.lviv.EduPortal.Repositories.UserCourseRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserCourseService {
@@ -34,6 +36,10 @@ public class UserCourseService {
         if(userCourseRepository.findByUserIdAndCourseId(cId, uId).isPresent()){
             userCourseRepository.delByCourseIdAndUserId(cId, uId);
         }
+    }
+
+    public Optional<UserCourse> findByUserIdAndCourseId(int cId, int uId){
+        return userCourseRepository.findByUserIdAndCourseId(cId, uId);
     }
 
 }

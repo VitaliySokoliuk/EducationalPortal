@@ -5,10 +5,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ua.lviv.EduPortal.DTOs.UserDto;
 import ua.lviv.EduPortal.Entities.UserArticle;
+import ua.lviv.EduPortal.Entities.UserCourse;
 import ua.lviv.EduPortal.Repositories.UserArticleRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserArticleService {
@@ -36,6 +38,10 @@ public class UserArticleService {
         if(userArticleRepository.findByUserIdAndArticleId(aId, uId).isPresent()){
             userArticleRepository.delByArticleIdAndUserId(aId, uId);
         }
+    }
+
+    public Optional<UserArticle> findByUserIdAndArticleId(int aId, int uId){
+        return userArticleRepository.findByUserIdAndArticleId(aId, uId);
     }
 
 }

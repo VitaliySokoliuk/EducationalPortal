@@ -25,6 +25,7 @@ public class UserService {
 
     public void save(User user){
         user.setRole(DEFAULT_USER_ROLE);
+        user.setPaidMaterials(false);
         String encodePassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodePassword);
         userRepository.save(user);

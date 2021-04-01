@@ -29,4 +29,8 @@ public class CourseLikeService {
         }
     }
 
+    public int getLikesByUserId(int userId){
+        return courseLikeRepository.getLikesByUserId(userId);
+    }
+
 }

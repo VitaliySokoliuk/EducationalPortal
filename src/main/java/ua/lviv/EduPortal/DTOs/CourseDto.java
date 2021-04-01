@@ -6,25 +6,29 @@ public class CourseDto {
     private String title;
     private String description;
     private byte[] logoPicture;
-    private Boolean visibility;
+    private Boolean paid;
+    private Double price;
     private Long likes;
     private Boolean meLiked;
 
-    public CourseDto(int id, String title, String description, byte[] logoPicture, Long likes, Boolean meLiked) {
+    public CourseDto(int id, String title, String description, byte[] logoPicture, Boolean paid, Double price, Long likes, Boolean meLiked) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.logoPicture = logoPicture;
+        this.paid = paid;
+        this.price = price;
         this.likes = likes;
         this.meLiked = meLiked;
     }
 
-    public CourseDto(int id, String title, String description, byte[] logoPicture, boolean visibility, Long likes) {
+    public CourseDto(int id, String title, String description, byte[] logoPicture, Boolean paid, Double price, Long likes) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.logoPicture = logoPicture;
-        this.visibility = visibility;
+        this.paid = paid;
+        this.price = price;
         this.likes = likes;
     }
 
@@ -76,12 +80,20 @@ public class CourseDto {
         this.meLiked = meLiked;
     }
 
-    public Boolean getVisibility() {
-        return visibility;
+    public Boolean getPaid() {
+        return paid;
     }
 
-    public void setVisibility(Boolean visibility) {
-        this.visibility = visibility;
+    public void setPaid(Boolean paid) {
+        this.paid = paid;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
     }
 
     @Override
