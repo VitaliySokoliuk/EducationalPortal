@@ -36,8 +36,12 @@
                     <c:if test = "${!course.paid}">
                         <p>Course is free</p>
                     </c:if>
-                    <p>Topic: <a href="/allMaterials?topic=${course.chapter.topic.name}">
-                            ${course.chapter.topic.name}</a> &#8594; ${course.chapter.name}</p>
+                    <p>Topic:
+                        <a href="/allMaterials?topic=${course.chapter.topic.name}">
+                                ${course.chapter.topic.name}</a>
+                        &#8594;
+                        <a href="/allMaterials?topic=${course.chapter.topic.name}&title=${course.chapter.name}">
+                                ${course.chapter.name}</a></p>
                     <a href="/courseDetails?id=${course.id}">Details</a>
                     <c:if test = "${isUserPresent == true && !course.paid}">
                         <a href="/addCToList?id=${course.id}">Add to my list</a>
@@ -76,8 +80,12 @@
                     <c:if test = "${!article.paid}">
                         <p>Article is free</p>
                     </c:if>
-                    <p>Topic: <a href="/allMaterials?topic=${article.chapter.topic.name}">
-                            ${article.chapter.topic.name}</a> &#8594; ${article.chapter.name}</p>
+                    <p>Topic:
+                        <a href="/allMaterials?topic=${article.chapter.topic.name}">
+                                ${article.chapter.topic.name}</a>
+                        &#8594;
+                        <a href="/allMaterials?topic=${article.chapter.topic.name}&title=${article.chapter.name}">
+                                ${article.chapter.name}</a></p>
                     <c:if test = "${!article.paid}">
                         <a href="/readArticle?id=${article.id}">Read</a>
                     </c:if>

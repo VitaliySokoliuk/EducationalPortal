@@ -38,6 +38,13 @@ public interface ArticleRepository extends JpaRepository<Article, Integer> {
     @Query("select a from Article a where a.chapter.topic.name = :topicName")
     List<Article> findAllByTopic(String topicName);
 
+    @Query("select a from Article a where a.chapter.topic.name = :topicName and " +
+            "(a.title like %:title% or a.chapter.name like %:title%)")
+    List<Article> findAllByTopicAndTitle(String topicName, String title);
+
+    @Query("select a from Article a where a.title like %:title% or a.chapter.name like %:title%")
+    List<Article> findAllByTitle(String title);
+
     @Query("select a from Article a join ArticleLike ak on a.id = ak.article.id " +
             "group by ak.article.id order by count(ak.article.id) desc")
     List<Article> findFewByLikes(Pageable pageable);
