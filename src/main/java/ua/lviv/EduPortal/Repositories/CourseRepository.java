@@ -5,7 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import ua.lviv.EduPortal.DTOs.CourseDto;
-import ua.lviv.EduPortal.Entities.Article;
 import ua.lviv.EduPortal.Entities.Course;
 import ua.lviv.EduPortal.Entities.User;
 
@@ -33,6 +32,13 @@ public interface CourseRepository extends JpaRepository<Course, Integer> {
 
     @Query("select c from Course c where c.chapter.topic.name = :topicName")
     List<Course> findAllByTopic(String topicName);
+
+    @Query("select c from Course c where c.chapter.topic.name = :topicName and " +
+            "(c.title like %:title% or c.chapter.name like %:title%)")
+    List<Course> findAllByTopicAndTitle(String topicName, String title);
+
+    @Query("select c from Course c where c.title like %:title% or c.chapter.name like %:title%")
+    List<Course> findAllByTitle(String title);
 
     @Query("select c from Course c left join CourseLike ck on c.id = ck.course.id " +
             "group by ck.course.id order by count(ck.course.id) desc")

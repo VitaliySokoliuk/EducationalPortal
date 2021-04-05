@@ -13,13 +13,18 @@
 
 <form action="/allMaterials" method="get">
     <div class="form-group">
-        <label for="topic">Find materials by topic:</label>
+        <label for="topic">Find materials by topic and name:</label>
         <select class="form-control" id="topic" name="topic">
+            <c:if test="${topicName != null}">
+                <option value="${topicName}">${topicName}</option>
+            </c:if>
             <option value="">All topics</option>
             <c:forEach var="topic" items="${topics}">
                 <option value="${topic.name}">${topic.name}</option>
             </c:forEach>
         </select>
+        <label for="title">Input title:</label>
+        <input type="text" value="${title}" class="form-control" id="title" name="title">
     </div>
     <button type="submit" class="btn btn-primary">Find</button>
 </form>
@@ -49,8 +54,12 @@
                     <c:if test = "${!course.paid}">
                         <p>Course is free</p>
                     </c:if>
-                    <p>Topic: <a href="/allMaterials?topic=${course.chapter.topic.name}">
-                            ${course.chapter.topic.name}</a> &#8594; ${course.chapter.name}</p>
+                    <p>Topic:
+                        <a href="/allMaterials?topic=${course.chapter.topic.name}">
+                            ${course.chapter.topic.name}</a>
+                        &#8594;
+                        <a href="/allMaterials?topic=${course.chapter.topic.name}&title=${course.chapter.name}">
+                                ${course.chapter.name}</a></p>
                     <a href="/courseDetails?id=${course.id}">Details</a>
                     <c:if test = "${isUserPresent == true && !course.paid}">
                         <a href="/addCToList?id=${course.id}">Add to my list</a>
@@ -89,8 +98,12 @@
                     <c:if test = "${!article.paid}">
                         <p>Article is free</p>
                     </c:if>
-                    <p>Topic: <a href="/allMaterials?topic=${article.chapter.topic.name}">
-                            ${article.chapter.topic.name}</a> &#8594; ${article.chapter.name}</p>
+                    <p>Topic:
+                        <a href="/allMaterials?topic=${article.chapter.topic.name}">
+                            ${article.chapter.topic.name}</a>
+                        &#8594;
+                        <a href="/allMaterials?topic=${article.chapter.topic.name}&title=${article.chapter.name}">
+                                ${article.chapter.name}</a></p>
                     <c:if test = "${!article.paid}">
                         <a href="/readArticle?id=${article.id}">Read</a>
                     </c:if>

@@ -54,6 +54,14 @@ public class CourseService {
         return courseRepository.findAllByTopic(topicName);
     }
 
+    public List<Course> findAllByTopicAndTitle(String topicName, String title){
+        return courseRepository.findAllByTopicAndTitle(topicName, title);
+    }
+
+    public List<Course> findAllByTitle(String title){
+        return courseRepository.findAllByTitle(title);
+    }
+
     public List<Course> findFewByLikes(int count){
         return courseRepository.findFewByLikes(PageRequest.of(0,count));
     }

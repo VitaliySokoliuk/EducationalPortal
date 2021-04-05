@@ -61,6 +61,14 @@ public class ArticleService {
         return articleRepository.findAllByTopic(topicName);
     }
 
+    public List<Article> findAllByTopicAndTitle(String topicName, String title){
+        return articleRepository.findAllByTopicAndTitle(topicName, title);
+    }
+
+    public List<Article> findAllByTitle(String title){
+        return articleRepository.findAllByTitle(title);
+    }
+
     public List<Article> findFewByLikes(int count) {
         return articleRepository.findFewByLikes(PageRequest.of(0,count));
     }
