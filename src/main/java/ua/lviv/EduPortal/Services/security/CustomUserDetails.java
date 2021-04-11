@@ -4,6 +4,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import ua.lviv.EduPortal.Entities.User;
+import ua.lviv.EduPortal.Entities.enums.UserRole;
 
 import java.util.Collection;
 
@@ -20,6 +21,10 @@ public class CustomUserDetails implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         String role = String.valueOf(user.getRole());
         return AuthorityUtils.commaSeparatedStringToAuthorityList(role);
+    }
+
+    public boolean isAdmin(){
+        return user.getRole() == UserRole.ROLE_ADMIN || user.getRole() == UserRole.ROLE_SUPER_ADMIN;
     }
 
     @Override
