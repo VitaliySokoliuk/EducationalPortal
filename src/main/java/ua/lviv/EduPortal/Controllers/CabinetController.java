@@ -97,6 +97,8 @@ public class CabinetController {
     @PostMapping("updateUser")
     public String updateUser(@RequestParam String firstName,
                              @RequestParam String lastName,
+                             @RequestParam(defaultValue = "pass1") String pass1,
+                             @RequestParam(defaultValue = "pass2") String pass2,
                              @RequestParam MultipartFile photo){
         Optional<User> currentUser = CustomUserDetailsService.getCurrentUser();
         if(currentUser.isPresent()){
@@ -111,9 +113,13 @@ public class CabinetController {
             } catch (IOException e) {
                 throw new RuntimeException("Could not save file" + photo.getOriginalFilename());
             }
-            userService.update(user);
+            if (pass1.equals(pass2)) {
+                user.setPassword(pass1);
+                userService.updateWithPass(user);
+            } else {
+                userService.update(user);
+            }
         }
-        //ToDo add opportunity to change password
         return "redirect:";
     }
 
