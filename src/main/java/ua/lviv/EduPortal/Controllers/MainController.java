@@ -75,17 +75,18 @@ public class MainController {
         Course course = courseService.findById(courseId);
         if(!course.isPaid()){
             request.setAttribute("isAbleToSee", true);
-        }
-        Optional<User> currentUser = CustomUserDetailsService.getCurrentUser();
-        if(currentUser.isPresent()){
-            Optional<UserCourse> userCourse = userCourseService.findByUserIdAndCourseId(courseId, currentUser.get().getId());
-            if(userCourse.isPresent()){
-                request.setAttribute("isAbleToSee", true);
+        }else {
+            Optional<User> currentUser = CustomUserDetailsService.getCurrentUser();
+            if(currentUser.isPresent()){
+                Optional<UserCourse> userCourse = userCourseService.findByUserIdAndCourseId(courseId, currentUser.get().getId());
+                if(userCourse.isPresent()){
+                    request.setAttribute("isAbleToSee", true);
+                }else {
+                    request.setAttribute("isAbleToSee", false);
+                }
             }else {
                 request.setAttribute("isAbleToSee", false);
             }
-        }else {
-            request.setAttribute("isAbleToSee", false);
         }
         request.setAttribute("course", course);
         request.setAttribute("courseArticles", articlesInCourseService.findArticlesByCourseId(courseId));
