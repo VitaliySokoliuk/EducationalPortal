@@ -27,6 +27,10 @@ public class CustomUserDetails implements UserDetails {
         return user.getRole() == UserRole.ROLE_ADMIN || user.getRole() == UserRole.ROLE_SUPER_ADMIN;
     }
 
+    public boolean isSuperAdmin(){
+        return user.getRole() == UserRole.ROLE_SUPER_ADMIN;
+    }
+
     @Override
     public String getPassword() {
         return user.getPassword();

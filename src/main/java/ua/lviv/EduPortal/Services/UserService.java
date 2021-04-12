@@ -8,6 +8,7 @@ import ua.lviv.EduPortal.Entities.enums.UserRole;
 import ua.lviv.EduPortal.Repositories.UserRepository;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -49,4 +50,13 @@ public class UserService {
     public byte[] getProfilePictureById(int id) {
         return userRepository.getProfilePictureById(id);
     }
+
+    public List<User> findAllByRole(UserRole userRole){
+        return userRepository.findAllByRole(userRole);
+    }
+
+    public Optional<User> findById(int id){
+        return userRepository.findById(id);
+    }
+
 }

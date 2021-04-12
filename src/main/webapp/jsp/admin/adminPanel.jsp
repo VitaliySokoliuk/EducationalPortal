@@ -12,6 +12,9 @@
 
 <a href="/adminPanel/subjects">Chapters and topics</a> <br>
 
+<c:if test = "${sessionScope.SPRING_SECURITY_CONTEXT.authentication.principal.isSuperAdmin()}">
+    <a href="/adminPanel/allAdmins">All admins</a> <br>
+</c:if>
 
 </body>
 </html>
