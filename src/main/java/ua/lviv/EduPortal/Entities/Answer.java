@@ -20,6 +20,8 @@ public class Answer {
     private AnswerFile answerFile;
     @Column(nullable = true)
     private String response;
+    @Column(nullable = true)
+    private String feedback;
     @Column(nullable = false)
     private double mark;
 
@@ -79,6 +81,14 @@ public class Answer {
         this.answerFile = answerFile;
     }
 
+    public String getFeedback() {
+        return feedback;
+    }
+
+    public void setFeedback(String feedback) {
+        this.feedback = feedback;
+    }
+
     @Override
     public String toString() {
         return "Answer{" +
@@ -86,6 +96,7 @@ public class Answer {
                 ", hometask=" + hometask +
                 ", user=" + user +
                 ", response='" + response + '\'' +
+                ", feedback='" + feedback + '\'' +
                 ", mark=" + mark +
                 '}';
     }

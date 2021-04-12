@@ -471,8 +471,11 @@ public class CabinetController {
 
     @GetMapping("confirmAnswer/{id}")
     public String confirmAnswer(@PathVariable(name = "id") int answerId, @RequestParam int articleId,
-                                @RequestParam double mark){
+                                @RequestParam double mark, @RequestParam(required = false) String feedback){
         Answer answer = answerService.findById(answerId);
+        if(feedback != null && !feedback.equals("")){
+            answer.setFeedback(feedback);
+        }
         answer.setMark(mark);
         answerService.save(answer);
         return "redirect:/cabinet/articleAnswers?id=" + articleId;
@@ -488,8 +491,12 @@ public class CabinetController {
     }
 
     @PostMapping("allAnswers")
-    public String allAnswers2(@RequestParam int answerId, @RequestParam double mark){
+    public String allAnswers2(@RequestParam int answerId, @RequestParam double mark,
+                              @RequestParam(required = false) String feedback){
         Answer answer = answerService.findById(answerId);
+        if(feedback != null && !feedback.equals("")){
+            answer.setFeedback(feedback);
+        }
         answer.setMark(mark);
         answerService.save(answer);
         return "redirect:/cabinet/allAnswers";
