@@ -4,10 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import ua.lviv.EduPortal.Entities.Article;
-import ua.lviv.EduPortal.Entities.Course;
-import ua.lviv.EduPortal.Entities.Topic;
-import ua.lviv.EduPortal.Entities.User;
+import ua.lviv.EduPortal.Entities.*;
 import ua.lviv.EduPortal.Entities.enums.UserRole;
 import ua.lviv.EduPortal.Services.*;
 
@@ -26,12 +23,21 @@ public class AdminPanelController {
     private ArticleService articleService;
     private UserCourseService userCourseService;
     private UserArticleService userArticleService;
+    private CourseLikeService courseLikeService;
+    private ArticlesInCourseService articlesInCourseService;
+    private ArticleLikeService articleLikeService;
+    private AnswerService answerService;
+    private HometaskService hometaskService;
+    private AnswerFileService answerFileService;
 
     @Autowired
     public AdminPanelController(ChapterService chapterService, TopicService topicService,
                                 UserService userService, CourseService courseService,
                                 ArticleService articleService, UserCourseService userCourseService,
-                                UserArticleService userArticleService) {
+                                UserArticleService userArticleService, CourseLikeService courseLikeService,
+                                ArticlesInCourseService articlesInCourseService, AnswerService answerService,
+                                ArticleLikeService articleLikeService, HometaskService hometaskService,
+                                AnswerFileService answerFileService) {
         this.chapterService = chapterService;
         this.topicService = topicService;
         this.userService = userService;
@@ -39,6 +45,12 @@ public class AdminPanelController {
         this.articleService = articleService;
         this.userCourseService = userCourseService;
         this.userArticleService = userArticleService;
+        this.courseLikeService = courseLikeService;
+        this.articlesInCourseService = articlesInCourseService;
+        this.articleLikeService = articleLikeService;
+        this.answerService = answerService;
+        this.hometaskService = hometaskService;
+        this.answerFileService = answerFileService;
     }
 
     @GetMapping("subjects")
@@ -184,6 +196,53 @@ public class AdminPanelController {
             return "redirect:/adminPanel/accessToMaterials?email=" + user.getEmail();
         }
         return "redirect:/adminPanel/accessToMaterials";
+    }
+
+    @GetMapping("deleteMaterials")
+    public String deleteMaterials(HttpServletRequest request, @RequestParam(required = false) String search){
+        if(search == null || search.equals("")){
+            return "admin/deleteMaterials";
+        }
+        request.setAttribute("courses", courseService.findAllByTitle(search));
+        request.setAttribute("articles", articleService.findAllByTitle(search));
+        request.setAttribute("search", search);
+        return "admin/deleteMaterials";
+    }
+
+    @GetMapping("deleteMaterials/delCourse")
+    public String delCourse(@RequestParam int courseId, @RequestParam String search){
+        Course course = courseService.findById(courseId);
+        userCourseService.deleteAllByCourseId(courseId);
+        courseLikeService.deleteAllByCourseId(courseId);
+        articlesInCourseService.deleteAllByCourseId(courseId);
+        courseService.deleteById(courseId);
+        chapterService.deleteById(course.getChapter().getId());
+        return "redirect:/adminPanel/deleteMaterials?search=" + search;
+    }
+
+    @GetMapping("deleteMaterials/delArticle")
+    public String delArticle(@RequestParam int articleId, @RequestParam String search){
+        Article article = articleService.findById(articleId);
+        userArticleService.deleteAllByArticleId(articleId);
+        articleLikeService.deleteAllByArticleId(articleId);
+        articlesInCourseService.deleteAllByArticleId(articleId);
+
+        if(article.getHometask() != null){
+            int hometaskId = article.getHometask().getId();
+            List<Answer> allAnswersByHometaskId = answerService.findAllByHometaskId(hometaskId);
+            answerService.deleteByHometaskId(hometaskId);
+            for (Answer a : allAnswersByHometaskId) {
+                if(a.getAnswerFile() != null){
+                    answerFileService.deleteById(a.getAnswerFile().getId());
+                }
+            }
+            articleService.deleteById(articleId);
+            hometaskService.deleteById(hometaskId);
+        }else{
+            articleService.deleteById(articleId);
+        }
+        chapterService.deleteById(article.getChapter().getId());
+        return "redirect:/adminPanel/deleteMaterials?search=" + search;
     }
 
 }

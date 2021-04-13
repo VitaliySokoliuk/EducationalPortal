@@ -70,4 +70,8 @@ public class CourseService {
         return courseRepository.findAllCoursesAndLikes(userId);
     }
 
+    public void deleteById(int courseId){
+        courseRepository.deleteById(courseId);
+    }
+
 }

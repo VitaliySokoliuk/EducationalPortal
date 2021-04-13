@@ -2,6 +2,7 @@ package ua.lviv.EduPortal.Services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ua.lviv.EduPortal.Entities.Article;
 import ua.lviv.EduPortal.Entities.ArticleLike;
 import ua.lviv.EduPortal.Entities.User;
@@ -30,6 +31,11 @@ public class ArticleLikeService {
 
     public int getLikesByUserId(int userId){
         return articleLikeRepository.getLikesByUserId(userId);
+    }
+
+    @Transactional
+    public void deleteAllByArticleId(int aId){
+        articleLikeRepository.deleteAllByArticle_Id(aId);
     }
 
 }

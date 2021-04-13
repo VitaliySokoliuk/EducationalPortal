@@ -44,4 +44,9 @@ public class UserArticleService {
         return userArticleRepository.findByUserIdAndArticleId(aId, uId);
     }
 
+    @Transactional
+    public void deleteAllByArticleId(int aId){
+        userArticleRepository.deleteAllByArticle_Id(aId);
+    }
+
 }

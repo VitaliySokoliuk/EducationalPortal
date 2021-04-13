@@ -77,4 +77,8 @@ public class ArticleService {
         return articleRepository.findAllArticlesAndLikes(userId);
     }
 
+    public void deleteById(int courseId){
+        articleRepository.deleteById(courseId);
+    }
+
 }

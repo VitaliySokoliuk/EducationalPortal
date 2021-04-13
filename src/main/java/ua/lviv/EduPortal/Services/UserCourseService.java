@@ -42,4 +42,9 @@ public class UserCourseService {
         return userCourseRepository.findByUserIdAndCourseId(cId, uId);
     }
 
+    @Transactional
+    public void deleteAllByCourseId(int cId){
+        userCourseRepository.deleteAllByCourse_Id(cId);
+    }
+
 }

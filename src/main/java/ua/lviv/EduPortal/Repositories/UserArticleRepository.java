@@ -30,4 +30,7 @@ public interface UserArticleRepository extends JpaRepository<UserArticle, CK_Use
     @Query("delete from UserArticle a where a.article.id = :aId and a.user.id = :uId")
     void delByArticleIdAndUserId(int aId, int uId);
 
+    @Modifying
+    void deleteAllByArticle_Id(int articleId);
+
 }

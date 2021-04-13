@@ -18,4 +18,6 @@ public interface AnswerRepository extends JpaRepository<Answer, Integer> {
             "join Article a on a.hometask.id = ht.id where a.author.id = :authorId order by an.mark")
     List<Answer> findAllForAuthor(int authorId);
 
+    void deleteAllByHometask_Id(int hometaskId);
+
 }

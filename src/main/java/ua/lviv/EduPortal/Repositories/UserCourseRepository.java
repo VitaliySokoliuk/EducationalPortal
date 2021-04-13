@@ -31,4 +31,7 @@ public interface UserCourseRepository extends JpaRepository<UserCourse, CK_UserC
     @Query("delete from UserCourse a where a.course.id = :cId and a.user.id = :uId")
     void delByCourseIdAndUserId(int cId, int uId);
 
+    @Modifying
+    void deleteAllByCourse_Id(int courseId);
+
 }

@@ -28,6 +28,4 @@ public class ChapterService {
         return chapterRepository.save(newChapter);
     }
 
-
-
 }

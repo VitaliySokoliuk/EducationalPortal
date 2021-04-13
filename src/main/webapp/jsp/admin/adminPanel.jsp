@@ -20,5 +20,7 @@
 
 <a href="/adminPanel/accessToMaterials">Remove paid materials from the user</a> <br>
 
+<a href="/adminPanel/deleteMaterials">Remove materials</a> <br>
+
 </body>
 </html>
