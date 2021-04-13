@@ -26,4 +26,10 @@ public interface ArticlesInCourseRepository extends JpaRepository<ArticlesInCour
     @Query("delete from ArticlesInCourse a where a.course.id = :course_id and a.article.id = :article_id")
     void delete(int course_id, int article_id);
 
+    @Modifying
+    void deleteAllByCourse_Id(int courseId);
+
+    @Modifying
+    void deleteAllByArticle_Id(int articleId);
+
 }

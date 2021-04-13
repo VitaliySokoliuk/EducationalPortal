@@ -5,12 +5,14 @@ public class UserDto {
     private String firstName;
     private String lastName;
     private String email;
+    private byte[] profilePicture;
 
-    public UserDto(int id, String firstName, String lastName, String email) {
+    public UserDto(int id, String firstName, String lastName, String email, byte[] profilePicture) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+        this.profilePicture = profilePicture;
     }
 
     public int getId() {
@@ -43,6 +45,14 @@ public class UserDto {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public byte[] getProfilePicture() {
+        return profilePicture;
+    }
+
+    public void setProfilePicture(byte[] profilePicture) {
+        this.profilePicture = profilePicture;
     }
 
     @Override

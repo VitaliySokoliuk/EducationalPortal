@@ -25,7 +25,11 @@
                         <p>File: <a href="/cabinet/downloadAnswerFile?id=${answer.answerFile.id}">File</a></p>
                     </c:if>
                     <form action="/cabinet/allAnswers" method="post">
-                        <input type="number" step="0.1" value="${answer.mark}" name="mark" min="0" max="${answer.hometask.maxMark}"/>
+                        <label for="feedback">Feedback:</label>
+                        <input type="text" name="feedback" id="feedback" value="${answer.feedback}"/>
+                        <label for="feedback">Mark:</label>
+                        <input type="number" id="mark" step="0.1" value="${answer.mark}" name="mark"
+                               min="0" max="${answer.hometask.maxMark}"/> / ${answer.hometask.maxMark} <br>
                         <input type="hidden" name="answerId" value="${answer.id}">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         <button type="submit" class="btn btn-dark">Send</button><br>

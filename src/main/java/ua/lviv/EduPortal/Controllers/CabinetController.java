@@ -97,6 +97,8 @@ public class CabinetController {
     @PostMapping("updateUser")
     public String updateUser(@RequestParam String firstName,
                              @RequestParam String lastName,
+                             @RequestParam(defaultValue = "pass1") String pass1,
+                             @RequestParam(defaultValue = "pass2") String pass2,
                              @RequestParam MultipartFile photo){
         Optional<User> currentUser = CustomUserDetailsService.getCurrentUser();
         if(currentUser.isPresent()){
@@ -111,9 +113,13 @@ public class CabinetController {
             } catch (IOException e) {
                 throw new RuntimeException("Could not save file" + photo.getOriginalFilename());
             }
-            userService.update(user);
+            if (pass1.equals(pass2)) {
+                user.setPassword(pass1);
+                userService.updateWithPass(user);
+            } else {
+                userService.update(user);
+            }
         }
-        //ToDo add opportunity to change password
         return "redirect:";
     }
 
@@ -404,22 +410,6 @@ public class CabinetController {
         return "cabinet/articleReaders";
     }
 
-    @PostMapping("addUserArticle")
-    public String addUserArticle(@RequestParam String email, @RequestParam int articleId){
-        Optional<User> maybeUser = userService.findByEmail(email);
-        if(maybeUser.isPresent()){
-            int userId = maybeUser.get().getId();
-            userArticleService.save(articleId, userId, true);
-        }
-        return "redirect:/cabinet/articleReaders?id=" + articleId;
-    }
-
-    @GetMapping("delUserArticle")
-    public String delUserArticle(@RequestParam int articleId, @RequestParam int userId){
-        userArticleService.delete(articleId, userId);
-        return "redirect:/cabinet/articleReaders?id=" + articleId;
-    }
-
     @GetMapping("courseReaders")
     public String courseReaders(HttpServletRequest request, @RequestParam("id") int courseId){
         List<UserDto> allUsersByCourseId = userCourseService.findAllUsersByCourseId(courseId);
@@ -428,22 +418,6 @@ public class CabinetController {
         request.setAttribute("readersCount", readersCount);
         request.setAttribute("courseId", courseId);
         return "cabinet/courseReaders";
-    }
-
-    @PostMapping("addUserCourse")
-    public String addUserCourse(@RequestParam String email, @RequestParam int courseId){
-        Optional<User> maybeUser = userService.findByEmail(email);
-        if(maybeUser.isPresent()){
-            int userId = maybeUser.get().getId();
-            userCourseService.save(courseId, userId, true);
-        }
-        return "redirect:/cabinet/courseReaders?id=" + courseId;
-    }
-
-    @GetMapping("delUserCourse")
-    public String delUserCourse(@RequestParam int courseId, @RequestParam int userId){
-        userCourseService.delete(courseId, userId);
-        return "redirect:/cabinet/courseReaders?id=" + courseId;
     }
 
     @GetMapping("articleAnswers")
@@ -465,8 +439,11 @@ public class CabinetController {
 
     @GetMapping("confirmAnswer/{id}")
     public String confirmAnswer(@PathVariable(name = "id") int answerId, @RequestParam int articleId,
-                                @RequestParam double mark){
+                                @RequestParam double mark, @RequestParam(required = false) String feedback){
         Answer answer = answerService.findById(answerId);
+        if(feedback != null && !feedback.equals("")){
+            answer.setFeedback(feedback);
+        }
         answer.setMark(mark);
         answerService.save(answer);
         return "redirect:/cabinet/articleAnswers?id=" + articleId;
@@ -482,8 +459,12 @@ public class CabinetController {
     }
 
     @PostMapping("allAnswers")
-    public String allAnswers2(@RequestParam int answerId, @RequestParam double mark){
+    public String allAnswers2(@RequestParam int answerId, @RequestParam double mark,
+                              @RequestParam(required = false) String feedback){
         Answer answer = answerService.findById(answerId);
+        if(feedback != null && !feedback.equals("")){
+            answer.setFeedback(feedback);
+        }
         answer.setMark(mark);
         answerService.save(answer);
         return "redirect:/cabinet/allAnswers";

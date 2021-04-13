@@ -8,6 +8,7 @@ import ua.lviv.EduPortal.Entities.enums.UserRole;
 import ua.lviv.EduPortal.Repositories.UserRepository;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -26,12 +27,19 @@ public class UserService {
     public void save(User user){
         user.setRole(DEFAULT_USER_ROLE);
         user.setPaidMaterials(false);
+        user.setNonLocked(true);
         String encodePassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodePassword);
         userRepository.save(user);
     }
 
     public void update(User user){
+        userRepository.save(user);
+    }
+
+    public void updateWithPass(User user){
+        String encodePassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(encodePassword);
         userRepository.save(user);
     }
 
@@ -43,4 +51,17 @@ public class UserService {
     public byte[] getProfilePictureById(int id) {
         return userRepository.getProfilePictureById(id);
     }
+
+    public List<User> findAllByRole(UserRole userRole){
+        return userRepository.findAllByRole(userRole);
+    }
+
+    public Optional<User> findById(int id){
+        return userRepository.findById(id);
+    }
+
+    public List<User> findAllByNonLockedFalse(){
+        return userRepository.findAllByNonLockedFalse();
+    }
+
 }

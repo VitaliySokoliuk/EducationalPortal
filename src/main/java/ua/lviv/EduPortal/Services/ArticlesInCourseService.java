@@ -34,4 +34,14 @@ public class ArticlesInCourseService {
         articlesInCourseRepository.delete(cId, aId);
     }
 
+    @Transactional
+    public void deleteAllByCourseId(int cId){
+        articlesInCourseRepository.deleteAllByCourse_Id(cId);
+    }
+
+    @Transactional
+    public void deleteAllByArticleId(int aId){
+        articlesInCourseRepository.deleteAllByArticle_Id(aId);
+    }
+
 }

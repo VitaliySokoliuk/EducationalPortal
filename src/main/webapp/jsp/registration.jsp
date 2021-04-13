@@ -13,15 +13,15 @@
     <form action="/registration" method="post">
         <div class="form-group">
             <label for="firstName">First name</label>
-            <input type="text" class="form-control" id="firstName" placeholder="Enter first name" name="firstName">
+            <input type="text" class="form-control" maxlength="30" id="firstName" placeholder="Enter first name" name="firstName">
         </div>
         <div class="form-group">
             <label for="lastName">Last name</label>
-            <input type="text" class="form-control" id="lastName" placeholder="Enter last name" name="lastName">
+            <input type="text" class="form-control" maxlength="30" id="lastName" placeholder="Enter last name" name="lastName">
         </div>
         <div class="form-group">
             <label for="email">Email address</label>
-            <input type="email" class="form-control" id="email" placeholder="Enter email" name="email">
+            <input type="email" class="form-control" maxlength="60" id="email" placeholder="Enter email" name="email">
         </div>
         <div class="form-group">
             <label for="password">Password</label>

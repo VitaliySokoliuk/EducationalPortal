@@ -41,8 +41,8 @@ public class ArticleService {
         return articleRepository.findAll();
     }
 
-    public List<Article> findArticlesInUserList(int userId, boolean byAuthor){
-        return articleRepository.findArticlesInUserList(userId, byAuthor);
+    public List<Article> findArticlesInUserList(int userId, boolean bought){
+        return articleRepository.findArticlesInUserList(userId, bought);
     }
 
     public int findHTidByArticleId(int articleId){
@@ -53,8 +53,8 @@ public class ArticleService {
         return articleRepository.findByHometaskId(hometaskId);
     }
 
-    public List<ArticleDto> findArticlesAndLikes(int userId){
-        return articleRepository.findArticlesAndLikes(userId);
+    public List<ArticleDto> findArticlesAndLikesAndPaid(int userId, boolean isBought){
+        return articleRepository.findArticlesAndLikesAndPaid(userId, isBought);
     }
 
     public List<Article> findAllByTopic(String topicName){
@@ -75,6 +75,10 @@ public class ArticleService {
 
     public List<ArticleDto> findAllArticlesAndLikes(int userId){
         return articleRepository.findAllArticlesAndLikes(userId);
+    }
+
+    public void deleteById(int courseId){
+        articleRepository.deleteById(courseId);
     }
 
 }

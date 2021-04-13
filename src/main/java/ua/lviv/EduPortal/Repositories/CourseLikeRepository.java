@@ -1,6 +1,7 @@
 package ua.lviv.EduPortal.Repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import ua.lviv.EduPortal.Entities.Course;
@@ -16,5 +17,8 @@ public interface CourseLikeRepository extends JpaRepository<CourseLike, Integer>
 
     @Query("select count(cl) from CourseLike cl where cl.course.author.id = :userId")
     int getLikesByUserId(int userId);
+
+    @Modifying
+    void deleteAllByCourse_Id(int courseId);
 
 }

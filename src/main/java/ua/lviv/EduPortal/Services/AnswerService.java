@@ -2,6 +2,7 @@ package ua.lviv.EduPortal.Services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ua.lviv.EduPortal.Entities.Answer;
 import ua.lviv.EduPortal.Repositories.AnswerRepository;
 
@@ -35,6 +36,11 @@ public class AnswerService {
 
     public List<Answer> findAllForAuthor(int authorId){
         return answerRepository.findAllForAuthor(authorId);
+    }
+
+    @Transactional
+    public void deleteByHometaskId(int hometaskId){
+        answerRepository.deleteAllByHometask_Id(hometaskId);
     }
 
 }

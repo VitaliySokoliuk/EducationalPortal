@@ -12,10 +12,10 @@
 <body>
 <c:import url="../parts/header.jsp"/>
 
-<c:if test="${!empty coursesAddedByAuthor}">
+<c:if test="${!empty coursesUserBought}">
     <div class="container">
         <h4>Courses which you have bought:</h4>
-        <c:forEach var="course" items="${coursesAddedByAuthor}">
+        <c:forEach var="course" items="${coursesUserBought}">
             <div class="container article">
                 <div>
                     <c:if test = "${course.logoPicture == null}">
@@ -82,10 +82,10 @@
     </div>
 </c:if>
 
-<c:if test="${!empty articlesAddedByAuthor}">
+<c:if test="${!empty articlesUserBought}">
     <div class="container">
         <h4>Articles which you have bought:</h4>
-        <c:forEach var="article" items="${articlesAddedByAuthor}">
+        <c:forEach var="article" items="${articlesUserBought}">
             <div class="container article">
                 <div>
                     <c:if test = "${article.logoPicture == null}">

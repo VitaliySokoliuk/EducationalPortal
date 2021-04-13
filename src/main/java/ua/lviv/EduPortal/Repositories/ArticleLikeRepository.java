@@ -1,6 +1,7 @@
 package ua.lviv.EduPortal.Repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import ua.lviv.EduPortal.Entities.Article;
@@ -16,5 +17,8 @@ public interface ArticleLikeRepository extends JpaRepository<ArticleLike, Intege
 
     @Query("select count(al) from ArticleLike al where al.article.author.id = :userId")
     int getLikesByUserId(int userId);
+
+    @Modifying
+    void deleteAllByArticle_Id(int articleId);
 
 }

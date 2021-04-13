@@ -12,12 +12,12 @@ public class Course {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id", nullable = false)
     private User author;
-    @Column(nullable = false, length = 30)
+    @Column(nullable = false, length = 60)
     private String title;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "chapter_id", nullable = false)
     private Chapter chapter;
-    @Column(nullable = false, length = 120)
+    @Column(nullable = false, length = 200)
     private String description;
     @Column(nullable = false)
     private boolean paid;

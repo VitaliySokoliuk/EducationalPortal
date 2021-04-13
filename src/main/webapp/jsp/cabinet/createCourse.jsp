@@ -16,7 +16,7 @@
     <form action="/cabinet/createCourse" enctype="multipart/form-data" method="post">
         <div class="form-group">
             <label for="title">Course Title:</label>
-            <input required type="text" class="form-control" id="title" name="title">
+            <input required type="text" maxlength="60" class="form-control" id="title" name="title">
         </div>
         <div class="form-group">
             <label for="logo">Course logo:</label>
@@ -36,7 +36,7 @@
         </div>
         <div class="form-group">
             <label for="description">Description:</label>
-            <textarea required class="form-control" name="description" maxlength="60" id="description" cols="30" rows="3"></textarea>
+            <textarea required class="form-control" name="description" maxlength="200" id="description" cols="30" rows="3"></textarea>
         </div>
         <c:if test = "${!userIsPaid}">
             <div class="disabled">

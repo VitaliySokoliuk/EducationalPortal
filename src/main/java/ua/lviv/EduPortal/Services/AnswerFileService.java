@@ -2,6 +2,7 @@ package ua.lviv.EduPortal.Services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ua.lviv.EduPortal.Entities.AnswerFile;
 import ua.lviv.EduPortal.Repositories.AnswerFileRepository;
 
@@ -23,4 +24,10 @@ public class AnswerFileService {
     public AnswerFile getById(int id) {
         return answerFileRepository.getOne(id);
     }
+
+    @Transactional
+    public void deleteById(int id){
+        answerFileRepository.deleteById(id);
+    }
+
 }

@@ -75,17 +75,18 @@ public class MainController {
         Course course = courseService.findById(courseId);
         if(!course.isPaid()){
             request.setAttribute("isAbleToSee", true);
-        }
-        Optional<User> currentUser = CustomUserDetailsService.getCurrentUser();
-        if(currentUser.isPresent()){
-            Optional<UserCourse> userCourse = userCourseService.findByUserIdAndCourseId(courseId, currentUser.get().getId());
-            if(userCourse.isPresent()){
-                request.setAttribute("isAbleToSee", true);
+        }else {
+            Optional<User> currentUser = CustomUserDetailsService.getCurrentUser();
+            if(currentUser.isPresent()){
+                Optional<UserCourse> userCourse = userCourseService.findByUserIdAndCourseId(courseId, currentUser.get().getId());
+                if(userCourse.isPresent()){
+                    request.setAttribute("isAbleToSee", true);
+                }else {
+                    request.setAttribute("isAbleToSee", false);
+                }
             }else {
                 request.setAttribute("isAbleToSee", false);
             }
-        }else {
-            request.setAttribute("isAbleToSee", false);
         }
         request.setAttribute("course", course);
         request.setAttribute("courseArticles", articlesInCourseService.findArticlesByCourseId(courseId));
@@ -141,6 +142,38 @@ public class MainController {
         }
         answerService.save(answer);
         return "redirect:/myMaterials";
+    }
+
+    @GetMapping("buyCourse")
+    public String buyCourse(HttpServletRequest request, @RequestParam("id") int courseId){
+        request.setAttribute("courseId", courseId);
+        return "home/buyCourse";
+    }
+
+    @PostMapping("buyCourse")
+    public String buyCourse(@RequestParam int courseId){
+        Optional<User> currentUser = CustomUserDetailsService.getCurrentUser();
+        if(currentUser.isPresent()){
+            int userId = currentUser.get().getId();
+            userCourseService.save(courseId, userId, true);
+        }
+        return "redirect:/";
+    }
+
+    @GetMapping("buyArticle")
+    public String buyArticle(HttpServletRequest request, @RequestParam("id") int articleId){
+        request.setAttribute("articleId", articleId);
+        return "home/buyArticle";
+    }
+
+    @PostMapping("buyArticle")
+    public String buyArticle(@RequestParam int articleId){
+        Optional<User> currentUser = CustomUserDetailsService.getCurrentUser();
+        if(currentUser.isPresent()){
+            int userId = currentUser.get().getId();
+            userArticleService.save(articleId, userId, true);
+        }
+        return "redirect:/";
     }
 
 }

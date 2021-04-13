@@ -25,11 +25,16 @@
             <label>Your photo:</label>
             <input type="file" name="photo"><br>
             <label>First name:</label>
-            <input type="text" name = "firstName" value="${user.firstName}" class="form-control"><br>
+            <input type="text" name = "firstName" maxlength="30" value="${user.firstName}" class="form-control"><br>
             <label>Last name:</label>
-            <input type="text" name = "lastName" value="${user.lastName}" class="form-control"><br>
-<%--            <label>Password:</label>--%>
-<%--            <input type="password" name = "password" placeholder="Input new password" class="form-control"><br>--%>
+            <input type="text" name = "lastName" maxlength="30" value="${user.lastName}" class="form-control"><br>
+            <label>Password:</label>
+            <input type="password" name = "pass1" placeholder="Input new password" class="form-control"><br>
+            <label>Confirm password:</label>
+            <input type="password" name = "pass2" placeholder="Confirm password" class="form-control"><br>
+            <c:if test="${param.error ne null}">
+                <div class="alert-danger">passwords are different</div>
+            </c:if>
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <button type="submit" class="btn btn-dark">Update</button><br>
         </form>

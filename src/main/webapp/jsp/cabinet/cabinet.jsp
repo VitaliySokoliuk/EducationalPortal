@@ -100,7 +100,7 @@
                         <c:if test = "${article.paid}">
                             <a href="/cabinet/articleReaders?id=${article.id}">Readers</a>
                         </c:if>
-                        <c:if test = "${article.giveAnswers == true}">
+                        <c:if test = "${article.giveAnswers}">
                             <a href="/cabinet/articleAnswers?id=${article.id}">Answers</a>
                         </c:if>
                     </div>

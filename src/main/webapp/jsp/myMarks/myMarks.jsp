@@ -24,8 +24,11 @@
                     <c:if test="${answerArticle.key.answerFile.id != null}">
                         <p>File: <a href="/cabinet/downloadAnswerFile?id=${answerArticle.key.answerFile.id}">File</a></p>
                     </c:if>
+                    <c:if test="${answerArticle.key.feedback != null}">
+                        Feedback: ${answerArticle.key.feedback}
+                    </c:if>
                     <c:if test="${answerArticle.key.mark != 0.0}">
-                        <p>Your result ${answerArticle.key.mark}</p>
+                        <p>Your result ${answerArticle.key.mark} / ${answerArticle.key.hometask.maxMark}</p>
                     </c:if>
                     <c:if test="${answerArticle.key.mark == 0.0}">
                         <p>Wait until teacher check your answer</p>

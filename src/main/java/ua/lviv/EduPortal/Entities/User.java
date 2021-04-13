@@ -27,6 +27,8 @@ public class User {
     private byte[] profilePicture;
     @Column(name = "paid_materials", nullable = false)
     private boolean paidMaterials;
+    @Column(name = "non_locked", nullable = false)
+    private boolean nonLocked;
 
     public User() {
     }
@@ -104,6 +106,14 @@ public class User {
 
     public void setPaidMaterials(boolean paidMaterials) {
         this.paidMaterials = paidMaterials;
+    }
+
+    public boolean isNonLocked() {
+        return nonLocked;
+    }
+
+    public void setNonLocked(boolean nonLocked) {
+        this.nonLocked = nonLocked;
     }
 
     @Override
