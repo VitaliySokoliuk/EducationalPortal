@@ -22,8 +22,11 @@
         </div>
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <button type="submit" class="btn btn-primary">Submit</button>
-        <c:if test="${param.error ne null}">
-            <div class="alert-danger">Invalid username and password.</div>
+        <c:if test="${SPRING_SECURITY_LAST_EXCEPTION ne null}">
+            <div class="alert-danger">
+                Login failed,
+                Reason: ${SPRING_SECURITY_LAST_EXCEPTION.message}
+            </div>
         </c:if>
         <c:if test="${param.logout ne null}">
             <div class="alert-normal">You have been logged out.</div>

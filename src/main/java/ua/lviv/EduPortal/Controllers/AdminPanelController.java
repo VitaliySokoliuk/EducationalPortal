@@ -32,7 +32,7 @@ public class AdminPanelController {
     }
 
     @GetMapping("subjects")
-    private String getSubjects(HttpServletRequest request){
+    public String getSubjects(HttpServletRequest request){
         request.setAttribute("topics", topicService.findAll());
         request.setAttribute("chapters", chapterService.findAll());
         return "admin/subjects";
@@ -69,7 +69,7 @@ public class AdminPanelController {
     }
 
     @GetMapping("allAdmins")
-    private String allAdmins(HttpServletRequest request){
+    public String allAdmins(HttpServletRequest request){
         List<User> admins = userService.findAllByRole(UserRole.ROLE_ADMIN);
         List<User> superAdmins = userService.findAllByRole(UserRole.ROLE_SUPER_ADMIN);
         request.setAttribute("admins", admins);
@@ -78,7 +78,7 @@ public class AdminPanelController {
     }
 
     @GetMapping("allAdmins/makeUser")
-    private String makeUser(@RequestParam int adminId){
+    public String makeUser(@RequestParam int adminId){
         Optional<User> maybeAdmin = userService.findById(adminId);
         if(maybeAdmin.isPresent()){
             User user = maybeAdmin.get();
@@ -89,7 +89,7 @@ public class AdminPanelController {
     }
 
     @PostMapping("allAdmins")
-    private String addAdmin(@RequestParam String email){
+    public String addAdmin(@RequestParam String email){
         Optional<User> maybeUser = userService.findByEmail(email);
         if(maybeUser.isPresent()){
             User user = maybeUser.get();
@@ -97,6 +97,44 @@ public class AdminPanelController {
             userService.update(user);
         }
         return "redirect:/adminPanel/allAdmins";
+    }
+
+    @GetMapping("blockUser")
+    public String blockUser(HttpServletRequest request, @RequestParam(required = false) String email){
+        List<User> lockedUsers = userService.findAllByNonLockedFalse();
+        request.setAttribute("lockedUsers", lockedUsers);
+        if(email == null || email.equals("")){
+            return "admin/blockUser";
+        }
+        Optional<User> maybeUser = userService.findByEmail(email);
+        if (maybeUser.isPresent()){
+            request.setAttribute("user", maybeUser.get());
+        }
+        return "admin/blockUser";
+    }
+
+    @GetMapping("blockUser/block")
+    public String blockUserById(@RequestParam int userId){
+        Optional<User> maybeUser = userService.findById(userId);
+        if (maybeUser.isPresent()){
+            User user = maybeUser.get();
+            if(user.getRole().equals(UserRole.ROLE_USER)){
+                user.setNonLocked(false);
+                userService.update(user);
+            }
+        }
+        return "redirect:/adminPanel/blockUser";
+    }
+
+    @GetMapping("blockUser/unblock")
+    public String unblockUserById(@RequestParam int userId){
+        Optional<User> maybeUser = userService.findById(userId);
+        if (maybeUser.isPresent()){
+            User user = maybeUser.get();
+            user.setNonLocked(true);
+            userService.update(user);
+        }
+        return "redirect:/adminPanel/blockUser";
     }
 
 }

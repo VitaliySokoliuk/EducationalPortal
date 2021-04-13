@@ -16,5 +16,7 @@
     <a href="/adminPanel/allAdmins">All admins</a> <br>
 </c:if>
 
+<a href="/adminPanel/blockUser">Block user</a> <br>
+
 </body>
 </html>

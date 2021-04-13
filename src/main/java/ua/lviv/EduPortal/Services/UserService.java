@@ -27,6 +27,7 @@ public class UserService {
     public void save(User user){
         user.setRole(DEFAULT_USER_ROLE);
         user.setPaidMaterials(false);
+        user.setNonLocked(true);
         String encodePassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodePassword);
         userRepository.save(user);
@@ -57,6 +58,10 @@ public class UserService {
 
     public Optional<User> findById(int id){
         return userRepository.findById(id);
+    }
+
+    public List<User> findAllByNonLockedFalse(){
+        return userRepository.findAllByNonLockedFalse();
     }
 
 }
