@@ -45,7 +45,7 @@ public interface ArticleRepository extends JpaRepository<Article, Integer> {
     @Query("select a from Article a where a.title like %:title% or a.chapter.name like %:title%")
     List<Article> findAllByTitle(String title);
 
-    @Query("select a from Article a join ArticleLike ak on a.id = ak.article.id " +
+    @Query("select a from Article a left join ArticleLike ak on a.id = ak.article.id " +
             "group by ak.article.id order by count(ak.article.id) desc")
     List<Article> findFewByLikes(Pageable pageable);
 

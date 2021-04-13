@@ -25,9 +25,9 @@
             <label>Your photo:</label>
             <input type="file" name="photo"><br>
             <label>First name:</label>
-            <input type="text" name = "firstName" value="${user.firstName}" class="form-control"><br>
+            <input type="text" name = "firstName" maxlength="30" value="${user.firstName}" class="form-control"><br>
             <label>Last name:</label>
-            <input type="text" name = "lastName" value="${user.lastName}" class="form-control"><br>
+            <input type="text" name = "lastName" maxlength="30" value="${user.lastName}" class="form-control"><br>
             <label>Password:</label>
             <input type="password" name = "pass1" placeholder="Input new password" class="form-control"><br>
             <label>Confirm password:</label>
