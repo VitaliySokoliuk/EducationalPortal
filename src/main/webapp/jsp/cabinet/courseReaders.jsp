@@ -10,26 +10,26 @@
 </head>
 <body>
 <c:import url="../parts/header.jsp"/>
-<h4>Number of readers: ${readersCount}</h4>
-<h4>Add new user:</h4>
-<form action="/cabinet/addUserCourse" method="post">
-    <label>User email</label>
-    <input type="email" name = "email" class="form-control">
-    <input type="hidden" name="courseId" value="${courseId}">
-    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-    <button type="submit" class="btn btn-dark">Add user</button><br>
-</form>
 
+<h3>${readersCount} readers in this course</h3>
 <c:if test = "${users != null && users != []}">
-    <h3>Users in course</h3>
     <table class="table table-striped">
         <tbody>
         <c:forEach var="user" items="${users}">
             <tr>
+                <c:if test = "${user.profilePicture == null}">
+                    <td>
+                        <img class="photo" src="https://clipartart.com/images250_/default-profile-picture-clipart-6.png" width="50px">
+                    </td>
+                </c:if>
+                <c:if test = "${user.profilePicture != null}">
+                    <td>
+                        <img src="/cabinet/download_photo?id=${user.id}" width="50px">
+                    </td>
+                </c:if>
                 <td>${user.firstName}</td>
                 <td>${user.lastName}</td>
                 <td>${user.email}</td>
-                <td><a href="/cabinet/delUserCourse?courseId=${courseId}&userId=${user.id}">delete</a></td>
             </tr>
         </c:forEach>
         </tbody>

@@ -15,6 +15,7 @@
     <input type="email" name = "email" class="form-control">
     <button type="submit" class="btn btn-dark">Find user</button><br>
 </form>
+
 <c:if test = "${user != null}">
     <table class="table table-striped">
         <tbody>

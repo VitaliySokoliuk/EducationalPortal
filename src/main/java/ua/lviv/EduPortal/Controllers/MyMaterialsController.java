@@ -40,10 +40,10 @@ public class MyMaterialsController {
         Optional<User> currentUser = CustomUserDetailsService.getCurrentUser();
         if (currentUser.isPresent()){
             int userId = currentUser.get().getId();
-            request.setAttribute("coursesAddedByAuthor", courseService.findCoursesAndLikes(userId));
-            request.setAttribute("coursesAddedByUser", courseService.findCoursesAndLikes(userId));
-            request.setAttribute("articlesAddedByAuthor", articleService.findArticlesAndLikes(userId));
-            request.setAttribute("articlesAddedByUser", articleService.findArticlesAndLikes(userId));
+            request.setAttribute("coursesUserBought", courseService.findCoursesAndLikesAndPaid(userId, true));
+            request.setAttribute("coursesAddedByUser", courseService.findCoursesAndLikesAndPaid(userId, false));
+            request.setAttribute("articlesUserBought", articleService.findArticlesAndLikesAndPaid(userId, true));
+            request.setAttribute("articlesAddedByUser", articleService.findArticlesAndLikesAndPaid(userId, false));
         }
         return "myMaterials/myMaterials";
     }

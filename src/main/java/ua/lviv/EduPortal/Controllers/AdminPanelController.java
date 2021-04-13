@@ -4,12 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import ua.lviv.EduPortal.Entities.Article;
+import ua.lviv.EduPortal.Entities.Course;
 import ua.lviv.EduPortal.Entities.Topic;
 import ua.lviv.EduPortal.Entities.User;
 import ua.lviv.EduPortal.Entities.enums.UserRole;
-import ua.lviv.EduPortal.Services.ChapterService;
-import ua.lviv.EduPortal.Services.TopicService;
-import ua.lviv.EduPortal.Services.UserService;
+import ua.lviv.EduPortal.Services.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -22,13 +22,23 @@ public class AdminPanelController {
     private ChapterService chapterService;
     private TopicService topicService;
     private UserService userService;
+    private CourseService courseService;
+    private ArticleService articleService;
+    private UserCourseService userCourseService;
+    private UserArticleService userArticleService;
 
     @Autowired
     public AdminPanelController(ChapterService chapterService, TopicService topicService,
-                                UserService userService) {
+                                UserService userService, CourseService courseService,
+                                ArticleService articleService, UserCourseService userCourseService,
+                                UserArticleService userArticleService) {
         this.chapterService = chapterService;
         this.topicService = topicService;
         this.userService = userService;
+        this.courseService = courseService;
+        this.articleService = articleService;
+        this.userCourseService = userCourseService;
+        this.userArticleService = userArticleService;
     }
 
     @GetMapping("subjects")
@@ -135,6 +145,45 @@ public class AdminPanelController {
             userService.update(user);
         }
         return "redirect:/adminPanel/blockUser";
+    }
+
+    @GetMapping("accessToMaterials")
+    public String accessToMaterials(HttpServletRequest request, @RequestParam(required = false) String email){
+        if(email == null || email.equals("")){
+            return "admin/accessToMaterials";
+        }
+        Optional<User> maybeUser = userService.findByEmail(email);
+        if (maybeUser.isPresent()){
+            User user = maybeUser.get();
+            request.setAttribute("user", user);
+            List<Course> courses = courseService.findCoursesInUserList(user.getId(), true);
+            List<Article> articles = articleService.findArticlesInUserList(user.getId(), true);
+            request.setAttribute("courses", courses);
+            request.setAttribute("articles", articles);
+        }
+        return "admin/accessToMaterials";
+    }
+
+    @GetMapping("accessToMaterials/delCourse")
+    public String delCourse(@RequestParam int courseId, @RequestParam int userId){
+        Optional<User> maybeUser = userService.findById(userId);
+        if(maybeUser.isPresent()){
+            User user = maybeUser.get();
+            userCourseService.delete(courseId, userId);
+            return "redirect:/adminPanel/accessToMaterials?email=" + user.getEmail();
+        }
+        return "redirect:/adminPanel/accessToMaterials";
+    }
+
+    @GetMapping("accessToMaterials/delArticle")
+    public String delArticle(@RequestParam int articleId, @RequestParam int userId){
+        Optional<User> maybeUser = userService.findById(userId);
+        if(maybeUser.isPresent()){
+            User user = maybeUser.get();
+            userArticleService.delete(articleId, userId);
+            return "redirect:/adminPanel/accessToMaterials?email=" + user.getEmail();
+        }
+        return "redirect:/adminPanel/accessToMaterials";
     }
 
 }

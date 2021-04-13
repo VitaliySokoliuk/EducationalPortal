@@ -15,14 +15,14 @@ import java.util.Optional;
 @Repository
 public interface UserCourseRepository extends JpaRepository<UserCourse, CK_UserCourse> {
 
-    @Query("select new ua.lviv.EduPortal.DTOs.UserDto(u.id, u.firstName, u.lastName, u.email) " +
+    @Query("select new ua.lviv.EduPortal.DTOs.UserDto(u.id, u.firstName, u.lastName, u.email, u.profilePicture) " +
             "from UserCourse uar join User u on uar.user.id = u.id where uar.course.id = :courseId")
     List<UserDto> findAllUsersByCourseId(int courseId);
 
     @Modifying
-    @Query(value = "INSERT user_course(course_id, user_id, added_by_author) VALUES (?1, ?2, ?3)",
+    @Query(value = "INSERT user_course(course_id, user_id, bought) VALUES (?1, ?2, ?3)",
             nativeQuery = true)
-    void save(int cId, int uId, boolean byUser);
+    void save(int cId, int uId, boolean bought);
 
     @Query("select u from UserCourse u where u.user.id = :uId and u.course.id = :cId")
     Optional<UserCourse> findByUserIdAndCourseId(int cId, int uId);

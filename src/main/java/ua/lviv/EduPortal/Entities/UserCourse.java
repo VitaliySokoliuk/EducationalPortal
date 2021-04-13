@@ -17,13 +17,13 @@ public class UserCourse {
     @ManyToOne
     @JoinColumn(name = "course_id")
     private Course course;
-    @Column(name = "added_by_author", nullable = false)
-    private boolean addedByAuthor;
+    @Column(nullable = false)
+    private boolean bought;
 
-    public UserCourse(User user, Course course, boolean addedByAuthor) {
+    public UserCourse(User user, Course course, boolean bought) {
         this.user = user;
         this.course = course;
-        this.addedByAuthor = addedByAuthor;
+        this.bought = bought;
     }
 
     public UserCourse() {
@@ -45,12 +45,12 @@ public class UserCourse {
         this.course = course;
     }
 
-    public boolean isAddedByAuthor() {
-        return addedByAuthor;
+    public boolean isBought() {
+        return bought;
     }
 
-    public void setAddedByAuthor(boolean addedByAuthor) {
-        this.addedByAuthor = addedByAuthor;
+    public void setBought(boolean bought) {
+        this.bought = bought;
     }
 
     @Override
@@ -58,7 +58,7 @@ public class UserCourse {
         return "UserCourse{" +
                 "user=" + user +
                 ", course=" + course +
-                ", addedByAuthor=" + addedByAuthor +
+                ", bought=" + bought +
                 '}';
     }
 }

@@ -25,9 +25,9 @@ public class UserCourseService {
     }
 
     @Transactional
-    public void save(int cId, int uId, boolean byUser){
+    public void save(int cId, int uId, boolean bought){
         if(userCourseRepository.findByUserIdAndCourseId(cId, uId).isEmpty()){
-            userCourseRepository.save(cId, uId, byUser);
+            userCourseRepository.save(cId, uId, bought);
         }
     }
 

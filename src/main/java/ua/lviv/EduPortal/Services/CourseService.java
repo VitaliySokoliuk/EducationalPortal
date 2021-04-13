@@ -42,12 +42,12 @@ public class CourseService {
         return courseRepository.findAll();
     }
 
-    public List<Course> findCoursesInUserList(int userId, boolean byAuthor){
-        return courseRepository.findCoursesInUserList(userId, byAuthor);
+    public List<Course> findCoursesInUserList(int userId, boolean bought){
+        return courseRepository.findCoursesInUserList(userId, bought);
     }
 
-    public List<CourseDto> findCoursesAndLikes(int userId){
-        return courseRepository.findCoursesAndLikes(userId);
+    public List<CourseDto> findCoursesAndLikesAndPaid(int userId, boolean isBought){
+        return courseRepository.findCoursesAndLikesAndPaid(userId, isBought);
     }
 
     public List<Course> findAllByTopic(String topicName){

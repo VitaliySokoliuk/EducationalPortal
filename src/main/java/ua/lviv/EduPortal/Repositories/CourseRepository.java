@@ -19,16 +19,16 @@ public interface CourseRepository extends JpaRepository<Course, Integer> {
     byte[] getLogoPictureById(int id);
 
     @Query("select c from Course c join UserCourse uc on c.id = uc.course.id " +
-            "where uc.user.id = :userId and uc.addedByAuthor = :byAuthor")
-    List<Course> findCoursesInUserList(int userId, boolean byAuthor);
+            "where uc.user.id = :userId and uc.bought = :bought")
+    List<Course> findCoursesInUserList(int userId, boolean bought);
 
     @Query("select new ua.lviv.EduPortal.DTOs.CourseDto(c.id, c.title, c.description, c.logoPicture, c.paid, c.price, " +
             "count(cl.id), sum(case when cl.user.id = :userId then 1 else 0 end) > 0) " +
             "from Course c join UserCourse uc on c.id = uc.course.id " +
             "left join CourseLike cl on c.id = cl.course.id " +
-            "where uc.user.id = :userId and uc.addedByAuthor = 0 " +
+            "where uc.user.id = :userId and uc.bought = :isBought " +
             "group by uc.course.id")
-    List<CourseDto> findCoursesAndLikes(int userId);
+    List<CourseDto> findCoursesAndLikesAndPaid(int userId, boolean isBought);
 
     @Query("select c from Course c where c.chapter.topic.name = :topicName")
     List<Course> findAllByTopic(String topicName);

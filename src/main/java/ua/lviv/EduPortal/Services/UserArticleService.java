@@ -27,9 +27,9 @@ public class UserArticleService {
     }
 
     @Transactional
-    public void save(int aId, int uId, boolean byUser){
+    public void save(int aId, int uId, boolean bought){
         if(userArticleRepository.findByUserIdAndArticleId(aId, uId).isEmpty()){
-            userArticleRepository.save(aId, uId, byUser);
+            userArticleRepository.save(aId, uId, bought);
         }
     }
 

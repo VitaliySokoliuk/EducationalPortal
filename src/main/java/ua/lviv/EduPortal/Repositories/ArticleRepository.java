@@ -19,8 +19,8 @@ public interface ArticleRepository extends JpaRepository<Article, Integer> {
     byte[] getLogoPictureById(int id);
 
     @Query("select a from Article a join UserArticle uar on a.id = uar.article.id " +
-            "where uar.user.id = :userId and uar.addedByAuthor = :byAuthor")
-    List<Article> findArticlesInUserList(int userId, boolean byAuthor);
+            "where uar.user.id = :userId and uar.bought = :bought")
+    List<Article> findArticlesInUserList(int userId, boolean bought);
 
     @Query("select a.hometask.id from Article a where a.id = :articleId")
     int findHTidByArticleId(int articleId);
@@ -31,9 +31,9 @@ public interface ArticleRepository extends JpaRepository<Article, Integer> {
             "count(al.id), sum(case when al.user.id = :userId then 1 else 0 end) > 0) " +
             "from Article a join UserArticle uar on a.id = uar.article.id " +
             "left join ArticleLike al on a.id = al.article.id " +
-            "where uar.user.id = :userId and uar.addedByAuthor = 0 " +
+            "where uar.user.id = :userId and uar.bought = :isBought " +
             "group by uar.article.id")
-    List<ArticleDto> findArticlesAndLikes(int userId);
+    List<ArticleDto> findArticlesAndLikesAndPaid(int userId, boolean isBought);
 
     @Query("select a from Article a where a.chapter.topic.name = :topicName")
     List<Article> findAllByTopic(String topicName);
