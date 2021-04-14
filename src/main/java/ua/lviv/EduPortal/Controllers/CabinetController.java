@@ -1,6 +1,7 @@
 package ua.lviv.EduPortal.Controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -58,6 +59,9 @@ public class CabinetController {
         this.articleLikeService = articleLikeService;
     }
 
+    @Value("${minUserRating}")
+    private int minUserRating;
+
     @GetMapping
     public String getUserData(HttpServletRequest request){
         Optional<User> currentUser = CustomUserDetailsService.getCurrentUser();
@@ -66,7 +70,7 @@ public class CabinetController {
             if (!user.isPaidMaterials()){
                 int courseLikes = courseLikeService.getLikesByUserId(user.getId());
                 int articleLikes = articleLikeService.getLikesByUserId(user.getId());
-                if (courseLikes + articleLikes > 15){
+                if (courseLikes + articleLikes > minUserRating){
                     user.setPaidMaterials(true);
                     userService.update(user);
                 }
