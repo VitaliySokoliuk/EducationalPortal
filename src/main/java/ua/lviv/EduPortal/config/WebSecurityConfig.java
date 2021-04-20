@@ -27,7 +27,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                     .antMatchers("/", "/home", "/registration", "/resources/**", "/courseDetails",
-                            "/downloadCourseLogo/**", "/downloadArticleLogo/**", "/readArticle", "/allMaterials/**").permitAll()
+                            "/downloadCourseLogo/**", "/downloadArticleLogo/**", "/readArticle",
+                            "/allMaterials/**", "/confirmEmail", "/finishRegistration").permitAll()
                     .antMatchers("/adminPanel").hasAnyRole("ADMIN", "SUPER_ADMIN")
                     .antMatchers("/adminPanel/subjects/**", "/adminPanel/blockUser/**",
                             "/adminPanel/deleteMaterials/**", "/adminPanel/accessToMaterials/**")

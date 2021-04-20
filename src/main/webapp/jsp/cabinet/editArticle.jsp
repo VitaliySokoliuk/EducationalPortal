@@ -12,7 +12,7 @@
 <c:import url="../parts/header.jsp"/>
 
 <div class="container">
-    <h2>New Article</h2>
+    <h2>Edit article</h2>
     <form action="/cabinet/editArticle" enctype="multipart/form-data" method="post">
         <div class="form-group">
             <label for="title">Article Title:</label>
@@ -93,6 +93,9 @@
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <button type="submit" class="btn btn-primary">Update</button>
     </form>
+    <div class="my-2 my-md-0 mr-md-3">
+        <a class="p-2 text-dark" href="/cabinet/deleteArticle?articleId=${article.id}">Delete</a>
+    </div>
 </div>
 
 

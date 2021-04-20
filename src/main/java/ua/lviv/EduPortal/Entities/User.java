@@ -29,6 +29,9 @@ public class User {
     private boolean paidMaterials;
     @Column(name = "non_locked", nullable = false)
     private boolean nonLocked;
+    @Column(columnDefinition = "boolean default false")
+    private boolean isEmailVerified;
+    private String verifyEmailHash;
 
     public User() {
     }
@@ -114,6 +117,22 @@ public class User {
 
     public void setNonLocked(boolean nonLocked) {
         this.nonLocked = nonLocked;
+    }
+
+    public boolean isEmailVerified() {
+        return isEmailVerified;
+    }
+
+    public void setEmailVerified(boolean emailVerified) {
+        isEmailVerified = emailVerified;
+    }
+
+    public String getVerifyEmailHash() {
+        return verifyEmailHash;
+    }
+
+    public void setVerifyEmailHash(String verifyEmailHash) {
+        this.verifyEmailHash = verifyEmailHash;
     }
 
     @Override

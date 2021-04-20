@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import ua.lviv.EduPortal.Entities.User;
 import ua.lviv.EduPortal.Services.UserService;
 
@@ -25,6 +26,13 @@ public class RegistrationController {
     @PostMapping("registration")
     public String registration(User user){
         userService.save(user);
-        return "login";
+        return "finishRegistration";
     }
+
+    @GetMapping("/confirmEmail")
+    public String confirmEmail(@RequestParam String hash){
+        userService.confirmEmail(hash);
+        return "redirect:/login";
+    }
+
 }

@@ -10,6 +10,7 @@ import ua.lviv.EduPortal.Repositories.UserRepository;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class UserService {
@@ -17,11 +18,14 @@ public class UserService {
 
     private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
+    private EmailSendingService emailSendingService;
 
     @Autowired
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder,
+                       EmailSendingService emailSendingService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.emailSendingService = emailSendingService;
     }
 
     public void save(User user){
@@ -30,7 +34,19 @@ public class UserService {
         user.setNonLocked(true);
         String encodePassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodePassword);
+
+        UUID uuid = UUID.randomUUID();
+        user.setVerifyEmailHash(uuid.toString());
+
         userRepository.save(user);
+
+        SendEmail thread = new SendEmail(emailSendingService, user, uuid);
+        new Thread(thread).start();
+    }
+
+    @Transactional
+    public void confirmEmail(String hash) {
+        userRepository.findByVerifyEmailHash(hash).ifPresent(user -> userRepository.confirmEmail(user.getId()));
     }
 
     public void update(User user){

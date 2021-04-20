@@ -1,8 +1,10 @@
 package ua.lviv.EduPortal.Services;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ua.lviv.EduPortal.DTOs.ArticleDto;
+import ua.lviv.EduPortal.Entities.Answer;
 import ua.lviv.EduPortal.Entities.Article;
 import ua.lviv.EduPortal.Entities.User;
 import ua.lviv.EduPortal.Repositories.ArticleRepository;
@@ -15,6 +17,7 @@ public class ArticleService {
 
     private ArticleRepository articleRepository;
 
+    @Autowired
     public ArticleService(ArticleRepository articleRepository) {
         this.articleRepository = articleRepository;
     }
@@ -77,8 +80,8 @@ public class ArticleService {
         return articleRepository.findAllArticlesAndLikes(userId);
     }
 
-    public void deleteById(int courseId){
-        articleRepository.deleteById(courseId);
+    public void deleteById(int articleId){
+        articleRepository.deleteById(articleId);
     }
 
 }

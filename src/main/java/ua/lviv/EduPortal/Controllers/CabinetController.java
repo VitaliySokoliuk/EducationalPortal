@@ -1,6 +1,7 @@
 package ua.lviv.EduPortal.Controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -58,6 +59,9 @@ public class CabinetController {
         this.articleLikeService = articleLikeService;
     }
 
+    @Value("${minUserRating}")
+    private int minUserRating;
+
     @GetMapping
     public String getUserData(HttpServletRequest request){
         Optional<User> currentUser = CustomUserDetailsService.getCurrentUser();
@@ -66,7 +70,7 @@ public class CabinetController {
             if (!user.isPaidMaterials()){
                 int courseLikes = courseLikeService.getLikesByUserId(user.getId());
                 int articleLikes = articleLikeService.getLikesByUserId(user.getId());
-                if (courseLikes + articleLikes > 15){
+                if (courseLikes + articleLikes > minUserRating){
                     user.setPaidMaterials(true);
                     userService.update(user);
                 }
@@ -468,6 +472,41 @@ public class CabinetController {
         answer.setMark(mark);
         answerService.save(answer);
         return "redirect:/cabinet/allAnswers";
+    }
+
+    @GetMapping("deleteArticle")
+    public String deleteArticle(@RequestParam int articleId){
+        Article article = articleService.findById(articleId);
+        userArticleService.deleteAllByArticleId(articleId);
+        articleLikeService.deleteAllByArticleId(articleId);
+        articlesInCourseService.deleteAllByArticleId(articleId);
+        if(article.getHometask() != null){
+            int hometaskId = article.getHometask().getId();
+            List<Answer> allAnswersByHometaskId = answerService.findAllByHometaskId(hometaskId);
+            answerService.deleteByHometaskId(hometaskId);
+            for (Answer a : allAnswersByHometaskId) {
+                if(a.getAnswerFile() != null){
+                    answerFileService.deleteById(a.getAnswerFile().getId());
+                }
+            }
+            articleService.deleteById(articleId);
+            hometaskService.deleteById(hometaskId);
+        }else{
+            articleService.deleteById(articleId);
+        }
+        chapterService.deleteById(article.getChapter().getId());
+        return "redirect:/cabinet";
+    }
+
+    @GetMapping("deleteCourse")
+    public String deleteCourse(@RequestParam int courseId){
+        Course course = courseService.findById(courseId);
+        userCourseService.deleteAllByCourseId(courseId);
+        courseLikeService.deleteAllByCourseId(courseId);
+        articlesInCourseService.deleteAllByCourseId(courseId);
+        courseService.deleteById(courseId);
+        chapterService.deleteById(course.getChapter().getId());
+        return "redirect:/cabinet";
     }
 
 }
