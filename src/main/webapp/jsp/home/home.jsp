@@ -89,10 +89,10 @@
                     <c:if test = "${!article.paid}">
                         <a href="/readArticle?id=${article.id}">Read</a>
                     </c:if>
-                    <c:if test = "${isUserPresent == true && !article.paid}">
+                    <c:if test = "${isUserPresent && !article.paid}">
                         <a href="/addAToList?id=${article.id}">Add to my list</a>
                     </c:if>
-                    <c:if test = "${isUserPresent == true && article.paid}">
+                    <c:if test = "${isUserPresent && article.paid}">
                         <a href="/buyArticle?id=${article.id}">Buy article</a>
                     </c:if>
                 </div>

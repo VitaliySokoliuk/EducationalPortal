@@ -75,6 +75,9 @@
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <button type="submit" class="btn btn-primary">Update</button>
     </form>
+    <div class="my-2 my-md-0 mr-md-3">
+        <a class="p-2 text-dark" href="/cabinet/deleteCourse?courseId=${course.id}">Delete</a>
+    </div>
 </div>
 
 </body>

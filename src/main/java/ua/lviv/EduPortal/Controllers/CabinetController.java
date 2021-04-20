@@ -474,4 +474,39 @@ public class CabinetController {
         return "redirect:/cabinet/allAnswers";
     }
 
+    @GetMapping("deleteArticle")
+    public String deleteArticle(@RequestParam int articleId){
+        Article article = articleService.findById(articleId);
+        userArticleService.deleteAllByArticleId(articleId);
+        articleLikeService.deleteAllByArticleId(articleId);
+        articlesInCourseService.deleteAllByArticleId(articleId);
+        if(article.getHometask() != null){
+            int hometaskId = article.getHometask().getId();
+            List<Answer> allAnswersByHometaskId = answerService.findAllByHometaskId(hometaskId);
+            answerService.deleteByHometaskId(hometaskId);
+            for (Answer a : allAnswersByHometaskId) {
+                if(a.getAnswerFile() != null){
+                    answerFileService.deleteById(a.getAnswerFile().getId());
+                }
+            }
+            articleService.deleteById(articleId);
+            hometaskService.deleteById(hometaskId);
+        }else{
+            articleService.deleteById(articleId);
+        }
+        chapterService.deleteById(article.getChapter().getId());
+        return "redirect:/cabinet";
+    }
+
+    @GetMapping("deleteCourse")
+    public String deleteCourse(@RequestParam int courseId){
+        Course course = courseService.findById(courseId);
+        userCourseService.deleteAllByCourseId(courseId);
+        courseLikeService.deleteAllByCourseId(courseId);
+        articlesInCourseService.deleteAllByCourseId(courseId);
+        courseService.deleteById(courseId);
+        chapterService.deleteById(course.getChapter().getId());
+        return "redirect:/cabinet";
+    }
+
 }
