@@ -7,6 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import ua.lviv.EduPortal.DTOs.ArticleDto;
+import ua.lviv.EduPortal.DTOs.CourseDto;
 import ua.lviv.EduPortal.DTOs.UserDto;
 import ua.lviv.EduPortal.Entities.*;
 import ua.lviv.EduPortal.Services.*;
@@ -67,17 +69,25 @@ public class CabinetController {
         Optional<User> currentUser = CustomUserDetailsService.getCurrentUser();
         if(currentUser.isPresent()){
             User user = currentUser.get();
+            int courseLikes = courseLikeService.getLikesByUserId(user.getId());
+            int articleLikes = articleLikeService.getLikesByUserId(user.getId());
+            int rating = courseLikes + articleLikes;
             if (!user.isPaidMaterials()){
-                int courseLikes = courseLikeService.getLikesByUserId(user.getId());
-                int articleLikes = articleLikeService.getLikesByUserId(user.getId());
-                if (courseLikes + articleLikes > minUserRating){
+                if (rating > minUserRating){
                     user.setPaidMaterials(true);
                     userService.update(user);
                 }
+                request.setAttribute("likes", rating + "/" + minUserRating);
+            }else{
+                request.setAttribute("likes", rating);
             }
+            List<ArticleDto> articles = articleService.findAllArticlesAndLikes(user.getId());
+            List<CourseDto> courses = courseService.findAllCoursesAndLikes(user.getId());
+            request.setAttribute("numOfArticles", articles.size());
+            request.setAttribute("numOfCourses", courses.size());
             request.setAttribute("user", user);
-            request.setAttribute("articles", articleService.findAllArticlesAndLikes(user.getId()));
-            request.setAttribute("courses", courseService.findAllCoursesAndLikes(user.getId()));
+            request.setAttribute("articles", articles);
+            request.setAttribute("courses", courses);
             return "cabinet/cabinet";
         }
         return "403";
@@ -370,14 +380,6 @@ public class CabinetController {
             List<Article> articlesByCourseId = articlesInCourseService.findArticlesByCourseId(courseId);
             List<Article> articlesByAuthor = articleService.getByAuthor(user);
             articlesByAuthor.removeAll(articlesByCourseId);
-            boolean isPaid = courseService.findById(courseId).isPaid();
-            List<Article> willRemove = new ArrayList<>();
-            for (Article a : articlesByAuthor) {
-                if(a.isPaid() != isPaid){
-                    willRemove.add(a);
-                }
-            }
-            articlesByAuthor.removeAll(willRemove);
             request.setAttribute("articlesInCourse", articlesByCourseId);
             request.setAttribute("anotherArticle", articlesByAuthor);
             request.setAttribute("courseId", courseId);

@@ -80,7 +80,6 @@ public class AllMaterialsController {
         Optional<User> currentUser = CustomUserDetailsService.getCurrentUser();
         Article article = articleService.findById(articleId);
         request.setAttribute("article", article);
-        request.setAttribute("author", article.getAuthor());
         if(currentUser.isPresent()){
             Optional<UserArticle> userArticle = userArticleService.findByUserIdAndArticleId(articleId, currentUser.get().getId());
             if(userArticle.isPresent()){

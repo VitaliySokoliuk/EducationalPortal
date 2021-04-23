@@ -28,7 +28,7 @@ public interface ArticleRepository extends JpaRepository<Article, Integer> {
     Article findByHometaskId(int hometaskId);
 
     @Query("select new ua.lviv.EduPortal.DTOs.ArticleDto(a.id, a.title, a.description, a.logoPicture, a.paid, a.price, " +
-            "count(al.id), sum(case when al.user.id = :userId then 1 else 0 end) > 0) " +
+            "count(al.id), sum(case when al.user.id = :userId then 1 else 0 end) > 0, a.author, a.chapter) " +
             "from Article a join UserArticle uar on a.id = uar.article.id " +
             "left join ArticleLike al on a.id = al.article.id " +
             "where uar.user.id = :userId and uar.bought = :isBought " +
@@ -50,7 +50,7 @@ public interface ArticleRepository extends JpaRepository<Article, Integer> {
     List<Article> findFewByLikes(Pageable pageable);
 
     @Query("select new ua.lviv.EduPortal.DTOs.ArticleDto(a.id, a.title, a.description, a.logoPicture, " +
-            "a.paid, a.price, a.giveAnswers, count(al.article.id) )" +
+            "a.paid, a.price, a.giveAnswers, count(al.article.id), a.author, a.chapter) " +
             "from Article a left join ArticleLike al on a.id = al.article.id " +
             "where a.author.id = :userId group by a.id")
     List<ArticleDto> findAllArticlesAndLikes(int userId);

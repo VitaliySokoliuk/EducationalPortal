@@ -1,5 +1,8 @@
 package ua.lviv.EduPortal.DTOs;
 
+import ua.lviv.EduPortal.Entities.Chapter;
+import ua.lviv.EduPortal.Entities.User;
+
 public class CourseDto {
 
     private int id;
@@ -10,8 +13,11 @@ public class CourseDto {
     private Double price;
     private Long likes;
     private Boolean meLiked;
+    private User author;
+    private Chapter chapter;
 
-    public CourseDto(int id, String title, String description, byte[] logoPicture, Boolean paid, Double price, Long likes, Boolean meLiked) {
+    public CourseDto(int id, String title, String description, byte[] logoPicture, Boolean paid,
+                     Double price, Long likes, Boolean meLiked, User author, Chapter chapter) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -20,9 +26,12 @@ public class CourseDto {
         this.price = price;
         this.likes = likes;
         this.meLiked = meLiked;
+        this.author = author;
+        this.chapter = chapter;
     }
 
-    public CourseDto(int id, String title, String description, byte[] logoPicture, Boolean paid, Double price, Long likes) {
+    public CourseDto(int id, String title, String description, byte[] logoPicture,
+                     Boolean paid, Double price, Long likes, User author, Chapter chapter) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -30,6 +39,8 @@ public class CourseDto {
         this.paid = paid;
         this.price = price;
         this.likes = likes;
+        this.author = author;
+        this.chapter = chapter;
     }
 
     public int getId() {
@@ -94,6 +105,22 @@ public class CourseDto {
 
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    public User getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(User author) {
+        this.author = author;
+    }
+
+    public Chapter getChapter() {
+        return chapter;
+    }
+
+    public void setChapter(Chapter chapter) {
+        this.chapter = chapter;
     }
 
     @Override

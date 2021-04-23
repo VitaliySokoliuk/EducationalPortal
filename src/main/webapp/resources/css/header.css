@@ -1,0 +1,15 @@
+.signOut{
+    padding-bottom: 0;
+}
+.signOut:hover{
+    text-decoration: underline !important;
+}
+form{
+    margin-block-end: 0em;
+}
+.bg{
+    background-color: #12001F;
+}
+.bg2{
+    background-color: #DA70D6;
+}

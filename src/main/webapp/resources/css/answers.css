@@ -1,0 +1,32 @@
+@import url("header.css");
+
+body {
+    background: #654ea3;
+    background: linear-gradient(to right, #e96443, #904e95);
+    min-height: 100vh
+}
+.grey-bg {
+    background-color: rgba(255, 255, 255, 0.3);
+}
+.answ{
+    width: 30%;
+    background-color: rgba(255, 255, 255, 0.5);
+}
+.black{
+    color: black;
+    text-decoration: underline;
+}
+.inp{
+    width: 20%;
+    padding: 7px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+.inp:focus{
+    outline: none;
+    -moz-box-shadow:0 0 7px deepskyblue;
+    -webkit-box-shadow:0 0 7px deepskyblue;
+    box-shadow:0 0 7px deepskyblue;
+}
