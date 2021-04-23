@@ -1,0 +1,7 @@
+@import url("header.css");
+
+body {
+    background: #654ea3;
+    background: linear-gradient(to bottom, #e96443, #654ea3);
+    min-height: 100vh
+}

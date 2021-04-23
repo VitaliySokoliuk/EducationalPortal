@@ -1,0 +1,18 @@
+.bl{
+    background-color: rgba(200, 200, 200, 0.3);
+}
+.w-47{
+    width: 47%;
+}
+.w-30{
+    width: 30%;
+}
+
+.art_fon{
+    background-color: rgba(230, 230, 230, 0.5);
+    border-radius: 10px;
+}
+.black{
+    color: black;
+    text-decoration: underline;
+}

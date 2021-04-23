@@ -23,7 +23,7 @@ public interface CourseRepository extends JpaRepository<Course, Integer> {
     List<Course> findCoursesInUserList(int userId, boolean bought);
 
     @Query("select new ua.lviv.EduPortal.DTOs.CourseDto(c.id, c.title, c.description, c.logoPicture, c.paid, c.price, " +
-            "count(cl.id), sum(case when cl.user.id = :userId then 1 else 0 end) > 0) " +
+            "count(cl.id), sum(case when cl.user.id = :userId then 1 else 0 end) > 0, c.author, c.chapter) " +
             "from Course c join UserCourse uc on c.id = uc.course.id " +
             "left join CourseLike cl on c.id = cl.course.id " +
             "where uc.user.id = :userId and uc.bought = :isBought " +
@@ -45,7 +45,7 @@ public interface CourseRepository extends JpaRepository<Course, Integer> {
     List<Course> findFewByLikes(Pageable pageable);
 
     @Query("select new ua.lviv.EduPortal.DTOs.CourseDto(c.id, c.title, c.description, c.logoPicture, " +
-            "c.paid, c.price, count(cl.course.id) )" +
+            "c.paid, c.price, count(cl.course.id), c.author, c.chapter)" +
             "from Course c left join CourseLike cl on c.id = cl.course.id " +
             "where c.author.id = :userId group by c.id")
     List<CourseDto> findAllCoursesAndLikes(int userId);

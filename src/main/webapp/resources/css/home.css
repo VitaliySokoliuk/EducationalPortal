@@ -1,0 +1,64 @@
+@import url("header.css");
+
+body {
+    background: #654ea3;
+    background: linear-gradient(to right, #e96443, #904e95);
+    min-height: 100vh
+}
+
+.inspiration{
+    /*background-color: #ECC7A5;*/
+    display: flex;
+    margin: 35px 15% 35px;
+    padding: 30px 30px 5px;
+}
+.quote{
+    width: 50%;
+    height: auto;
+    font-size: 30px;
+    margin: 5px 40px 25px;
+}
+.cont{
+    width: 70%;
+    height: auto;
+    background-color: #ECC7A5;
+    margin: 15px 15%;
+    display: flex;
+    justify-content: space-between;
+}
+.el{
+    padding: 10px;
+    width: 33%;
+    height: auto;
+}
+.photo{
+    border-radius: 15px;
+}
+.h3{
+    margin-left: 12%;
+}
+.span{
+    font-size: 15px;
+    color: black;
+}
+.span:hover{
+    color: black;
+}
+.info{
+    font-size: 20px;
+}
+.block_info1{
+    /*background-color: #316ac5;*/
+    /*float: left;*/
+    margin-right: 10px;
+}
+.block_info2{
+    /*background-color: #8a8a8a;*/
+    height: 100px;
+}
+.block_info3{
+    /*background-color: #9c3328;*/
+}
+.s18{
+    font-size: 18px;
+}

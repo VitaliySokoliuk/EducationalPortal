@@ -18,9 +18,9 @@ public class Answer {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "answerFile_id", referencedColumnName = "id")
     private AnswerFile answerFile;
-    @Column(nullable = true)
+    @Column(nullable = true, length = 100)
     private String response;
-    @Column(nullable = true)
+    @Column(nullable = true, length = 100)
     private String feedback;
     @Column(nullable = false)
     private double mark;

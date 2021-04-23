@@ -6,101 +6,114 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="<c:url value="/resources/css/home.css"/>">
+    <link rel="stylesheet" href="<c:url value="/resources/css/block.css"/>">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
 </head>
 <body>
 <c:import url="../parts/header.jsp"/>
 
+<div class="inspiration">
+    <img src="https://i.postimg.cc/tRWcj3zV/Edu-Portal-logo3.png" alt="logo" height="275px">
+    <div class="quote">I hope you'll find EduPortal helpful no matter if you're a student that needs a boost of motivation
+        or if you're a teacher of any kind that wants to inspire and make a change in the lives of others.</div>
+</div>
+
 <c:if test="${!empty courses}">
+    <h3 class="h3">The most popular courses <a href="/allMaterials" class="span"> View all</a> </h3>
     <div class="container">
-        <h4>Courses:</h4>
-        <c:forEach var="course" items="${courses}">
-            <div class="container">
-                <div>
-                    <c:if test = "${course.logoPicture == null}">
-                        <td>
-                            <img class="photo" src="https://images.vexels.com/media/users/3/147152/isolated/preview/70b2451ccef7efd91f7fde69fe25d1c9-newspaper-article-icon-by-vexels.png" width="200px">
-                        </td>
-                    </c:if>
-                    <c:if test = "${course.logoPicture != null}">
-                        <td>
-                            <img class="photo" src="/downloadCourseLogo/${course.id}" width="200px">
-                        </td>
-                    </c:if>
-                    <br>
-                    <p>${course.title}</p>
-                    <p>${course.description}</p>
-                    <c:if test = "${course.paid}">
-                        <p>Course is paid - ${course.price} UAH</p>
-                    </c:if>
-                    <c:if test = "${!course.paid}">
-                        <p>Course is free</p>
-                    </c:if>
-                    <p>Topic:
-                        <a href="/allMaterials?topic=${course.chapter.topic.name}">
-                                ${course.chapter.topic.name}</a>
-                        &#8594;
-                        <a href="/allMaterials?topic=${course.chapter.topic.name}&title=${course.chapter.name}">
-                                ${course.chapter.name}</a></p>
-                    <a href="/courseDetails?id=${course.id}">Details</a>
-                    <c:if test = "${isUserPresent == true && !course.paid}">
-                        <a href="/addCToList?id=${course.id}">Add to my list</a>
-                    </c:if>
-                    <c:if test = "${isUserPresent == true && course.paid}">
-                        <a href="/buyCourse?id=${course.id}">Buy course</a>
-                    </c:if>
+        <div class="row d-flex justify-content-between">
+            <c:forEach var="course" items="${courses}">
+                <div class="w-30 m-2">
+                    <div class="row">
+                        <div class="col-4 pt-3 bl">
+                            <c:if test = "${course.logoPicture == null}">
+                                <img src="https://images.vexels.com/media/users/3/147152/isolated/preview/70b2451ccef7efd91f7fde69fe25d1c9-newspaper-article-icon-by-vexels.png" width="100px">
+                            </c:if>
+                            <c:if test = "${course.logoPicture != null}">
+                                <img class="rounded" src="/downloadCourseLogo/${course.id}" width="100px">
+                            </c:if>
+                        </div>
+                        <div class="col-8 pt-2 bl">
+                            <h5>${course.title}</h5>
+                            <span>Author
+                                <span style="font-size: 16px">${course.author.firstName} ${course.author.lastName}</span>
+                            </span> <br>
+                            <c:if test = "${course.paid}">
+                                <strong><em>Course is paid - ${course.price} UAH</em></strong>
+                            </c:if>
+                            <c:if test = "${!course.paid}">
+                                <strong><em>Course is free</em></strong>
+                            </c:if>
+                            <br>
+                            <span>Topic:
+                                <a class="black" href="/allMaterials?topic=${course.chapter.topic.name}">
+                                        ${course.chapter.topic.name}</a>
+                                &#8594;
+                                <a class="black" href="/allMaterials?topic=${course.chapter.topic.name}&title=${course.chapter.name}">
+                                        ${course.chapter.name}</a>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="bl row">
+                        <span class="col-12">${course.description}</span>
+                        <a class="btn btn-dark ml-3 mr-3 mt-1 mb-3" href="/courseDetails?id=${course.id}">Details</a>
+                        <c:if test = "${isUserPresent == true && !course.paid}">
+                            <a class="btn btn-dark mt-1 mb-3" href="/addCToList?id=${course.id}">Add to my list</a>
+                        </c:if>
+                        <c:if test = "${isUserPresent == true && course.paid}">
+                            <a class="btn btn-dark mt-1 mb-3" href="/buyCourse?id=${course.id}">Buy course</a>
+                        </c:if>
+                    </div>
                 </div>
-            </div>
-        </c:forEach>
+            </c:forEach>
+        </div>
     </div>
 </c:if>
-
-<c:if test="${!empty articles}">
-    <div class="container">
-        <h4>Articles:</h4>
-        <c:forEach var="article" items="${articles}">
-            <div class="container">
-                <div>
-                    <c:if test = "${article.logoPicture == null}">
-                        <td>
-                            <img class="photo" src="https://images.vexels.com/media/users/3/147152/isolated/preview/70b2451ccef7efd91f7fde69fe25d1c9-newspaper-article-icon-by-vexels.png" width="200px">
-                        </td>
-                    </c:if>
-                    <c:if test = "${article.logoPicture != null}">
-                        <td>
-                            <img class="photo" src="/downloadArticleLogo/${article.id}" width="200px">
-                        </td>
-                    </c:if>
-                    <br>
-                    <p>${article.title}</p>
-                    <p>${article.description}</p>
-                    <c:if test = "${article.paid}">
-                        <p>Article is paid - ${article.price} UAH</p>
-                    </c:if>
-                    <c:if test = "${!article.paid}">
-                        <p>Article is free</p>
-                    </c:if>
-                    <p>Topic:
-                        <a href="/allMaterials?topic=${article.chapter.topic.name}">
-                                ${article.chapter.topic.name}</a>
-                        &#8594;
-                        <a href="/allMaterials?topic=${article.chapter.topic.name}&title=${article.chapter.name}">
-                                ${article.chapter.name}</a></p>
-                    <c:if test = "${!article.paid}">
-                        <a href="/readArticle?id=${article.id}">Read</a>
-                    </c:if>
-                    <c:if test = "${isUserPresent && !article.paid}">
-                        <a href="/addAToList?id=${article.id}">Add to my list</a>
-                    </c:if>
-                    <c:if test = "${isUserPresent && article.paid}">
-                        <a href="/buyArticle?id=${article.id}">Buy article</a>
-                    </c:if>
-                </div>
-            </div>
-        </c:forEach>
-    </div>
-</c:if>
-
+<%--<div class="cont">--%>
+<%--    <c:if test="${!empty courses}">--%>
+<%--        <c:forEach var="course" items="${courses}">--%>
+<%--            <div class="el row">--%>
+<%--                <c:if test = "${course.logoPicture == null}">--%>
+<%--                    <div class="block_info1">--%>
+<%--                        <img class="photo" src="https://images.vexels.com/media/users/3/147152/isolated/preview/70b2451ccef7efd91f7fde69fe25d1c9-newspaper-article-icon-by-vexels.png" width="100px">--%>
+<%--                    </div>--%>
+<%--                </c:if>--%>
+<%--                <c:if test = "${course.logoPicture != null}">--%>
+<%--                    <div class="block_info1">--%>
+<%--                        <img class="photo" src="/downloadCourseLogo/${course.id}" width="100px">--%>
+<%--                    </div>--%>
+<%--                </c:if>--%>
+<%--                <div class="block_info2">--%>
+<%--                    <span class="info">${course.title}</span> <br>--%>
+<%--                    <span>Author <span style="font-size: 16px">${course.author.firstName} ${course.author.lastName}</span></span>--%>
+<%--                    <br>--%>
+<%--                    <c:if test = "${course.paid}">--%>
+<%--                        <span>Course is paid - ${course.price} UAH</span> <br>--%>
+<%--                    </c:if>--%>
+<%--                    <c:if test = "${!course.paid}">--%>
+<%--                        <span>Course is free</span> <br>--%>
+<%--                    </c:if>--%>
+<%--                    <span class="span">Topic:--%>
+<%--                        <a href="/allMaterials?topic=${course.chapter.topic.name}" class="span">--%>
+<%--                                ${course.chapter.topic.name}</a>--%>
+<%--                        &#8594;--%>
+<%--                        <a href="/allMaterials?topic=${course.chapter.topic.name}&title=${course.chapter.name}" class="span">--%>
+<%--                                ${course.chapter.name}</a></span>--%>
+<%--                </div>--%>
+<%--                <div class="block_info3">--%>
+<%--                    <span>${course.description}</span> <br>--%>
+<%--                    <a href="/courseDetails?id=${course.id}" class="s18 btn btn-dark">Details</a>--%>
+<%--                    <c:if test = "${isUserPresent == true && !course.paid}">--%>
+<%--                        <a href="/addCToList?id=${course.id}" class="s18 btn btn-dark">Add to my list</a>--%>
+<%--                    </c:if>--%>
+<%--                    <c:if test = "${isUserPresent == true && course.paid}">--%>
+<%--                        <a href="/buyCourse?id=${course.id}" class="s18 btn btn-dark">Buy course</a>--%>
+<%--                    </c:if>--%>
+<%--                </div>--%>
+<%--            </div>--%>
+<%--        </c:forEach>--%>
+<%--    </c:if>--%>
+<%--</div>--%>
 
 </body>
 </html>

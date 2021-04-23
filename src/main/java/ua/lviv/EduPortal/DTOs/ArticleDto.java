@@ -1,5 +1,8 @@
 package ua.lviv.EduPortal.DTOs;
 
+import ua.lviv.EduPortal.Entities.Chapter;
+import ua.lviv.EduPortal.Entities.User;
+
 public class ArticleDto {
 
     private int id;
@@ -11,9 +14,11 @@ public class ArticleDto {
     private Boolean giveAnswers;
     private Long likes;
     private Boolean meLiked;
+    private User author;
+    private Chapter chapter;
 
     public ArticleDto(int id, String title, String description, byte[] logoPicture, Boolean paid,
-                      Double price, Long likes, Boolean meLiked) {
+                      Double price, Long likes, Boolean meLiked, User author, Chapter chapter) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -22,10 +27,12 @@ public class ArticleDto {
         this.price = price;
         this.likes = likes;
         this.meLiked = meLiked;
+        this.author = author;
+        this.chapter = chapter;
     }
 
     public ArticleDto(int id, String title, String description, byte[] logoPicture, Boolean paid,
-                      Double price, Boolean giveAnswers, Long likes) {
+                      Double price, Boolean giveAnswers, Long likes, User author, Chapter chapter) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -34,6 +41,8 @@ public class ArticleDto {
         this.price = price;
         this.giveAnswers = giveAnswers;
         this.likes = likes;
+        this.author = author;
+        this.chapter = chapter;
     }
 
     public int getId() {
@@ -114,6 +123,22 @@ public class ArticleDto {
 
     public void setMeLiked(Boolean meLiked) {
         this.meLiked = meLiked;
+    }
+
+    public User getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(User author) {
+        this.author = author;
+    }
+
+    public Chapter getChapter() {
+        return chapter;
+    }
+
+    public void setChapter(Chapter chapter) {
+        this.chapter = chapter;
     }
 
     @Override
