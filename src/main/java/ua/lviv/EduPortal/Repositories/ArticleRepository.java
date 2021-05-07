@@ -35,14 +35,20 @@ public interface ArticleRepository extends JpaRepository<Article, Integer> {
             "group by uar.article.id")
     List<ArticleDto> findArticlesAndLikesAndPaid(int userId, boolean isBought);
 
-    @Query("select a from Article a where a.chapter.topic.name = :topicName")
+    @Query("select a from Article a left join ArticleLike ak on a.id = ak.article.id " +
+            "where a.chapter.topic.name = :topicName " +
+            "group by ak.article.id order by count(ak.article.id) desc")
     List<Article> findAllByTopic(String topicName);
 
-    @Query("select a from Article a where a.chapter.topic.name = :topicName and " +
-            "(a.title like %:title% or a.chapter.name like %:title%)")
+    @Query("select a from Article a left join ArticleLike ak on a.id = ak.article.id " +
+            "where a.chapter.topic.name = :topicName and " +
+            "(a.title like %:title% or a.chapter.name like %:title%) " +
+            "group by ak.article.id order by count(ak.article.id) desc")
     List<Article> findAllByTopicAndTitle(String topicName, String title);
 
-    @Query("select a from Article a where a.title like %:title% or a.chapter.name like %:title%")
+    @Query("select a from Article a left join ArticleLike ak on a.id = ak.article.id " +
+            "where a.title like %:title% or a.chapter.name like %:title% " +
+            "group by ak.article.id order by count(ak.article.id) desc")
     List<Article> findAllByTitle(String title);
 
     @Query("select a from Article a left join ArticleLike ak on a.id = ak.article.id " +

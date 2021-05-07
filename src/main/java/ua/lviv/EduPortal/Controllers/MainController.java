@@ -48,13 +48,11 @@ public class MainController {
             req.setAttribute("isUserPresent", false);
         }
         req.setAttribute("courses", courseService.findFewByLikes(3));
-        req.setAttribute("articles", articleService.findFewByLikes(3));
         return "home/home";
     }
 
     @GetMapping("downloadCourseLogo/{id}")
-    public @ResponseBody
-    byte[] downloadCourseLogo(@PathVariable int id) {
+    public @ResponseBody byte[] downloadCourseLogo(@PathVariable int id) {
         return courseService.getLogoPictureById(id);
     }
 
@@ -66,7 +64,6 @@ public class MainController {
     @GetMapping("readArticle")
     public String readArticle(HttpServletRequest request, @RequestParam int id){
         request.setAttribute("article", articleService.findById(id));
-        request.setAttribute("answerAbility", true);
         return "cabinet/contentArticle";
     }
 
@@ -175,5 +172,4 @@ public class MainController {
         }
         return "redirect:/";
     }
-
 }

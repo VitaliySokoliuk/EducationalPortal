@@ -14,7 +14,7 @@
 <c:import url="../parts/header.jsp"/>
 
 <c:if test="${!empty coursesUserBought}">
-    <h3 class="w-75 m-auto p">Courses which you have bought</h3>
+    <h3 class="w-75 m-auto p">Courses which you bought</h3>
     <div class="container">
         <div class="row d-flex justify-content-between">
             <c:forEach var="course" items="${coursesUserBought}">
@@ -69,7 +69,7 @@
 </c:if>
 
 <c:if test="${!empty coursesAddedByUser}">
-    <h3 class="w-75 m-auto p">Courses to which you have been added personally</h3>
+    <h3 class="w-75 m-auto p">Courses to which you have joined personally</h3>
     <div class="container">
         <div class="row d-flex justify-content-between">
             <c:forEach var="course" items="${coursesAddedByUser}">
@@ -124,7 +124,7 @@
 </c:if>
 
 <c:if test="${!empty articlesUserBought}">
-    <h3 class="w-75 m-auto p">Articles which you have bought</h3>
+    <h3 class="w-75 m-auto p">Articles which you bought</h3>
     <div class="container">
         <div class="row d-flex justify-content-between">
             <c:forEach var="article" items="${articlesUserBought}">
@@ -179,7 +179,7 @@
 </c:if>
 
 <c:if test="${!empty articlesAddedByUser}">
-    <h3 class="w-75 m-auto p">Articles to which you have been added personally</h3>
+    <h3 class="w-75 m-auto p">Articles to which you have joined personally</h3>
     <div class="container">
         <div class="row d-flex justify-content-between">
             <c:forEach var="article" items="${articlesAddedByUser}">

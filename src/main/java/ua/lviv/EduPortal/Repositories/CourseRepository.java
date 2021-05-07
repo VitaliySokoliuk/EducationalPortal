@@ -30,14 +30,20 @@ public interface CourseRepository extends JpaRepository<Course, Integer> {
             "group by uc.course.id")
     List<CourseDto> findCoursesAndLikesAndPaid(int userId, boolean isBought);
 
-    @Query("select c from Course c where c.chapter.topic.name = :topicName")
+    @Query("select c from Course c left join CourseLike ck on c.id = ck.course.id " +
+            "where c.chapter.topic.name = :topicName " +
+            "group by ck.course.id order by count(ck.course.id) desc ")
     List<Course> findAllByTopic(String topicName);
 
-    @Query("select c from Course c where c.chapter.topic.name = :topicName and " +
-            "(c.title like %:title% or c.chapter.name like %:title%)")
+    @Query("select c from Course c left join CourseLike ck on c.id = ck.course.id " +
+            "where c.chapter.topic.name = :topicName and " +
+            "(c.title like %:title% or c.chapter.name like %:title%) " +
+            "group by ck.course.id order by count(ck.course.id) desc")
     List<Course> findAllByTopicAndTitle(String topicName, String title);
 
-    @Query("select c from Course c where c.title like %:title% or c.chapter.name like %:title%")
+    @Query("select c from Course c left join CourseLike ck on c.id = ck.course.id " +
+            "where c.title like %:title% or c.chapter.name like %:title% " +
+            "group by ck.course.id order by count(ck.course.id) desc ")
     List<Course> findAllByTitle(String title);
 
     @Query("select c from Course c left join CourseLike ck on c.id = ck.course.id " +

@@ -19,7 +19,7 @@
         <div class="container p-2">
             <h3>Additional task</h3>
             <h5 class="mb-2">${article.hometask.task}</h5>
-            <c:if test = "${article.giveAnswers && answerAbility}">
+            <c:if test = "${article.giveAnswers}">
                 <form method="post" action="/readArticle" enctype="multipart/form-data">
                     <input class="mb-2" type="file" name="file">
                     <input type="text" maxlength="100" class="form-control w-50" placeholder="Your answer" name="response"> <br>

@@ -119,10 +119,10 @@
                             </c:if>
                             <br>
                             <span>Topic:
-                                <a class="text-dark" href="/allMaterials?topic=${article.chapter.topic.name}">
+                                <a class="black" href="/allMaterials?topic=${article.chapter.topic.name}">
                                         ${article.chapter.topic.name}</a>
                                 &#8594;
-                                <a class="text-dark" href="/allMaterials?topic=${article.chapter.topic.name}&title=${article.chapter.name}">
+                                <a class="black" href="/allMaterials?topic=${article.chapter.topic.name}&title=${article.chapter.name}">
                                         ${article.chapter.name}</a>
                             </span>
                         </div>

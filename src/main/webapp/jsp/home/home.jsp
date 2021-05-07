@@ -69,51 +69,6 @@
         </div>
     </div>
 </c:if>
-<%--<div class="cont">--%>
-<%--    <c:if test="${!empty courses}">--%>
-<%--        <c:forEach var="course" items="${courses}">--%>
-<%--            <div class="el row">--%>
-<%--                <c:if test = "${course.logoPicture == null}">--%>
-<%--                    <div class="block_info1">--%>
-<%--                        <img class="photo" src="https://images.vexels.com/media/users/3/147152/isolated/preview/70b2451ccef7efd91f7fde69fe25d1c9-newspaper-article-icon-by-vexels.png" width="100px">--%>
-<%--                    </div>--%>
-<%--                </c:if>--%>
-<%--                <c:if test = "${course.logoPicture != null}">--%>
-<%--                    <div class="block_info1">--%>
-<%--                        <img class="photo" src="/downloadCourseLogo/${course.id}" width="100px">--%>
-<%--                    </div>--%>
-<%--                </c:if>--%>
-<%--                <div class="block_info2">--%>
-<%--                    <span class="info">${course.title}</span> <br>--%>
-<%--                    <span>Author <span style="font-size: 16px">${course.author.firstName} ${course.author.lastName}</span></span>--%>
-<%--                    <br>--%>
-<%--                    <c:if test = "${course.paid}">--%>
-<%--                        <span>Course is paid - ${course.price} UAH</span> <br>--%>
-<%--                    </c:if>--%>
-<%--                    <c:if test = "${!course.paid}">--%>
-<%--                        <span>Course is free</span> <br>--%>
-<%--                    </c:if>--%>
-<%--                    <span class="span">Topic:--%>
-<%--                        <a href="/allMaterials?topic=${course.chapter.topic.name}" class="span">--%>
-<%--                                ${course.chapter.topic.name}</a>--%>
-<%--                        &#8594;--%>
-<%--                        <a href="/allMaterials?topic=${course.chapter.topic.name}&title=${course.chapter.name}" class="span">--%>
-<%--                                ${course.chapter.name}</a></span>--%>
-<%--                </div>--%>
-<%--                <div class="block_info3">--%>
-<%--                    <span>${course.description}</span> <br>--%>
-<%--                    <a href="/courseDetails?id=${course.id}" class="s18 btn btn-dark">Details</a>--%>
-<%--                    <c:if test = "${isUserPresent == true && !course.paid}">--%>
-<%--                        <a href="/addCToList?id=${course.id}" class="s18 btn btn-dark">Add to my list</a>--%>
-<%--                    </c:if>--%>
-<%--                    <c:if test = "${isUserPresent == true && course.paid}">--%>
-<%--                        <a href="/buyCourse?id=${course.id}" class="s18 btn btn-dark">Buy course</a>--%>
-<%--                    </c:if>--%>
-<%--                </div>--%>
-<%--            </div>--%>
-<%--        </c:forEach>--%>
-<%--    </c:if>--%>
-<%--</div>--%>
 
 </body>
 </html>
