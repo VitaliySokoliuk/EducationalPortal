@@ -31,13 +31,13 @@
                             <a class="black" href="/cabinet/downloadAnswerFile?id=${answer.answerFile.id}">${answer.answerFile.name}</a>
                         </c:if>
                         <hr style="border: none; background-color: #4A0054; height: 3px;">
-                        <form action="/cabinet/confirmAnswer/${answer.id}" method="get">
+                        <form action="/cabinet/allAnswers" method="post">
                             <label>Feedback </label>
                             <input type="text" maxlength="100" name="feedback" class="form-control" value="${answer.feedback}"/>
                             <span class="mt-2">Mark </span>
                             <input type="number" class="w-25 mt-2 inp" step="0.1" value="${answer.mark}" name="mark"
                                    min="0" max="${answer.hometask.maxMark}"/> / ${answer.hometask.maxMark} <br>
-                            <input type="hidden" name="articleId" value="${articleId}">
+                            <input type="hidden" name="answerId" value="${answer.id}">
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                             <button type="submit" class="btn btn-dark mt-2">Send</button><br>
                         </form>

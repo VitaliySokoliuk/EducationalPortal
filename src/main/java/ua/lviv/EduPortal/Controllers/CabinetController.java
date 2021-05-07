@@ -16,7 +16,6 @@ import ua.lviv.EduPortal.Services.security.CustomUserDetailsService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -164,9 +163,6 @@ public class CabinetController {
             try {
                 Topic savedTopic = topicService.findOrSave(topic);
                 Chapter savedChapter = chapterService.save(new Chapter(savedTopic, chapter));
-                content = content.replaceAll("&lt;", "<")
-                        .replaceAll("&gt;", ">")
-                        .replaceAll("&quot;", "\"");
                 Article article = new Article(currentUser.get(), title, savedChapter, description,
                                             paid, false, content);
                 String contentType = logo.getContentType();
@@ -238,9 +234,6 @@ public class CabinetController {
             article.setTitle(title);
             article.setDescription(description);
             article.setPaid(paid);
-            content = content.replaceAll("&lt;", "<")
-                    .replaceAll("&gt;", ">")
-                    .replaceAll("&quot;", "\"");
             article.setContent(content);
             String contentType = logo.getContentType();
             if (contentType != null && contentType.startsWith("image")) {
@@ -444,8 +437,8 @@ public class CabinetController {
     }
 
     @GetMapping("confirmAnswer/{id}")
-    public String confirmAnswer(@PathVariable(name = "id") int answerId, @RequestParam int articleId,
-                                @RequestParam double mark, @RequestParam(required = false) String feedback){
+    public String confirmAnswer(@PathVariable(name = "id") int answerId, @RequestParam(required = false) String feedback,
+                                @RequestParam double mark, @RequestParam int articleId){
         Answer answer = answerService.findById(answerId);
         if(feedback != null && !feedback.equals("")){
             answer.setFeedback(feedback);
@@ -465,8 +458,8 @@ public class CabinetController {
     }
 
     @PostMapping("allAnswers")
-    public String allAnswers2(@RequestParam int answerId, @RequestParam double mark,
-                              @RequestParam(required = false) String feedback){
+    public String allAnswers2(@RequestParam(required = false) String feedback, @RequestParam double mark,
+                              @RequestParam int answerId){
         Answer answer = answerService.findById(answerId);
         if(feedback != null && !feedback.equals("")){
             answer.setFeedback(feedback);
